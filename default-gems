@@ -1,0 +1,8 @@
+bundler
+pry
+gem-ctags
+httparty
+rspec
+rails
+puma
+rubocop
