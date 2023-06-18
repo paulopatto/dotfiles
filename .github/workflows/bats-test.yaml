@@ -3,7 +3,7 @@ name: bats
 
 on: [workflow_dispatch]
 jobs:
-  vagrant-tests-fedora:
+  tests-with-bats:
     runs-on: ubuntu-latest
 
     steps:
