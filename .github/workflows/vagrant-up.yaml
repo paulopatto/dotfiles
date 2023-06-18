@@ -12,13 +12,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Install Virtualbox
-      run: apt install --yes virtualbox 
+      run: sudo apt install --yes virtualbox 
 
     - name: Install Vagrant 2.2.19
-      run: wget https://releases.hashicorp.com/vagrant/2.2.19/vagrant_2.2.19_x86_64.deb && apt install ./vagrant_2.2.19_x86_64.deb
+      run: wget https://releases.hashicorp.com/vagrant/2.2.19/vagrant_2.2.19_x86_64.deb && sudo apt install ./vagrant_2.2.19_x86_64.deb
 
     - name: Cache Vagrant boxes
       uses: actions/cache@v2
