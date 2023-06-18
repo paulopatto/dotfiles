@@ -26,6 +26,9 @@ jobs:
     - name: Show Vagrant version
       run: vagrant --version
 
+    - name: Disable virtualbox :gui
+      run: find ./Vagrantfile -type f -exec sed -i "s/vb.gui = true/vb.gui = false/g" {} \;
+
     - name: Run vagrant up
       run: vagrant up fedora
 
