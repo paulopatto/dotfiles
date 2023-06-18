@@ -1,14 +1,9 @@
 ---
 name: vagrant-up
 
-on: 
-  workflow_dispatch:
-    inputs:
-      tags:
-        description: "Test tag scenario"
-
+on: [workflow_dispatch]
 jobs:
-  vagrant-tests:
+  vagrant-tests-fedora:
     runs-on: ubuntu-latest
 
     steps:
@@ -31,8 +26,8 @@ jobs:
     - name: Show Vagrant version
       run: vagrant --version
 
-    # - name: Run vagrant up
-    #   run: vagrant up fedora
+    - name: Run vagrant up
+      run: vagrant up fedora
 
-    # - name: ssh into box after boot
-    #   run: vagrant ssh fedora -c "echo 'hello world!'"
+    - name: ssh into box after boot
+      run: vagrant ssh fedora -c "echo 'hello world!'"
