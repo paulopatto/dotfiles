@@ -12,6 +12,11 @@ jobs:
     - name: Git submodule update
       run: git submodule update --init
 
+    - name: Run bootstrap script
+      run: sh ./bootstrap
+    - name: Init zsh
+      run: zsh
+
     - name: Run bats tests
       run: ./test/bats/bin/bats test/*.bats
     

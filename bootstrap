@@ -12,12 +12,11 @@ then
   echo "[UBUNTU] Install essential packages via APT"
   sudo apt install --yes curl \
     gawk \
-    git \
-    gitk \
     tmux \
     zsh \
     neovim \
-    jq
+    jq \
+    git
 
   echo "[UBUNTU] Install snaps"
   sudo snap install --classic code
