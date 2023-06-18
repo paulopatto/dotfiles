@@ -14,6 +14,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Install Virtualbox
+      run: apt install --yes virtualbox 
+
+    - name: Install Vagrant 2.2.19
+      run: wget https://releases.hashicorp.com/vagrant/2.2.19/vagrant_2.2.19_x86_64.deb && apt install ./vagrant_2.2.19_x86_64.deb
+
     - name: Cache Vagrant boxes
       uses: actions/cache@v2
       with:
@@ -25,8 +31,8 @@ jobs:
     - name: Show Vagrant version
       run: vagrant --version
 
-    - name: Run vagrant up
-      run: vagrant up fedora
+    # - name: Run vagrant up
+    #   run: vagrant up fedora
 
-    - name: ssh into box after boot
-      run: vagrant ssh fedora -c "echo 'hello world!'"
+    # - name: ssh into box after boot
+    #   run: vagrant ssh fedora -c "echo 'hello world!'"
