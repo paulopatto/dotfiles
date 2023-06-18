@@ -1,0 +1,16 @@
+---
+name: bats
+
+on: [workflow_dispatch]
+jobs:
+  vagrant-tests-fedora:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Git submodule update
+      run: git submodule update --init --recursive
+    - name: Run bats tests
+      run: ./test/bats/bin/bats test/*.bats
+    
