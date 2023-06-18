@@ -1,0 +1,16 @@
+.DS_Store
+.rvmrc
+.rvmrc.local
+*~
+.*.sw?
+*.sqlite3
+*.log
+.rbenv-gemsets
+Procfile.development
+tags
+i
+public/assets/**/*.webp
+.tools-versions
+.tool-versions
+nohup.out
+spec/vcr/services/referral_candy_service.yml

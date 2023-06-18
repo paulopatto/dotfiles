@@ -23,7 +23,6 @@ then
   sudo snap install postman
 
   echo "[1password] Visit: https://support.1password.com/install-linux/"
-  
   if [ ! -f /usr/share/keyrings/1password-archive-keyring.gpg ]; then
     echo "[1password] Add the key for the 1Password apt repository."
     curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
@@ -100,5 +99,7 @@ echo "[ZSH] Current shell is $SHELL, choosing zsh default..." && chsh -s $(which
 [ ! -d $HOME/.asdf ] && git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf
 [ ! -f $HOME/.tmux.conf ] && ln -s $DOTFILES_HOME/tmux.conf $HOME/.tmux.conf
 [ ! -f $HOME/.vscode/settings.json ] && ln -s $DOTFILES_HOME/vscode/ $HOME/.vscode/settings.json
+[ ! -f $HOME/.gitconfig ] && ln -s $DOTFILES_HOME/gitconfig $HOME/.gitconfig
+[ ! -f $HOME/.gitignore_global ] && ln -s $DOTFILES_HOME/gitignore_global $HOME/.gitignore_global
 
 echo "Install ZSH plugin with: \`zplug install\`"
