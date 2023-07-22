@@ -5,4 +5,5 @@ httparty
 rspec
 rails
 puma
+solargraph
 rubocop
