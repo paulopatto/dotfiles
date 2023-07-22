@@ -1,5 +1,15 @@
 {
   "editor.tabSize": 2,
+  "[javascript]": {
+    "editor.tabSize": 2
+  },
+  "[json]": {
+    "editor.tabSize": 2
+  },
+  "[ruby]": {
+    "editor.tabSize": 2
+  },
+  "editor.insertSpaces": true,
   "files.insertFinalNewline": true,
   "prettier.tabWidth": 2,
   "editor.codeActionsOnSave": {
@@ -7,4 +17,6 @@
     "source.organizeImports": true
   },
   "typescript.preferences.importModuleSpecifier": "relative",
+  "ruby.rubocop.onSave": true,
+  "ruby.rubocop.executePath": "",
 }
