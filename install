@@ -1,0 +1,14 @@
+#!/bin/bash
+# vim:syntax=sh filetype=sh
+
+
+## Define os-platorm
+export PLATFORM="$(uname -s)" # Linux | Darwin | ...
+
+### Install base libs
+
+
+### Install Tmux
+
+
+### Install neovim w/ support lua
