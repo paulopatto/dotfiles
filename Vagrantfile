@@ -6,9 +6,6 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-
-  
-
   config.vm.define :fedora do |fedora|
     fedora.vm.box = "fedora/38-cloud-base"
     fedora.vm.hostname = "fedora"
@@ -21,10 +18,8 @@ Vagrant.configure("2") do |config|
       vb.cpus = 1
     end
 
-    fedora.vm.provision :shell, inline: "sudo dnf upgrade -y"
-    fedora.vm.provision :shell, inline: "sudo dnf install -y bats"
-    fedora.vm.provision :shell, inline: "sudo usermod -a -G sudo vagrant"
-    fedora.vm.provision :shell, inline: "cd /vagrant/dotfiles && ./bootstrap"
+    fedora.vm.provision :shell, inline: "sudo usermod -a -G wheel vagrant"
+    fedora.vm.provision :shell, inline: "cd /vagrant/dotfiles && ./install"
   end
 
   config.vm.define :ubuntu do |ubuntu|
@@ -39,10 +34,8 @@ Vagrant.configure("2") do |config|
       vb.cpus = 1
     end
 
-    ubuntu.vm.provision :shell, inline: "sudo apt upgrade --yes"
-    ubuntu.vm.provision :shell, inline: "sudo apt install --yes bats"
     ubuntu.vm.provision :shell, inline: "sudo usermod -a -G sudo vagrant"
-    ubuntu.vm.provision :shell, inline: "cd /vagrant/dotfiles && ./bootstrap"
+    ubuntu.vm.provision :shell, inline: "cd /vagrant/dotfiles && ./install"
   end
   
   # config.vm.define :macbook do |macbook|
