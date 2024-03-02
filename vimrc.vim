@@ -96,6 +96,7 @@ Plug 'sickill/vim-monokai'
 Plug 'sonph/onehalf'                             " Clean, vibrant and pleasing color schemes for Vim, gnome-terminal and more.
 Plug 'tomasiser/vim-code-dark'
 Plug 'tomasr/molokai'                            " Molokai color scheme for Vim
+Plug 'folke/tokyonight.nvim'                     " A clean, dark Neovim theme written in Lua, with support for lsp, treesitter and lots of plugins.
 
 " ====================================
 " *****    Language Supports     *****
