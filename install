@@ -1,7 +1,6 @@
 #!/bin/bash
 # vim:syntax=sh filetype=sh
 
-
 ## Define os-platorm
 export PLATFORM_ARCH="$(uname -s)" # Linux | Darwin | ...
 
@@ -92,6 +91,4 @@ elif [ $PLATFORM_OS == "MacOS" ]; then
 
 else
   echo "Unsupported platorm"
-
 fi
-
