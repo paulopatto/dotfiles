@@ -1,4 +1,4 @@
-set expandtab
-set tabstop=2
-set sfttabstop=2
-set shiftwidth=2
+vim.cmd("set expandtab")
+vim.cmd("set tabstop=2")
+vim.cmd("set sfttabstop=2")
+vim.cmd("set shiftwidth=2")
