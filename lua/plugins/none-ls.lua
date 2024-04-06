@@ -1,9 +1,23 @@
 return {
 	"nvimtools/none-ls.nvim",
+  dependencies = {
+    "nvimtools/none-ls-extras.nvim",
+  },
 	config = function()
 		local null_ls = require("null-ls")
 		null_ls.setup({
 			sources = {
+        require("none-ls.diagnostics.eslint_d"),
+        require("none-ls.code_actions.eslint"),
+        require("none-ls.diagnostics.flake8"),
+        require("none-ls.formatting.jq"),
+
+        -- General
+        null_ls.builtins.completion.spell,
+
+        -- markdown || linter
+        null_ls.builtins.diagnostics.alex,
+
 				-- Lua language
 				null_ls.builtins.formatting.stylua,
 
@@ -12,18 +26,15 @@ return {
 				null_ls.builtins.diagnostics.rubocop,
 
         -- JavaScript / Typescript Stack
+        --null_ls.builtins.diagnostics.eslint_d,
         null_ls.builtins.formatting.prettier,
-        null_ls.builtins.diagnostics.eslint_d.with ({
-          method = null_ls.methods.DIAGNOSTICS_ON_SAVE
-        }),
 
-
-        -- Python
-        -- link: https://www.reddit.com/r/neovim/comments/1069wto/what_python_lsp_and_linter/
+        -- Python Formatter
+        -- links: 
+        -- - https://www.reddit.com/r/neovim/comments/1069wto/what_python_lsp_and_linter/
+        -- - https://www.reddit.com/r/neovim/comments/1b5hc2p/nonels_giving_me_errors_starting_from_today/
         null_ls.builtins.formatting.black,
-        null_ls.builtins.diagnostics.isort.with({ --/flake8
-          method = null_ls.methods.DIAGNOSTICS_ON_SAVE
-        })
+        null_ls.builtins.formatting.isort,
 			},
 		})
 
