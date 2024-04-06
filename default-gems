@@ -1,9 +1,9 @@
 bundler
-pry
 gem-ctags
 httparty
-rspec
-rails
+pry
 puma
-solargraph
+rails
+rspec
 rubocop
+solargraph

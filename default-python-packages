@@ -1,4 +1,7 @@
-pipenv
-requests
-pytest
+black
 ipython
+pipenv
+pyright
+pytest
+requests
+virtualenv
