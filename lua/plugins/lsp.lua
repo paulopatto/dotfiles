@@ -42,8 +42,12 @@ return {
       lspconfig.tsserver.setup({})
       lspconfig.pyright.setup({})
 
-      -- Will open helper pop-up
-      vim.keymap.set('n', 'K', vim.lsp.buf.hover, {})
+      -- Buffer local mappings.
+      -- See `:help vim.lsp.*` for documentation on any of the below functions
+      vim.keymap.set('n', 'K', vim.lsp.buf.hover, {}) -- Will open helper pop-up
+      vim.keymap.set('n', 'gd', vim.lsp.buf.definition, {})
+      vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, {})
+      vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, {})
     end
   }
 }
