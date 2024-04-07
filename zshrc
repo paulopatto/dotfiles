@@ -70,21 +70,20 @@ fi
 if [ -f $HOME/.zplug/init.zsh ]; then 
   source $HOME/.zplug/init.zsh
 
-  zplug "plugins/git", from:oh-my-zsh
-  zplug "plugins/git", from:oh-my-zsh
-  zplug "plugins/sudo", from:oh-my-zsh
-  zplug "plugins/pip", from:oh-my-zsh
-  zplug "plugins/rails", from:oh-my-zsh
-  zplug "plugins/ruby", from:oh-my-zsh
-  zplug "plugins/asdf", from:oh-my-zsh
+  zplug "plugins/asdf",              from:oh-my-zsh
   zplug "plugins/command-not-found", from:oh-my-zsh
-  zplug "plugins/compleat", from:oh-my-zsh
-  zplug "themes/agnoster", from:oh-my-zsh, as:theme
+  zplug "plugins/compleat",          from:oh-my-zsh
+  zplug "plugins/git",               from:oh-my-zsh
+  zplug "plugins/git",               from:oh-my-zsh
+  zplug "plugins/pip",               from:oh-my-zsh
+  zplug "plugins/rails",             from:oh-my-zsh
+  zplug "plugins/ruby",              from:oh-my-zsh
+  zplug "plugins/sudo",              from:oh-my-zsh
+  zplug "themes/agnoster",           from:oh-my-zsh, as:theme
   zplug "zsh-users/zsh-completions"
 
   autoload -U +X bashcompinit && bashcompinit
   autoload -U +X compinit && compinit
-
   plugins=(git ruby rails pip zsh-syntax-highlighting asdf compleat)
 
   zplug load
@@ -97,6 +96,7 @@ if [ ! -d $HOME/.tmux/plugins/tpm ]; then
   echo "[TMUX] Press [prefix] + [U] (capital u, as in Update) updates plugin(s)."
   echo "[TMUX] Visit https://github.com/tmux-plugins/tpm"
 fi
+PATH=$PATH:$HOME/.tmux/plugins/tmuxifier/bin
 
 # Configs to ASDF-VM:
 if [ -d $HOME/.asdf/completions/ ]; then
@@ -109,11 +109,13 @@ fi
 [ -f $HOME/.asdf/asdf.sh ] && source $HOME/.asdf/asdf.sh
 [ -f $HOME/.asdf/completions/asdf.bash ] && source $HOME/.asdf/completions/asdf.bash
 
-export ANDROID_HOME=/$HOME/.android
-export ANDROID_SDK_ROOT=$ANDROID_HOME
+if [ -d $HOME/.android/ ]; then
+  export ANDROID_HOME=/$HOME/.android
+  export ANDROID_SDK_ROOT=$ANDROID_HOME
 
-[ -d $HOME/.android/cmdline-tools ] &&  export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
-[ -d $HOME/.android/platform-tools ] &&  export PATH=$PATH:$ANDROID_HOME/platform-tools/
-[ -d $HOME/.android/emulator ] &&  export PATH=$PATH:$ANDROID_HOME/emulator/
+  [ -d $HOME/.android/cmdline-tools ] &&  export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+  [ -d $HOME/.android/platform-tools ] &&  export PATH=$PATH:$ANDROID_HOME/platform-tools/
+  [ -d $HOME/.android/emulator ] &&  export PATH=$PATH:$ANDROID_HOME/emulator/
+fi
 
 alias ll="ls -lh"
