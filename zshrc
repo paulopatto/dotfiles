@@ -110,7 +110,7 @@ fi
 [ -f $HOME/.asdf/completions/asdf.bash ] && source $HOME/.asdf/completions/asdf.bash
 
 if [ -d $HOME/.android/ ]; then
-  export ANDROID_HOME=/$HOME/.android
+  export ANDROID_HOME=$HOME/.android
   export ANDROID_SDK_ROOT=$ANDROID_HOME
 
   [ -d $HOME/.android/cmdline-tools ] &&  export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
