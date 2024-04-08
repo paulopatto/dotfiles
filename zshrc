@@ -119,3 +119,4 @@ if [ -d $HOME/.android/ ]; then
 fi
 
 alias ll="ls -lh"
+alias python=python3
