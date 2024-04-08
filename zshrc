@@ -120,3 +120,5 @@ fi
 
 alias ll="ls -lh"
 alias python=python3
+alias ipy="python -c 'import IPython;
+IPython.terminal.ipapp.launch_new_instance()'"
