@@ -62,31 +62,39 @@ HISTFILE=~/.zsh_history
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(git ruby rails pip zsh-syntax-highlighting)
 
+
+# Ensure zplug has been installed
 if [ ! -d $HOME/.zplug ]; then
   echo "[ZSH] Install zplug - Zsh Plugin Manager"
   git clone https://github.com/zplug/zplug $HOME/.zplug
 fi
 
-if [ -f $HOME/.zplug/init.zsh ]; then 
-  source $HOME/.zplug/init.zsh
 
+if [ -f $HOME/.zplug/init.zsh ]; then 
+  export ZPLUG_HOME=$HOME/.zplug
+  source $ZPLUG_HOME/init.zsh
+
+  zplug "lib/clipboard",             from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
   zplug "plugins/asdf",              from:oh-my-zsh
   zplug "plugins/command-not-found", from:oh-my-zsh
   zplug "plugins/compleat",          from:oh-my-zsh
-  zplug "plugins/git",               from:oh-my-zsh
-  zplug "plugins/git",               from:oh-my-zsh
+  zplug "plugins/git",               from:oh-my-zsh, if:"which git"
+  zplug "plugins/osx",               from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
   zplug "plugins/pip",               from:oh-my-zsh
   zplug "plugins/rails",             from:oh-my-zsh
   zplug "plugins/ruby",              from:oh-my-zsh
   zplug "plugins/sudo",              from:oh-my-zsh
-  zplug "themes/agnoster",           from:oh-my-zsh, as:theme
+  zplug "themes/agnoster",           from:oh-my-zsh, as: "theme"
+  zplug "themes/robbyrussell",       from:oh-my-zsh, as: "theme"
   zplug "zsh-users/zsh-completions"
 
   autoload -U +X bashcompinit && bashcompinit
   autoload -U +X compinit && compinit
-  plugins=(git ruby rails pip zsh-syntax-highlighting asdf compleat)
+
+  plugins=(git ruby rails pip asdf compleat)
 
   zplug load
+  source $ZSH/oh-my-zsh.sh
 fi
 
 if [ ! -d $HOME/.tmux/plugins/tpm ]; then
