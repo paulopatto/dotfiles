@@ -3,7 +3,7 @@ export LANG="pt_BR.UTF-8"
 export LOCALE="pt_BR.UTF-8"
 export EDITOR='nvim'
 export TERM='xterm-256color' # old: 'screen-256color'
-export PAGER='less -rS' # By @dlisboa
+export PAGER='less -rS'      # By @dlisboa
 
 ############################################
 ########          GIT
