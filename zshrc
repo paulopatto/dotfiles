@@ -1,4 +1,5 @@
 # You may need to manually set your language environment
+export XDG_CONFIG_HOME=$HOME/.config
 export LANG="pt_BR.UTF-8"
 export LOCALE="pt_BR.UTF-8"
 export EDITOR='nvim'
@@ -59,14 +60,16 @@ HISTFILE=~/.zsh_history
 
 
 # Ensure zplug has been installed
-if [ ! -d $HOME/.zplug ]; then
+if [ ! -d $XDG_CONFIG_HOME/zsh/plugins/zplug ]; then
   echo "[ZSH] Install zplug - Zsh Plugin Manager"
-  git clone https://github.com/zplug/zplug $HOME/.zplug
+  git clone https://github.com/zplug/zplug $XDG_CONFIG_HOME/zsh/plugins/zplug
+  echo "[ZSH] Zplugin installed, can you run: zplug install" 
+  zplug install
 fi
 
 
-if [ -f $HOME/.zplug/init.zsh ]; then 
-  export ZPLUG_HOME=$HOME/.zplug
+if [ -f $XDG_CONFIG_HOME/zsh/plugins/zplug/init.zsh ]; then 
+  export ZPLUG_HOME=$XDG_CONFIG_HOME/zsh/plugins/zplug
   source $ZPLUG_HOME/init.zsh
 
   zplug "lib/clipboard",             from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
@@ -79,8 +82,8 @@ if [ -f $HOME/.zplug/init.zsh ]; then
   zplug "plugins/rails",             from:oh-my-zsh
   zplug "plugins/ruby",              from:oh-my-zsh
   zplug "plugins/sudo",              from:oh-my-zsh
-  zplug "themes/agnoster",           from:oh-my-zsh, as: "theme"
-  zplug "themes/robbyrussell",       from:oh-my-zsh, as: "theme"
+  zplug "themes/agnoster",           from:oh-my-zsh, as:theme
+  zplug "themes/robbyrussell",       from:oh-my-zsh, as:theme
   zplug "zsh-users/zsh-completions"
 
   autoload -U +X bashcompinit && bashcompinit
@@ -94,17 +97,17 @@ if [ -f $HOME/.zplug/init.zsh ]; then
   plugins=(git ruby rails pip asdf compleat)
 
   zplug load
-  source $ZSH/oh-my-zsh.sh
+  source $ZPLUG_HOME/repos/$ZSH_THEME/oh-my-zsh/oh-my-zsh.sh
 fi
 
-if [ ! -d $HOME/.tmux/plugins/tpm ]; then
+if [ ! -d $XDG_CONFIG_HOME/tmux/plugins/tpm ]; then
   echo "[TMUX] Install TMUX Plugin Manager (TPM)"
-  git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
+  git clone https://github.com/tmux-plugins/tpm $XDG_CONFIG_HOME/tmux/plugins/tpm
   echo "[TMUX] Press [prefix] + [I] (capital i, as in Install) Installs new plugins from GitHub or any other git repository & refresh env."
   echo "[TMUX] Press [prefix] + [U] (capital u, as in Update) updates plugin(s)."
   echo "[TMUX] Visit https://github.com/tmux-plugins/tpm"
 fi
-PATH=$PATH:$HOME/.tmux/plugins/tmuxifier/bin
+PATH=$PATH:$XDG_CONFIG_HOME/tmux/plugins/tmuxifier/bin
 
 # Configs to ASDF-VM:
 if [ -d $HOME/.asdf/completions/ ]; then
@@ -130,3 +133,11 @@ alias ll="ls -lh"
 alias python=python3
 alias ipy="python -c 'import IPython;
 IPython.terminal.ipapp.launch_new_instance()'"
+
+## Configs to gcloud
+#FIXME: Move it to be managed by asdf-vm
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/opt/google/cloud-sdk/path.zsh.inc' ]; then . '/opt/google/cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/opt/google/cloud-sdk/completion.zsh.inc' ]; then . '/opt/google/cloud-sdk/completion.zsh.inc'; fi
