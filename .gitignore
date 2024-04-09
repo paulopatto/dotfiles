@@ -1,1 +1,3 @@
 .vagrant/
+tmux/plugins/
+zsh/plugins/
