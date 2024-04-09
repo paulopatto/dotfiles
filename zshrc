@@ -98,14 +98,14 @@ if [ -f $HOME/.zplug/init.zsh ]; then
   source $ZSH/oh-my-zsh.sh
 fi
 
-if [ ! -d $HOME/.tmux/plugins/tpm ]; then
+if [ ! -d $XDG_CONFIG_HOME/tmux/plugins/tpm ]; then
   echo "[TMUX] Install TMUX Plugin Manager (TPM)"
-  git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
+  git clone https://github.com/tmux-plugins/tpm $XDG_CONFIG_HOME/tmux/plugins/tpm
   echo "[TMUX] Press [prefix] + [I] (capital i, as in Install) Installs new plugins from GitHub or any other git repository & refresh env."
   echo "[TMUX] Press [prefix] + [U] (capital u, as in Update) updates plugin(s)."
   echo "[TMUX] Visit https://github.com/tmux-plugins/tpm"
 fi
-PATH=$PATH:$HOME/.tmux/plugins/tmuxifier/bin
+PATH=$PATH:$XDG_CONFIG_HOME/tmux/plugins/tmuxifier/bin
 
 # Configs to ASDF-VM:
 if [ -d $HOME/.asdf/completions/ ]; then
