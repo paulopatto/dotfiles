@@ -108,6 +108,7 @@ if [ ! -d $XDG_CONFIG_HOME/tmux/plugins/tpm ]; then
   echo "[TMUX] Visit https://github.com/tmux-plugins/tpm"
 fi
 PATH=$PATH:$XDG_CONFIG_HOME/tmux/plugins/tmuxifier/bin
+eval "$(tmuxifier init -)"
 
 # Configs to ASDF-VM:
 if [ -d $HOME/.asdf/completions/ ]; then
