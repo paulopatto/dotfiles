@@ -64,6 +64,7 @@ if [ ! -d $XDG_CONFIG_HOME/zsh/plugins/zplug ]; then
   echo "[ZSH] Install zplug - Zsh Plugin Manager"
   git clone https://github.com/zplug/zplug $XDG_CONFIG_HOME/zsh/plugins/zplug
   echo "[ZSH] Zplugin installed, can you run: zplug install" 
+  zplug install
 fi
 
 
@@ -81,8 +82,8 @@ if [ -f $XDG_CONFIG_HOME/zsh/plugins/zplug/init.zsh ]; then
   zplug "plugins/rails",             from:oh-my-zsh
   zplug "plugins/ruby",              from:oh-my-zsh
   zplug "plugins/sudo",              from:oh-my-zsh
-  zplug "themes/agnoster",           from:oh-my-zsh, as: "theme"
-  zplug "themes/robbyrussell",       from:oh-my-zsh, as: "theme"
+  zplug "themes/agnoster",           from:oh-my-zsh, as:theme
+  zplug "themes/robbyrussell",       from:oh-my-zsh, as:theme
   zplug "zsh-users/zsh-completions"
 
   autoload -U +X bashcompinit && bashcompinit
@@ -96,7 +97,7 @@ if [ -f $XDG_CONFIG_HOME/zsh/plugins/zplug/init.zsh ]; then
   plugins=(git ruby rails pip asdf compleat)
 
   zplug load
-  source $ZSH/oh-my-zsh.sh
+  source $ZPLUG_HOME/repos/$ZSH_THEME/oh-my-zsh/oh-my-zsh.sh
 fi
 
 if [ ! -d $XDG_CONFIG_HOME/tmux/plugins/tpm ]; then
