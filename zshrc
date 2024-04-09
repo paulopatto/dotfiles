@@ -60,14 +60,15 @@ HISTFILE=~/.zsh_history
 
 
 # Ensure zplug has been installed
-if [ ! -d $HOME/.zplug ]; then
+if [ ! -d $XDG_CONFIG_HOME/zsh/plugins/zplug ]; then
   echo "[ZSH] Install zplug - Zsh Plugin Manager"
-  git clone https://github.com/zplug/zplug $HOME/.zplug
+  git clone https://github.com/zplug/zplug $XDG_CONFIG_HOME/zsh/plugins/zplug
+  echo "[ZSH] Zplugin installed, can you run: zplug install"
 fi
 
 
-if [ -f $HOME/.zplug/init.zsh ]; then 
-  export ZPLUG_HOME=$HOME/.zplug
+if [ -f $XDG_CONFIG_HOME/zsh/plugins/zplug/init.zsh ]; then
+  export ZPLUG_HOME=$XDG_CONFIG_HOME/zsh/plugins/zplug
   source $ZPLUG_HOME/init.zsh
 
   zplug "lib/clipboard",             from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
