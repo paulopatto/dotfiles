@@ -63,11 +63,11 @@ HISTFILE=~/.zsh_history
 if [ ! -d $XDG_CONFIG_HOME/zsh/plugins/zplug ]; then
   echo "[ZSH] Install zplug - Zsh Plugin Manager"
   git clone https://github.com/zplug/zplug $XDG_CONFIG_HOME/zsh/plugins/zplug
-  echo "[ZSH] Zplugin installed, can you run: zplug install"
+  echo "[ZSH] Zplugin installed, can you run: zplug install" 
 fi
 
 
-if [ -f $XDG_CONFIG_HOME/zsh/plugins/zplug/init.zsh ]; then
+if [ -f $XDG_CONFIG_HOME/zsh/plugins/zplug/init.zsh ]; then 
   export ZPLUG_HOME=$XDG_CONFIG_HOME/zsh/plugins/zplug
   source $ZPLUG_HOME/init.zsh
 
@@ -132,3 +132,11 @@ alias ll="ls -lh"
 alias python=python3
 alias ipy="python -c 'import IPython;
 IPython.terminal.ipapp.launch_new_instance()'"
+
+## Configs to gcloud
+#FIXME: Move it to be managed by asdf-vm
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/opt/google/cloud-sdk/path.zsh.inc' ]; then . '/opt/google/cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/opt/google/cloud-sdk/completion.zsh.inc' ]; then . '/opt/google/cloud-sdk/completion.zsh.inc'; fi
