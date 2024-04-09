@@ -1,4 +1,5 @@
 # You may need to manually set your language environment
+export XDG_CONFIG_HOME=$HOME/.config
 export LANG="pt_BR.UTF-8"
 export LOCALE="pt_BR.UTF-8"
 export EDITOR='nvim'
