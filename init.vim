@@ -60,12 +60,26 @@ Plug 'tpope/vim-surround'                        " by https://vimawesome.com/plu
 Plug 'preservim/nerdcommenter'                   " Comment functions so powerful—no comment necessary.
 Plug 'Xuyuanp/nerdtree-git-plugin'               " A plugin of NERDTree showing git status flags. Works with the LATEST version of NERDTree.
 Plug 'kevinoid/vim-jsonc'                        " Vim syntax highlighting plugin for JSON with C-style line (//) and block (/* */) comments.
-Plug 'dense-analysis/ale'                        " Check syntax in Vim asynchronously and fix files, with Language Server Protocol (LSP) support
-Plug 'neoclide/coc.nvim', {'branch': 'release'}  " Nodejs extension host for vim & neovim, load extensions like VSCode and host language servers.
-                                                 " Install extensions for programming languages you use daily:
-                                                 " https://github.com/neoclide/coc.nvim/wiki/Install-coc.nvim#install-extensions-for-programming-languages-you-use-daily
 Plug 'github/copilot.vim'                        " Neovim plugin for GitHub Copilot
 Plug 'editorconfig/editorconfig-vim'             " EditorConfig plugin for Vim
+
+" ========================================
+" Linting / Prettier / Syntax Highlighting
+" ========================================
+Plug 'dense-analysis/ale'                        " Check syntax in Vim asynchronously and fix files, w/ LSP support
+" A Vim plugin for Prettier
+Plug 'prettier/vim-prettier', {'do': 'yarn install --frozen-lockfile --production'}
+
+
+" ========================================
+" Language Server Protocol
+" ========================================
+Plug 'neoclide/coc.nvim', {'branch': 'release'}  " Nodejs extension host for [neo]vim, load extensions like VSCode language servers.
+                                                 " Install extensions for programming languages you use daily:
+                                                 " https://github.com/neoclide/coc.nvim/wiki/Install-coc.nvim#install-extensions-for-programming-languages-you-use-daily
+Plug 'neovim/nvim-lspconfig'                     " Quickstart configs for Nvim LSP
+Plug 'williamboman/mason.nvim'                   " Portable package manager for Neovim that runs everywhere Neovim runs. 
+                                                 " Easily install and manage LSP servers, DAP servers, linters, and formatters.
 
 " ================================
 " *****    Color Schemes     *****

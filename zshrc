@@ -56,11 +56,6 @@ HISTFILE=~/.zsh_history
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-# plugins=(git ruby rails pip zsh-syntax-highlighting)
 
 
 # Ensure zplug has been installed
@@ -91,6 +86,11 @@ if [ -f $HOME/.zplug/init.zsh ]; then
   autoload -U +X bashcompinit && bashcompinit
   autoload -U +X compinit && compinit
 
+  # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/* or $ZSH/plugins)
+  # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+  # Example format: plugins=(rails git textmate ruby lighthouse)
+  # Add wisely, as too many plugins slow down shell startup.
+  # plugins=(git ruby rails pip zsh-syntax-highlighting)
   plugins=(git ruby rails pip asdf compleat)
 
   zplug load

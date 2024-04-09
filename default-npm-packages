@@ -1,5 +1,11 @@
-lodash
-request
-express
-ts-node
+alex
+axios
+eslint
 expo
+express
+fastify
+lodash
+prettier
+pyright
+request
+ts-node
