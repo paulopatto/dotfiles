@@ -40,7 +40,7 @@ return {
       },
     })
     -- NeoTree
-    vim.keymap.set('n', '<leader>p', ':Neotree filesystem reveal left<CR>', {})
+    vim.keymap.set('n', '<leader>p', ':Neotree filesystem toggle=true reveal left<CR>', {})
   end
 }
 
