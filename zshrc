@@ -58,6 +58,9 @@ HISTFILE=~/.zsh_history
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
 
+# Ensure ripgrep has been installed
+# TODO: Creates a function to checks and install
+#       ripgrep in diferents systems: macOS | fedora | ubuntu
 
 # Ensure zplug has been installed
 if [ ! -d $XDG_CONFIG_HOME/zsh/plugins/zplug ]; then
