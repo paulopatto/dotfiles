@@ -1,3 +1,4 @@
 .vagrant/
 tmux/plugins/
 zsh/plugins/
+nvim/lazy-lock.json
