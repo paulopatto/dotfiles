@@ -13,7 +13,7 @@ return {
       dapui.setup()
 
       -- Key maps
-      vim.keymap.set("n", '<Leader>bp', dap.toggle_breakpoint, {})
+      vim.keymap.set("n", '<Leader>dt', dap.toggle_breakpoint, {}) -- debug toogle (breakpoint)
       vim.keymap.set("n", '<Leader>dc', dap.continue, {}) -- debug continue
 
 
