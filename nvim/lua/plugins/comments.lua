@@ -12,6 +12,19 @@ return {
     end
   },
   {
+    'RRethy/vim-illuminate',
+    config = function ()
+      require('illuminate').configure({
+        providers = {
+          'lsp',
+          'treesitter',
+          'regex',
+        },
+        delay = 100,
+      })
+    end
+  },
+  {
     "JoosepAlviste/nvim-ts-context-commentstring",
     config = function ()
       require('ts_context_commentstring').setup({
