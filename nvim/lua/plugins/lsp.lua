@@ -7,6 +7,7 @@ return {
           "eslint-lsp",
           "js-debug-adapter",
           "prettier",
+          "rubocop",
         },
       })
     end,
