@@ -2,7 +2,13 @@ return {
   {
     "williamboman/mason.nvim",
     config = function()
-      require("mason").setup()
+      require("mason").setup({
+        ensure_installed = {
+          "eslint-lsp",
+          "js-debug-adapter",
+          "prettier",
+        },
+      })
     end,
   },
   {
@@ -14,9 +20,9 @@ return {
         ensure_installed = {
           "lua_ls",
           "pyright",
+          "solargraph",
           "tailwindcss",
           "tsserver",
-          "solargraph",
         },
       })
     end,
@@ -30,7 +36,12 @@ return {
         capabilities = capabilities
       })
       lspconfig.tsserver.setup({
-        capabilities = capabilities
+        capabilities = capabilities,
+        init_options = {
+          preferences = {
+            disableSuggestions = true,
+          },
+        },
       })
       lspconfig.pyright.setup({
         capabilities = capabilities
