@@ -16,6 +16,50 @@ return {
       vim.keymap.set("n", '<Leader>di', dap.step_into, {})
       -- debug repl: Inspecting the state via the built-in REPL
       vim.keymap.set("n", '<Leader>dr', dap.repl.open, {})
+
+
+      -- Python
+      dap.adapters.python = {
+        type = 'executable',
+        command = vim.fn.stdpath('data') .. '/mason/packages/debugpy/venv/bin/python',
+        args = { '-m', 'debugpy.adapter' },
+      }
+      dap.configurations.python = {
+        {
+          type = "python",
+          request = "launch",
+          name = "Launch file",
+          program = "${file}", -- This configuration will launch the current file if used.
+        },
+      }
+
+      -- Javascript 
+      -- WATCH: https://youtu.be/Ul_WPhS2bis?si=AIzCC6lL-dKdtMzb
+      -- READ https://github.com/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation#javascript
+      -- npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out
+      --[[
+      dap.adapters["pwa-node"] = {
+        type = "server",
+        host = "localhost",
+        port = "${port}",
+        executable = {
+          command = "node",
+          -- 💀 Make sure to update this path to point to your installation
+          -- args = {"/path/to/js-debug/src/dapDebugServer.js", "${port}"},
+        }
+      }
+      ]]--
+      dap.configurations.javascript = {
+        {
+          type = "pwa-node",
+          request = "attach",
+          name = "Auto Attach",
+          cwd = "${workspaceFolder}", -- or vim.fn.getcwd()
+          -- added
+          processId = require("dap.utils").pick_process,
+          sourceMaps = true,
+        },
+      }
     end
   },
   {
