@@ -47,6 +47,14 @@ return {
       lspconfig.pyright.setup({
         capabilities = capabilities
       })
+      lspconfig.eslint.setup({
+        on_attach = function(client, bufnr)
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            buffer = bufnr,
+            command = "EslintFixAll",
+          })
+        end,
+      })
 
       -- Buffer local mappings.
       -- See `:help vim.lsp.*` for documentation on any of the below functions
