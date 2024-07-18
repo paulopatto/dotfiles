@@ -142,6 +142,18 @@ if [ -d $HOME/.android/ ]; then
   [ -d $HOME/.android/emulator ] &&  export PATH=$PATH:$ANDROID_HOME/emulator/
 fi
 
+if [ ! -f $HOME/.default-gems ]; them
+  ln -s $DOTFILES_HOME/defaul-gems $HOME/.default-gems
+fi
+
+if [ ! -f $HOME/.default-npm-packages ]; them
+  ln -s $DOTFILES_HOME/default-npm-packages $HOME/.default-npm-packages
+fi
+
+if [ ! -f $HOME/.default-python-packages ]; them
+  ln -s $DOTFILES_HOME/default-python-packages $HOME/.default-python-packages
+fi
+
 alias ll="ls -lh"
 alias python=python3
 alias ipy="python -c 'import IPython;
