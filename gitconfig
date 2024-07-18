@@ -10,7 +10,10 @@
   format = ssh
 
 [gpg "ssh"]
-  program = "/opt/1Password/op-ssh-sign"
+  # Linux (Ubuntu | Fedora)
+  # program = "/opt/1Password/op-ssh-sign"
+  # Mac (Darwin)
+  program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
 
 [commit]
   gpgsign = true
