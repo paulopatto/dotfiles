@@ -5,12 +5,21 @@ export LOCALE="pt_BR.UTF-8"
 export EDITOR='nvim'
 export TERM='xterm-256color' # old: 'screen-256color'
 export PAGER='less -rS'      # By @dlisboa
+export DOTFILES_HOME="$HOME/Code/dotfiles"
 
 ############################################
 ########          GIT
 ############################################
 export GITCONFIG=$HOME/.gitconfig
 export GITIGNORE=$HOME/.gitignore_global
+
+if [ ! -f $HOME/gitconfig ]; then  
+  ln -s $DOTFILES_HOME/gitconfig $HOME/.gitconfig
+fi
+
+if [ ! -f $HOME/.gitignore_global ]; then 
+  ln -s $DOTFILES_HOME/gitignore_global $HOME/.gitconfig
+fi
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
