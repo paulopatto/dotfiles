@@ -1,4 +1,4 @@
-# You may need to manually set your language environment
+## ENVIRONMENTS
 export XDG_CONFIG_HOME=$HOME/.config
 export LANG="pt_BR.UTF-8"
 export LOCALE="pt_BR.UTF-8"
@@ -159,7 +159,11 @@ if [ ! -f $HOME/.default-python-packages ]; them
   ln -s $DOTFILES_HOME/default-python-packages $HOME/.default-python-packages
 fi
 
-alias ll="ls -lh"
+# Aliases
+alias l='ls --color=auto'
+alias la='ls -lah --color=auto'
+alias ll='ls -lh --color=auto'
+alias grep='grep --color=auto'
 alias python=python3
 alias ipy="python -c 'import IPython;
 IPython.terminal.ipapp.launch_new_instance()'"
