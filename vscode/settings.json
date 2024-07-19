@@ -1,5 +1,9 @@
 {
   "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "prettier.tabWidth": 2,
   "[javascript]": {
     "editor.tabSize": 2
   },
@@ -9,16 +13,13 @@
   "[ruby]": {
     "editor.tabSize": 2
   },
-  "editor.insertSpaces": true,
-  "files.insertFinalNewline": true,
-  "files.trimTrailingWhitespace": true,
-  "prettier.tabWidth": 2,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
-    "source.organizeImports": true
+    "source.organizeImports": true,
+    "files.trimTrailingWhitespace": true,
   },
   "typescript.preferences.importModuleSpecifier": "relative",
   "ruby.rubocop.onSave": true,
-  "ruby.rubocop.executePath": "",
+  "ruby.rubocop.executePath": ""
 }
 
