@@ -11,6 +11,7 @@
   },
   "editor.insertSpaces": true,
   "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
   "prettier.tabWidth": 2,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
