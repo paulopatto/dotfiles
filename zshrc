@@ -97,6 +97,25 @@ esac
 # Ensure ripgrep has been installed
 # TODO: Creates a function to checks and install
 #       ripgrep in diferents systems: macOS | fedora | ubuntu
+if ! command -v rg &> /dev/null 
+then 
+  if [ $PLATFORM_OS = "Fedora" ]; then
+    # Enable repo to LazyGit
+    sudo dnf copr enable atim/lazygit -y
+    # Install Packages 
+    sudo dnf install -y ripgrep fd-find lazygit
+  elif [ $PLATFORM_OS = "Ubuntu" ]; then
+    sudo apt install -y ripgrep fd-find
+    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+    curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+    tar xf lazygit.tar.gz lazygit
+    sudo install lazygit /usr/local/bin
+  elif [ $PLATFORM_OS = "MacOS" ]; then
+    brew install neovim ripgrep fd lazygit
+  else
+    echo "Unsupported platorm"
+  fi
+fi
 
 # Ensure zplug has been installed
 if [ ! -d $XDG_CONFIG_HOME/zsh/plugins/zplug ]; then
