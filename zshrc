@@ -156,7 +156,7 @@ if [ -f $ZPLUG_HOME/init.zsh ]; then
   zplug load
   source $ZPLUG_HOME/repos/$ZSH_THEME/oh-my-zsh/oh-my-zsh.sh
 fi
-
+# Ensure tmux installed
 if ! command -v tmux &> /dev/null 
 then 
   echo "[TMUX] Install tmux for $PLATFORM_OS"
@@ -189,16 +189,27 @@ if [ -x tmuxifier ]; then
   eval "$(tmuxifier init -)"
 fi
 
+if [ ! -L $HOME/.asdfrc ]; then
+  ln -s $DOTFILES_HOME/asdfrc $HOME/.asdfrc
+fi
+
+# Ensure asdf installed
+export ASDF_HOME=$XDG_CONFIG_HOME/asdf
+export ASDF_DIR=$ASDF_HOME
+if [ ! -d $ASDF_HOME/ ]; then
+  git clone https://github.com/asdf-vm/asdf.git $ASDF_HOME
+fi
+
 # Configs to ASDF-VM:
-if [ -d $HOME/.asdf/completions/ ]; then
+if [ -d $ASDF_HOME/completions/ ]; then
   # append completions to fpath
-  fpath=($HOME/.asdf/completions $fpath)
+  fpath=($ASDF_HOME/completions $fpath)
 
   # initialise completions with ZSH's compinit
   autoload -Uz compinit && compinit
 fi
-[ -f $HOME/.asdf/asdf.sh ] && source $HOME/.asdf/asdf.sh
-[ -f $HOME/.asdf/completions/asdf.bash ] && source $HOME/.asdf/completions/asdf.bash
+[ -f $ASDF_HOME/asdf.sh ] && source $ASDF_HOME/asdf.sh
+[ -f $ASDF_HOME/completions/asdf.bash ] && source $ASDF_HOME/completions/asdf.bash
 
 if [ -d $HOME/.android/ ]; then
   export ANDROID_HOME=$HOME/.android
