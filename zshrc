@@ -18,12 +18,13 @@ fi
 export GITCONFIG=$HOME/.gitconfig
 export GITIGNORE=$HOME/.gitignore_global
 
-if [ ! -f $HOME/gitconfig ]; then  
+if [ ! -L $HOME/.gitconfig ]; then  
   ln -s $DOTFILES_HOME/gitconfig $HOME/.gitconfig
 fi
 
-if [ ! -f $HOME/.gitignore_global ]; then 
-  ln -s $DOTFILES_HOME/gitignore_global $HOME/.gitconfig
+
+if [ ! -L $HOME/.gitignore_global ]; then 
+  ln -s $DOTFILES_HOME/gitignore_global $HOME/.gitignore_global
 fi
 
 # Set name of the theme to load.
@@ -71,6 +72,27 @@ HISTFILE=~/.zsh_history
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+########################
+## Define os-platorm
+########################
+export PLATFORM_ARCH="$(uname -s)" # Linux | Darwin | ...
+
+case $PLATFORM_ARCH in 
+  Linux)
+    if [ -x dnf ]; then
+      export PLATFORM_OS="Fedora";
+    elif [ -x apt ]; then
+      export PLATFORM_OS="Ubuntu";
+    else
+      echo "Unsupported linux distro $(uname -a)"
+    fi
+    ;;
+  Darwin)
+    export PLATFORM_OS="MacOS";
+    ;;
+  *)
+    echo "Invalid option $PLATFORM_ARCH"
+esac
 
 # Ensure ripgrep has been installed
 # TODO: Creates a function to checks and install
@@ -83,10 +105,9 @@ if [ ! -d $XDG_CONFIG_HOME/zsh/plugins/zplug ]; then
   echo "[ZSH] Zplugin installed, can you run: zplug install" 
   zplug install
 fi
+export ZPLUG_HOME=$XDG_CONFIG_HOME/zsh/plugins/zplug
 
-
-if [ -f $XDG_CONFIG_HOME/zsh/plugins/zplug/init.zsh ]; then 
-  export ZPLUG_HOME=$XDG_CONFIG_HOME/zsh/plugins/zplug
+if [ -f $ZPLUG_HOME/init.zsh ]; then 
   source $ZPLUG_HOME/init.zsh
 
   zplug "lib/clipboard",             from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
@@ -117,6 +138,21 @@ if [ -f $XDG_CONFIG_HOME/zsh/plugins/zplug/init.zsh ]; then
   source $ZPLUG_HOME/repos/$ZSH_THEME/oh-my-zsh/oh-my-zsh.sh
 fi
 
+if ! command -v tmux &> /dev/null 
+then 
+  echo "[TMUX] Install tmux for $PLATFORM_OS"
+
+  if [ $PLATFORM_OS = "Fedora" ]; then
+    sudo dnf install -y tmux
+  elif [ $PLATFORM_OS = "Ubuntu" ]; then
+    sudo apt install -y tmux
+  elif [ $PLATFORM_OS = "MacOS" ]; then
+    brew install tmux
+  else
+    echo "Unsupported platorm"
+  fi
+fi
+
 if [ ! -d $XDG_CONFIG_HOME/tmux/plugins/tpm ]; then
   echo "[TMUX] Install TMUX Plugin Manager (TPM)"
   git clone https://github.com/tmux-plugins/tpm $XDG_CONFIG_HOME/tmux/plugins/tpm
@@ -124,8 +160,15 @@ if [ ! -d $XDG_CONFIG_HOME/tmux/plugins/tpm ]; then
   echo "[TMUX] Press [prefix] + [U] (capital u, as in Update) updates plugin(s)."
   echo "[TMUX] Visit https://github.com/tmux-plugins/tpm"
 fi
-PATH=$PATH:$XDG_CONFIG_HOME/tmux/plugins/tmuxifier/bin
-eval "$(tmuxifier init -)"
+PATH=$PATH:$XDG_CONFIG_HOME/tmux/plugins/tpm/bin
+
+if [ ! -L $XDG_CONFIG_HOME/tmux/tmux.conf ]; then
+  ln -s $DOTFILES_HOME/tmux/tmux.conf $XDG_CONFIG_HOME/tmux/tmux.conf
+fi
+
+if [ -x tmuxifier ]; then
+  eval "$(tmuxifier init -)"
+fi
 
 # Configs to ASDF-VM:
 if [ -d $HOME/.asdf/completions/ ]; then
@@ -147,15 +190,15 @@ if [ -d $HOME/.android/ ]; then
   [ -d $HOME/.android/emulator ] &&  export PATH=$PATH:$ANDROID_HOME/emulator/
 fi
 
-if [ ! -f $HOME/.default-gems ]; them
+if [ ! -L $HOME/.default-gems ]; then
   ln -s $DOTFILES_HOME/defaul-gems $HOME/.default-gems
 fi
 
-if [ ! -f $HOME/.default-npm-packages ]; them
+if [ ! -L $HOME/.default-npm-packages ]; then
   ln -s $DOTFILES_HOME/default-npm-packages $HOME/.default-npm-packages
 fi
 
-if [ ! -f $HOME/.default-python-packages ]; them
+if [ ! -L $HOME/.default-python-packages ]; then
   ln -s $DOTFILES_HOME/default-python-packages $HOME/.default-python-packages
 fi
 
