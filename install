@@ -1,9 +1,13 @@
 #!/bin/bash
 # vim:syntax=sh filetype=sh
 
+# Basic definitions
+export XDG_CONFIG_HOME=$HOME/.config
+export DOTFILES_HOME="$HOME/Code/dotfiles"
+
 ## Define os-platorm
 export PLATFORM_ARCH="$(uname -s)" # Linux | Darwin | ...
-
+export MACHINE_ARCH="$(uname -p)" # arm | AMD_64 | x86-64
 case $PLATFORM_ARCH in 
   Linux)
     if command -v dnf > /dev/null; then
@@ -21,75 +25,204 @@ case $PLATFORM_ARCH in
     echo "Invalid option $PLATFORM_ARCH"
 esac
 
-echo "PLATFORM_ARCH=$PLATFORM_ARCH; OS=$PLATFORM_OS"
+echo "Starting dotfiles installer..."
+echo "+----------------------------------------------------------+"
+echo "| PLATFORM_ARCH=$PLATFORM_ARCH; OS=$PLATFORM_OS |"
+echo "+----------------------------------------------------------+"
 
 ### Install base libs
-if [ $PLATFORM_OS = "Fedora" ]; then
-  sudo dnf upgrade -y 
-  sudo dnf groupinstall @development-tools @development-libraries
-  sudo dnf install @development-tools
-  sudo dnf install -y \
-    automake \
-    curl \
-    gcc \
-    gcc-c++ \
-    git \
-    kernel-devel \
-    libpq-devel \
-    lua \
-    make \
-    neovim \
-    nodejs \
-    python3 \
-    python3-devel \
-    python3-pip \
-    readline \
-    readline-devel \
-    tmux \
-    wget \
-    zsh 
+function install_base_packages() {
+  if [ $PLATFORM_OS = "Fedora" ]; then
+    sudo dnf upgrade -y 
+    sudo dnf groupinstall @development-tools @development-libraries
+    sudo dnf install @development-tools
+    # Enable repo to LazyGit
+    sudo dnf copr enable atim/lazygit -y
+    sudo dnf install -y \
+      automake \
+      curl \
+      gcc \
+      gcc-c++ \
+      git \
+      kernel-devel \
+      libpq-devel \
+      lua \
+      make \
+      neovim \
+      nodejs \
+      python3 \
+      python3-devel \
+      python3-pip \
+      readline \
+      readline-devel \
+      tmux \
+      wget \
+      zsh \
+      ripgrep \
+      fd-find \
+      lazygit
 
-  sudo rpm --import https://downloads.1password.com/linux/keys/1password.asc
-  sudo sh -c 'echo -e "[1password]\nname=1Password Stable Channel\nbaseurl=https://downloads.1password.com/linux/rpm/stable/\$basearch\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=\"https://downloads.1password.com/linux/keys/1password.asc\"" > /etc/yum.repos.d/1password.repo'
-  sudo dnf install 1password
+    sudo rpm --import https://downloads.1password.com/linux/keys/1password.asc
+    sudo sh -c 'echo -e "[1password]\nname=1Password Stable Channel\nbaseurl=https://downloads.1password.com/linux/rpm/stable/\$basearch\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=\"https://downloads.1password.com/linux/keys/1password.asc\"" > /etc/yum.repos.d/1password.repo'
+    sudo dnf install 1password
+  elif [ $PLATFORM_OS = "Ubuntu" ]; then
+    sudo apt upgrade -y
+    sudo apt install -y build-essential \
+      apt-transport-https \
+      curl \
+      git \
+      gnupg2 \
+      libpq-dev \
+      libreadline-dev \
+      lua5.3 \
+      neovim \
+      python3 \
+      python3-dev \
+      python3-pip \
+      tmux \
+      wget \
+      zsh \
+      ripgrep \
+      fd-find
+    
+    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+    curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+    tar xf lazygit.tar.gz lazygit
+    sudo install lazygit /usr/local/bin
 
-elif [ $PLATFORM_OS = "Ubuntu" ]; then
-  sudo apt upgrade -y
-  sudo apt install -y build-essential \
-    apt-transport-https \
-    curl \
-    git \
-    gnupg2 \
-    libpq-dev \
-    libreadline-dev \
-    lua5.3 \
-    neovim \
-    python3 \
-    python3-dev \
-    python3-pip \
-    tmux \
-    wget \
-    zsh 
+    echo "[INFO] 1Password playbook..."
+    curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
+    echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/amd64 stable main' | sudo tee /etc/apt/sources.list.d/1password.list
+    sudo mkdir -p /etc/debsig/policies/AC2D62742012EA22/
+    curl -sS https://downloads.1password.com/linux/debian/debsig/1password.pol | sudo tee /etc/debsig/policies/AC2D62742012EA22/1password.pol
+    sudo mkdir -p /usr/share/debsig/keyrings/AC2D62742012EA22
+    curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
+    sudo apt update && sudo apt install 1password
 
-  echo "[INFO] 1Password playbook..."
-  curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
-  echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/amd64 stable main' | sudo tee /etc/apt/sources.list.d/1password.list
-  sudo mkdir -p /etc/debsig/policies/AC2D62742012EA22/
-  curl -sS https://downloads.1password.com/linux/debian/debsig/1password.pol | sudo tee /etc/debsig/policies/AC2D62742012EA22/1password.pol
-  sudo mkdir -p /usr/share/debsig/keyrings/AC2D62742012EA22
-  curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
-  sudo apt update && sudo apt install 1password
-
-  if command -v op > /dev/null; then
-    echo "[INFO] 1Password installed with success"
+    if command -v op > /dev/null; then
+      echo "[INFO] 1Password installed with success"
+    else
+      echo "[ERROR] The 1Password hasn't installed!"
+    fi
+  elif [ $PLATFORM_OS = "MacOS" ]; then
+    brew upgrade -y
+    brew install zsh coreutils curl git wget tmux neovim ripgrep fd lazygit
   else
-    echo "[ERROR] The 1Password hasn't installed!"
+    echo "Unsupported platorm"
+  fi
+}
+
+function config_git() {
+  echo "[GIT] Configuring git..."
+
+  if [ ! -L $HOME/.gitconfig ]; then
+    echo "[*] Copy .gitconfig"
+    ln -s $DOTFILES_HOME/gitconfig $HOME/.gitconfig
   fi
 
-elif [ $PLATFORM_OS = "MacOS" ]; then
-  brew upgrade -y
-  brew install zsh coreutils curl git
 
+  if [ ! -L $HOME/.gitignore_global ]; then
+    echo "[*] Copy .gitignore_global"
+    ln -s $DOTFILES_HOME/gitignore_global $HOME/.gitignore_global
+  fi
+}
+
+function ensure_tmux_installed {
+  # Ensure tmux installed
+  if ! command -v tmux &> /dev/null 
+  then 
+    echo "[TMUX] Installing tmux for $PLATFORM_OS ..."
+
+    if [ $PLATFORM_OS = "Fedora" ]; then
+      sudo dnf install -y tmux
+    elif [ $PLATFORM_OS = "Ubuntu" ]; then
+      sudo apt install -y tmux
+    elif [ $PLATFORM_OS = "MacOS" ]; then
+      brew install tmux
+    else
+      echo "Unsupported platorm"
+    fi
+  fi
+
+  if [ ! -d $XDG_CONFIG_HOME/tmux/plugins/tpm ]; then
+    echo "[*] Install TMUX Plugin Manager (TPM)"
+    git clone https://github.com/tmux-plugins/tpm $XDG_CONFIG_HOME/tmux/plugins/tpm
+    echo "+------------------------------------------------------------------------------------------------------------------------------+"
+    echo "| Press [prefix] + [I] (capital i, as in Install) Installs new plugins from GitHub or any other git repository & refresh env.  |"
+    echo "| Press [prefix] + [U] (capital u, as in Update) updates plugin(s).                                                            |"
+    echo "| Visit https://github.com/tmux-plugins/tpm                                                                                    |"
+    echo "+------------------------------------------------------------------------------------------------------------------------------+"
+  else
+    echo "[ ] Install TMUX Plugin Manager (TPM) (SKIPPED)"
+  fi
+  
+
+  if [ ! -L $XDG_CONFIG_HOME/tmux/tmux.conf ]; then
+    ln -s $DOTFILES_HOME/tmux/tmux.conf $XDG_CONFIG_HOME/tmux/tmux.conf
+  fi
+}
+
+if [ ! -d $HOME/.local/bin ]; then
+  echo "[BASH] Creating .local/bin ..."
+  mkdir -p $HOME/.local/bin
+fi
+
+
+install_base_packages
+config_git
+
+
+# Ensure zplug has been installed
+if [ ! -d $XDG_CONFIG_HOME/zsh/plugins/zplug ]; then
+  echo "[ZSH] Install zplug - Zsh Plugin Manager"
+  git clone https://github.com/zplug/zplug $XDG_CONFIG_HOME/zsh/plugins/zplug
+  echo "[ZSH] Zplugin installed, can you run: zplug install" 
+  zplug install
 else
-  echo "Unsupported platorm"
+  echo "[ZSH] zplug - Zsh Plugin Manager Alrady configured run '$ zplug install'"
+fi
+
+ # Ensure asdf installed
+ echo "[ASDF] Install asdf-vm ..."
+ export ASDF_HOME=$XDG_CONFIG_HOME/asdf
+ export ASDF_DIR=$ASDF_HOME
+ if [ ! -d $ASDF_HOME/ ]; then
+  echo "[*] Clonning repo"
+  git clone https://github.com/asdf-vm/asdf.git $ASDF_HOME
+else
+  echo "[ ] Clonning repo (SKIPPED)"
+fi
+
+if [ ! -L $HOME/.asdfrc ]; then
+  echo "[*] Config asdfrc"
+  ln -s $DOTFILES_HOME/asdfrc $HOME/.default-golang-pkgs
+else 
+  echo "[ ] Config asdfrc (SKIPPED)"
+fi
+
+if [ ! -L $HOME/.asdfrc ]; then
+  echo "[*] Config asdfrc"
+  ln -s $DOTFILES_HOME/asdfrc $HOME/.asdfrc
+else
+  echo "[ ] Config asdfrc (SKIPPED)"
+fi
+if [ ! -L $HOME/.default-gems ]; then
+  echo "[*] Config default packages for rubies"
+  ln -s $DOTFILES_HOME/defaul-gems $HOME/.default-gems
+else
+  echo "[ ] Config default packages for rubies (SKIPPED)"
+fi
+
+if [ ! -L $HOME/.default-npm-packages ]; then
+  echo "[*] Config default packages for nodejs"
+  ln -s $DOTFILES_HOME/default-npm-packages $HOME/.default-npm-packages
+else
+  echo "[ ] Config default packages for nodejs (SKIPPED)"
+fi
+
+if [ ! -L $HOME/.default-python-packages ]; then
+  echo "[*] Config default packages for python"
+  ln -s $DOTFILES_HOME/default-python-packages $HOME/.default-python-packages
+else
+  echo "[ ] Config default packages for python (SKIPPED)"
 fi

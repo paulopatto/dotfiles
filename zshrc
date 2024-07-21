@@ -1,4 +1,8 @@
 ## ENVIRONMENTS
+
+############################################
+########          SHELL
+############################################
 export XDG_CONFIG_HOME=$HOME/.config
 export LANG="pt_BR.UTF-8"
 export LOCALE="pt_BR.UTF-8"
@@ -8,9 +12,11 @@ export PAGER='less -rS'      # By @dlisboa
 export DOTFILES_HOME="$HOME/Code/dotfiles"
 export PATH=$PATH:$HOME/.local/bin
 
-if [ ! -d $HOME/.local/bin ]; then
-  mkdir -p $HOME/.local/bin
-fi
+############################################
+########          ASDF-VM
+############################################
+export ASDF_HOME=$XDG_CONFIG_HOME/asdf
+export ASDF_DIR=$ASDF_HOME
 
 ############################################
 ########          GIT
@@ -18,14 +24,15 @@ fi
 export GITCONFIG=$HOME/.gitconfig
 export GITIGNORE=$HOME/.gitignore_global
 
-if [ ! -L $HOME/.gitconfig ]; then  
-  ln -s $DOTFILES_HOME/gitconfig $HOME/.gitconfig
-fi
-
-
-if [ ! -L $HOME/.gitignore_global ]; then 
-  ln -s $DOTFILES_HOME/gitignore_global $HOME/.gitignore_global
-fi
+############################################
+########          ALIASES
+############################################
+alias l='ls --color=auto'
+alias la='ls -lah --color=auto'
+alias ll='ls -lh --color=auto'
+alias grep='grep --color=auto'
+alias python=python3
+alias ipy="python -c 'import IPython; IPython.terminal.ipapp.launch_new_instance()'"
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -76,6 +83,7 @@ HISTFILE=~/.zsh_history
 ## Define os-platorm
 ########################
 export PLATFORM_ARCH="$(uname -s)" # Linux | Darwin | ...
+export MACHINE_ARCH="$(uname -p)" # arm | AMD_64 | x86-64 
 
 case $PLATFORM_ARCH in 
   Linux)
@@ -94,36 +102,6 @@ case $PLATFORM_ARCH in
     echo "Invalid option $PLATFORM_ARCH"
 esac
 
-# Ensure ripgrep has been installed
-# TODO: Creates a function to checks and install
-#       ripgrep in diferents systems: macOS | fedora | ubuntu
-if ! command -v rg &> /dev/null 
-then 
-  if [ $PLATFORM_OS = "Fedora" ]; then
-    # Enable repo to LazyGit
-    sudo dnf copr enable atim/lazygit -y
-    # Install Packages 
-    sudo dnf install -y ripgrep fd-find lazygit
-  elif [ $PLATFORM_OS = "Ubuntu" ]; then
-    sudo apt install -y ripgrep fd-find
-    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
-    curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
-    tar xf lazygit.tar.gz lazygit
-    sudo install lazygit /usr/local/bin
-  elif [ $PLATFORM_OS = "MacOS" ]; then
-    brew install neovim ripgrep fd lazygit
-  else
-    echo "Unsupported platorm"
-  fi
-fi
-
-# Ensure zplug has been installed
-if [ ! -d $XDG_CONFIG_HOME/zsh/plugins/zplug ]; then
-  echo "[ZSH] Install zplug - Zsh Plugin Manager"
-  git clone https://github.com/zplug/zplug $XDG_CONFIG_HOME/zsh/plugins/zplug
-  echo "[ZSH] Zplugin installed, can you run: zplug install" 
-  zplug install
-fi
 export ZPLUG_HOME=$XDG_CONFIG_HOME/zsh/plugins/zplug
 
 if [ -f $ZPLUG_HOME/init.zsh ]; then 
@@ -156,48 +134,9 @@ if [ -f $ZPLUG_HOME/init.zsh ]; then
   zplug load
   source $ZPLUG_HOME/repos/$ZSH_THEME/oh-my-zsh/oh-my-zsh.sh
 fi
-# Ensure tmux installed
-if ! command -v tmux &> /dev/null 
-then 
-  echo "[TMUX] Install tmux for $PLATFORM_OS"
-
-  if [ $PLATFORM_OS = "Fedora" ]; then
-    sudo dnf install -y tmux
-  elif [ $PLATFORM_OS = "Ubuntu" ]; then
-    sudo apt install -y tmux
-  elif [ $PLATFORM_OS = "MacOS" ]; then
-    brew install tmux
-  else
-    echo "Unsupported platorm"
-  fi
-fi
-
-if [ ! -d $XDG_CONFIG_HOME/tmux/plugins/tpm ]; then
-  echo "[TMUX] Install TMUX Plugin Manager (TPM)"
-  git clone https://github.com/tmux-plugins/tpm $XDG_CONFIG_HOME/tmux/plugins/tpm
-  echo "[TMUX] Press [prefix] + [I] (capital i, as in Install) Installs new plugins from GitHub or any other git repository & refresh env."
-  echo "[TMUX] Press [prefix] + [U] (capital u, as in Update) updates plugin(s)."
-  echo "[TMUX] Visit https://github.com/tmux-plugins/tpm"
-fi
-PATH=$PATH:$XDG_CONFIG_HOME/tmux/plugins/tpm/bin
-
-if [ ! -L $XDG_CONFIG_HOME/tmux/tmux.conf ]; then
-  ln -s $DOTFILES_HOME/tmux/tmux.conf $XDG_CONFIG_HOME/tmux/tmux.conf
-fi
 
 if [ -x tmuxifier ]; then
   eval "$(tmuxifier init -)"
-fi
-
-if [ ! -L $HOME/.asdfrc ]; then
-  ln -s $DOTFILES_HOME/asdfrc $HOME/.asdfrc
-fi
-
-# Ensure asdf installed
-export ASDF_HOME=$XDG_CONFIG_HOME/asdf
-export ASDF_DIR=$ASDF_HOME
-if [ ! -d $ASDF_HOME/ ]; then
-  git clone https://github.com/asdf-vm/asdf.git $ASDF_HOME
 fi
 
 # Configs to ASDF-VM:
@@ -210,36 +149,19 @@ if [ -d $ASDF_HOME/completions/ ]; then
 fi
 [ -f $ASDF_HOME/asdf.sh ] && source $ASDF_HOME/asdf.sh
 [ -f $ASDF_HOME/completions/asdf.bash ] && source $ASDF_HOME/completions/asdf.bash
+[ -f $ASDF_HOMEplugins/golang/set-env.zsh ] && source $ASDF_HOMEplugins/golang/set-env.zsh
+[ -d $XDG_CONFIG_HOME/tmux/plugins/tpm/bin ] && export PATH=$PATH:$XDG_CONFIG_HOME/tmux/plugins/tpm/bin
 
+# Configs to Android commandline
 if [ -d $HOME/.android/ ]; then
   export ANDROID_HOME=$HOME/.android
   export ANDROID_SDK_ROOT=$ANDROID_HOME
-
   [ -d $HOME/.android/cmdline-tools ] &&  export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
   [ -d $HOME/.android/platform-tools ] &&  export PATH=$PATH:$ANDROID_HOME/platform-tools/
   [ -d $HOME/.android/emulator ] &&  export PATH=$PATH:$ANDROID_HOME/emulator/
 fi
 
-if [ ! -L $HOME/.default-gems ]; then
-  ln -s $DOTFILES_HOME/defaul-gems $HOME/.default-gems
-fi
 
-if [ ! -L $HOME/.default-npm-packages ]; then
-  ln -s $DOTFILES_HOME/default-npm-packages $HOME/.default-npm-packages
-fi
-
-if [ ! -L $HOME/.default-python-packages ]; then
-  ln -s $DOTFILES_HOME/default-python-packages $HOME/.default-python-packages
-fi
-
-# Aliases
-alias l='ls --color=auto'
-alias la='ls -lah --color=auto'
-alias ll='ls -lh --color=auto'
-alias grep='grep --color=auto'
-alias python=python3
-alias ipy="python -c 'import IPython;
-IPython.terminal.ipapp.launch_new_instance()'"
 
 ## Configs to gcloud
 #FIXME: Move it to be managed by asdf-vm
