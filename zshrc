@@ -164,9 +164,10 @@ fi
 
 
 ## Configs to gcloud
-#FIXME: Move it to be managed by asdf-vm
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/opt/google/cloud-sdk/path.zsh.inc' ]; then . '/opt/google/cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/opt/google/cloud-sdk/completion.zsh.inc' ]; then . '/opt/google/cloud-sdk/completion.zsh.inc'; fi
+# Using asdf-gcloud
+# 1. Install plugin
+#   asdf plugin add gcloud https://github.com/jthegedus/asdf-gcloud
+# 2. Install install gcloud installed
+#   asdf install gcloud latest
+# 3. Set global version
+#   asdf global gcloud latest
