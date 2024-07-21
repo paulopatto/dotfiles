@@ -60,7 +60,8 @@ function install_base_packages() {
       zsh \
       ripgrep \
       fd-find \
-      lazygit
+      lazygit \
+      jq
 
     sudo rpm --import https://downloads.1password.com/linux/keys/1password.asc
     sudo sh -c 'echo -e "[1password]\nname=1Password Stable Channel\nbaseurl=https://downloads.1password.com/linux/rpm/stable/\$basearch\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=\"https://downloads.1password.com/linux/keys/1password.asc\"" > /etc/yum.repos.d/1password.repo'
@@ -83,7 +84,8 @@ function install_base_packages() {
       wget \
       zsh \
       ripgrep \
-      fd-find
+      fd-find \
+      jq
     
     LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
     curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
@@ -106,7 +108,7 @@ function install_base_packages() {
     fi
   elif [ $PLATFORM_OS = "MacOS" ]; then
     brew upgrade -y
-    brew install zsh coreutils curl git wget tmux neovim ripgrep fd lazygit
+    brew install zsh coreutils curl git wget tmux neovim ripgrep fd lazygit jq
   else
     echo "Unsupported platorm"
   fi
