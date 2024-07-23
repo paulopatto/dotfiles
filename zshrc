@@ -149,7 +149,7 @@ if [ -d $ASDF_HOME/completions/ ]; then
 fi
 [ -f $ASDF_HOME/asdf.sh ] && source $ASDF_HOME/asdf.sh
 [ -f $ASDF_HOME/completions/asdf.bash ] && source $ASDF_HOME/completions/asdf.bash
-[ -f $ASDF_HOMEplugins/golang/set-env.zsh ] && source $ASDF_HOMEplugins/golang/set-env.zsh
+[ -f $ASDF_HOME/plugins/golang/set-env.zsh ] && source $ASDF_HOME/plugins/golang/set-env.zsh
 [ -d $XDG_CONFIG_HOME/tmux/plugins/tpm/bin ] && export PATH=$PATH:$XDG_CONFIG_HOME/tmux/plugins/tpm/bin
 
 # Configs to Android commandline
