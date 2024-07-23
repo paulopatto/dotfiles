@@ -32,6 +32,11 @@ echo "+----------------------------------------------------------+"
 
 ### Install base libs
 function install_base_packages() {
+  if [ ! -d $HOME/.local/bin ]; then
+    echo "[BASH] Creating .local/bin ..."
+    mkdir -p $HOME/.local/bin
+  fi
+
   if [ $PLATFORM_OS = "Fedora" ]; then
     sudo dnf upgrade -y 
     sudo dnf groupinstall @development-tools @development-libraries
@@ -129,7 +134,7 @@ function config_git() {
   fi
 }
 
-function ensure_tmux_installed {
+function ensure_tmux_installed() {
   # Ensure tmux installed
   if ! command -v tmux &> /dev/null 
   then 
@@ -164,67 +169,88 @@ function ensure_tmux_installed {
   fi
 }
 
-if [ ! -d $HOME/.local/bin ]; then
-  echo "[BASH] Creating .local/bin ..."
-  mkdir -p $HOME/.local/bin
-fi
 
 
+function ensure_zplug_installed() {
+  # Ensure zplug has been installed
+  if [ ! -d $XDG_CONFIG_HOME/zsh/plugins/zplug ]; then
+    echo "[ZSH] Install zplug - Zsh Plugin Manager"
+    git clone https://github.com/zplug/zplug $XDG_CONFIG_HOME/zsh/plugins/zplug
+    echo "[ZSH] Zplugin installed, can you run: zplug install" 
+    zplug install
+  else
+    echo "[ZSH] zplug - Zsh Plugin Manager Alrady configured run '$ zplug install'"
+  fi
+}
+
+function ensure_asdf_installed() {
+  # Ensure asdf installed
+  echo "[ASDF] Install asdf-vm ..."
+  export ASDF_HOME=$XDG_CONFIG_HOME/asdf
+  export ASDF_DIR=$ASDF_HOME
+  if [ ! -d $ASDF_HOME/ ]; then
+    echo "[*] Clonning repo"
+    git clone https://github.com/asdf-vm/asdf.git $ASDF_HOME
+  else
+    echo "[ ] Clonning repo (SKIPPED)"
+  fi
+
+  if [ ! -L $HOME/.asdfrc ]; then
+    echo "[*] Config asdfrc"
+    ln -s $DOTFILES_HOME/asdfrc $HOME/.default-golang-pkgs
+  else 
+    echo "[ ] Config asdfrc (SKIPPED)"
+  fi
+
+  if [ ! -L $HOME/.asdfrc ]; then
+    echo "[*] Config asdfrc"
+    ln -s $DOTFILES_HOME/asdfrc $HOME/.asdfrc
+  else
+    echo "[ ] Config asdfrc (SKIPPED)"
+  fi
+  if [ ! -L $HOME/.default-gems ]; then
+    echo "[*] Config default packages for rubies"
+    ln -s $DOTFILES_HOME/defaul-gems $HOME/.default-gems
+  else
+    echo "[ ] Config default packages for rubies (SKIPPED)"
+  fi
+
+  if [ ! -L $HOME/.default-npm-packages ]; then
+    echo "[*] Config default packages for nodejs"
+    ln -s $DOTFILES_HOME/default-npm-packages $HOME/.default-npm-packages
+  else
+    echo "[ ] Config default packages for nodejs (SKIPPED)"
+  fi
+
+  if [ ! -L $HOME/.default-python-packages ]; then
+    echo "[*] Config default packages for python"
+    ln -s $DOTFILES_HOME/default-python-packages $HOME/.default-python-packages
+  else
+    echo "[ ] Config default packages for python (SKIPPED)"
+  fi
+}
+
+function ensure_neovim() {
+  export NEOVIM_CONF_HOME=$XDG_CONFIG_HOME/nvim
+
+  echo "[EDITOR] Install or config neovim ..."
+  if ! command -v nvim > /dev/null; then
+    echo "[x] Install neovim (not supported)"
+  fi
+
+  if [ ! -L $NEOVIM_CONF_HOME/init.lua ]; then
+    echo "[*] creates symlink to init.lua"
+    ln -s $DOTFILES_HOME/nvim/init.lua $NEOVIM_CONF_HOME/init.lua
+  fi
+
+  if [ ! -d $NEOVIM_CONF_HOME/lua ]; then
+    echo "[*] creates symlink to lua config folder"
+    ln -s $DOTFILES_HOME/nvim/lua/ $NEOVIM_CONF_HOME/lua
+  fi
+
+}
 install_base_packages
 config_git
-
-
-# Ensure zplug has been installed
-if [ ! -d $XDG_CONFIG_HOME/zsh/plugins/zplug ]; then
-  echo "[ZSH] Install zplug - Zsh Plugin Manager"
-  git clone https://github.com/zplug/zplug $XDG_CONFIG_HOME/zsh/plugins/zplug
-  echo "[ZSH] Zplugin installed, can you run: zplug install" 
-  zplug install
-else
-  echo "[ZSH] zplug - Zsh Plugin Manager Alrady configured run '$ zplug install'"
-fi
-
- # Ensure asdf installed
- echo "[ASDF] Install asdf-vm ..."
- export ASDF_HOME=$XDG_CONFIG_HOME/asdf
- export ASDF_DIR=$ASDF_HOME
- if [ ! -d $ASDF_HOME/ ]; then
-  echo "[*] Clonning repo"
-  git clone https://github.com/asdf-vm/asdf.git $ASDF_HOME
-else
-  echo "[ ] Clonning repo (SKIPPED)"
-fi
-
-if [ ! -L $HOME/.asdfrc ]; then
-  echo "[*] Config asdfrc"
-  ln -s $DOTFILES_HOME/asdfrc $HOME/.default-golang-pkgs
-else 
-  echo "[ ] Config asdfrc (SKIPPED)"
-fi
-
-if [ ! -L $HOME/.asdfrc ]; then
-  echo "[*] Config asdfrc"
-  ln -s $DOTFILES_HOME/asdfrc $HOME/.asdfrc
-else
-  echo "[ ] Config asdfrc (SKIPPED)"
-fi
-if [ ! -L $HOME/.default-gems ]; then
-  echo "[*] Config default packages for rubies"
-  ln -s $DOTFILES_HOME/defaul-gems $HOME/.default-gems
-else
-  echo "[ ] Config default packages for rubies (SKIPPED)"
-fi
-
-if [ ! -L $HOME/.default-npm-packages ]; then
-  echo "[*] Config default packages for nodejs"
-  ln -s $DOTFILES_HOME/default-npm-packages $HOME/.default-npm-packages
-else
-  echo "[ ] Config default packages for nodejs (SKIPPED)"
-fi
-
-if [ ! -L $HOME/.default-python-packages ]; then
-  echo "[*] Config default packages for python"
-  ln -s $DOTFILES_HOME/default-python-packages $HOME/.default-python-packages
-else
-  echo "[ ] Config default packages for python (SKIPPED)"
-fi
+ensure_zplug_installed
+ensure_asdf_installed
+ensure_neovim
