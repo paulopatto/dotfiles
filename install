@@ -238,6 +238,11 @@ function ensure_neovim() {
     echo "[x] Install neovim (not supported)"
   fi
 
+  if ! command -v lua > /dev/null; then
+    echo "[x] Please install LUA"
+    echo "  run: 'asdf install lua latest && asdf global lua latest'"
+  fi
+
   if [ ! -L $NEOVIM_CONF_HOME/init.lua ]; then
     echo "[*] creates symlink to init.lua"
     ln -s $DOTFILES_HOME/nvim/init.lua $NEOVIM_CONF_HOME/init.lua
