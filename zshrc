@@ -150,12 +150,14 @@ fi
 [ -f $ASDF_HOME/asdf.sh ] && source $ASDF_HOME/asdf.sh
 [ -f $ASDF_HOME/completions/asdf.bash ] && source $ASDF_HOME/completions/asdf.bash
 [ -f $ASDF_HOME/plugins/golang/set-env.zsh ] && source $ASDF_HOME/plugins/golang/set-env.zsh
+[ -f $ASDF_HOME/plugins/java/set-java-home.zsh ] && source $ASDF_HOME/plugins/java/set-java-home.zsh
 [ -d $XDG_CONFIG_HOME/tmux/plugins/tpm/bin ] && export PATH=$PATH:$XDG_CONFIG_HOME/tmux/plugins/tpm/bin
 
 # Configs to Android commandline
-if [ -d $HOME/.android/ ]; then
-  export ANDROID_HOME=$HOME/.android
+if [ -d $HOME/.local/share/Android ]; then
+  export ANDROID_HOME=$HOME/.local/share/Android
   export ANDROID_SDK_ROOT=$ANDROID_HOME
+  export ANDROID_SDK_HOME=$ANDROID_HOME
   [ -d $HOME/.android/cmdline-tools ] &&  export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
   [ -d $HOME/.android/platform-tools ] &&  export PATH=$PATH:$ANDROID_HOME/platform-tools/
   [ -d $HOME/.android/emulator ] &&  export PATH=$PATH:$ANDROID_HOME/emulator/
