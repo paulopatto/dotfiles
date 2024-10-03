@@ -132,6 +132,7 @@ if [ -f $ZPLUG_HOME/init.zsh ]; then
   plugins=(git ruby rails pip asdf compleat)
 
   zplug load
+  # Em caso de erro de plugins não encontrados pode chamar um zplug install
   source $ZPLUG_HOME/repos/$ZSH_THEME/oh-my-zsh/oh-my-zsh.sh
 fi
 
