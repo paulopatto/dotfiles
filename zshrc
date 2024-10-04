@@ -104,15 +104,9 @@ case $PLATFORM_ARCH in
     echo "Invalid option $PLATFORM_ARCH"
 esac
 
-# elapsed_platform_time=$((`date +%s` - $start_time))
-# echo "Platform ELAPSED TIME: $elapsed_platform_time s"
-
 export ZPLUG_HOME=$XDG_CONFIG_HOME/zsh/plugins/zplug
-
 if [ -f $ZPLUG_HOME/init.zsh ]; then 
   source $ZPLUG_HOME/init.zsh
-  # elapsed_zplug_load_time=$((`date +%s` - $start_time))
-  # echo "\tZplug init time: +$elapsed_platform_time s"
 
   zplug "lib/clipboard",             from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
   zplug "plugins/asdf",              from:oh-my-zsh
@@ -120,41 +114,28 @@ if [ -f $ZPLUG_HOME/init.zsh ]; then
   zplug "plugins/compleat",          from:oh-my-zsh
   zplug "plugins/git",               from:oh-my-zsh, if:"which git"
   zplug "plugins/osx",               from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
-  # zplug "plugins/pip",               from:oh-my-zsh
-  # zplug "plugins/rails",             from:oh-my-zsh
-  # zplug "plugins/ruby",              from:oh-my-zsh
-  # zplug "plugins/sudo",              from:oh-my-zsh
   zplug "themes/agnoster",           from:oh-my-zsh, as:theme
   zplug "themes/robbyrussell",       from:oh-my-zsh, as:theme
   zplug "zsh-users/zsh-completions"
 
   autoload -U +X bashcompinit && bashcompinit
   autoload -U +X compinit && compinit
-  # elapsed_zplug_compinit_time=$((`date +%s` - $start_time))
-  # echo "\tZplug compinit time: +$elapsed_zplug_compinit_time s"
 
   # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/* or $ZSH/plugins)
   # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
   # Example format: plugins=(rails git textmate ruby lighthouse)
   # Add wisely, as too many plugins slow down shell startup.
   # plugins=(git ruby rails pip zsh-syntax-highlighting)
-  plugins=(git ruby rails pip asdf compleat)
+  plugins=(git asdf compleat)
 
   zplug load
-  # elapsed_zplug_load_time=$((`date +%s` - $start_time))
-  # echo "\tZplug load time: +$elapsed_zplug_load_time s"
   # Em caso de erro de plugins não encontrados pode chamar um zplug install
   source $ZPLUG_HOME/repos/$ZSH_THEME/oh-my-zsh/oh-my-zsh.sh
 fi
 
-# elapsed_zplug_time=$((`date +%s` - $start_time))
-# echo "ZPLUG ELAPSED TIME: $elapsed_zplug_time s"
-
 if [ -x tmuxifier ]; then
   eval "$(tmuxifier init -)"
 fi
-# elapsed_tmux_time=$((`date +%s` - $start_time))
-# echo "TMUX ELAPSED TIME: $elapsed_tmux_time s"
 
 # Configs to ASDF-VM:
 if [ -d $ASDF_HOME/completions/ ]; then
@@ -170,9 +151,6 @@ fi
 [ -f $ASDF_HOME/plugins/java/set-java-home.zsh ] && source $ASDF_HOME/plugins/java/set-java-home.zsh
 [ -d $XDG_CONFIG_HOME/tmux/plugins/tpm/bin ] && export PATH=$PATH:$XDG_CONFIG_HOME/tmux/plugins/tpm/bin
 
-# elapsed_asdf_time=$((`date +%s` - $start_time))
-# echo "ASDF ELAPSED TIME: $elapsed_asdf_time s"
-
 # Configs to Android commandline
 if [ -d $HOME/.local/share/Android ]; then
   export ANDROID_HOME=$HOME/.local/share/Android
@@ -182,10 +160,6 @@ if [ -d $HOME/.local/share/Android ]; then
   [ -d $HOME/.android/platform-tools ] &&  export PATH=$PATH:$ANDROID_HOME/platform-tools/
   [ -d $HOME/.android/emulator ] &&  export PATH=$PATH:$ANDROID_HOME/emulator/
 fi
-
-# elapsed_android_time=$((`date +%s` - $start_time))
-# echo "ANDROID ELAPSED TIME: $elapsed_android_time s"
-
 
 ## Configs to gcloud
 # Using asdf-gcloud
