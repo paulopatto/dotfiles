@@ -156,9 +156,9 @@ if [ -d $HOME/.local/share/Android ]; then
   export ANDROID_HOME=$HOME/.local/share/Android
   export ANDROID_SDK_ROOT=$ANDROID_HOME
   export ANDROID_SDK_HOME=$ANDROID_HOME
-  [ -d $HOME/.android/cmdline-tools ] &&  export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
-  [ -d $HOME/.android/platform-tools ] &&  export PATH=$PATH:$ANDROID_HOME/platform-tools/
-  [ -d $HOME/.android/emulator ] &&  export PATH=$PATH:$ANDROID_HOME/emulator/
+  [ -d $ANDROID_HOME/cmdline-tools ] &&  export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+  [ -d $ANDROID_HOME/platform-tools ] &&  export PATH=$PATH:$ANDROID_HOME/platform-tools/
+  [ -d $ANDROID_HOME/emulator ] &&  export PATH=$PATH:$ANDROID_HOME/emulator/
 fi
 
 ## Configs to gcloud
