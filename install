@@ -32,6 +32,11 @@ echo "+----------------------------------------------------------+"
 
 ### Install base libs
 function install_base_packages() {
+  echo "+----------------------------------------------------------+"
+  echo "|    *** Installing basic package for O.S platform ***     |"
+  echo "+----------------------------------------------------------+"
+  echo " === PLATFORM_ARCH=$PLATFORM_ARCH; OS=$PLATFORM_OS ==="
+
   if [ ! -d $HOME/.local/bin ]; then
     echo "[BASH] Creating .local/bin ..."
     mkdir -p $HOME/.local/bin
