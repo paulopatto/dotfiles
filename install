@@ -30,13 +30,54 @@ echo "+----------------------------------------------------------+"
 echo "| PLATFORM_ARCH=$PLATFORM_ARCH; OS=$PLATFORM_OS |"
 echo "+----------------------------------------------------------+"
 
+
+function ensure_1p() {
+  echo "+----------------------------------------------------------+"
+  echo "|          *** Installing 1Password  ***                   |"
+  echo "+----------------------------------------------------------+"
+
+  if [ $PLATFORM_OS = "Fedora" ]; then
+    sudo rpm --import https://downloads.1password.com/linux/keys/1password.asc
+    sudo sh -c 'echo -e "[1password]\nname=1Password Stable Channel\nbaseurl=https://downloads.1password.com/linux/rpm/stable/\$basearch\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=\"https://downloads.1password.com/linux/keys/1password.asc\"" > /etc/yum.repos.d/1password.repo'
+    sudo dnf install 1password
+  elif [ $PLATFORM_OS = "Ubuntu" ]; then
+
+    if [! -f /usr/share/keyrings/1password-archive-keyring.gpg ]; then
+      curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
+      echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/amd64 stable main' | sudo tee /etc/apt/sources.list.d/1password.list
+    fi
+    
+    [! -d /etc/debsig/policies/AC2D62742012EA22/ ] && sudo mkdir -p /etc/debsig/policies/AC2D62742012EA22/
+    curl -sS https://downloads.1password.com/linux/debian/debsig/1password.pol | sudo tee /etc/debsig/policies/AC2D62742012EA22/1password.pol
+
+    [! -d /usr/share/debsig/keyrings/AC2D62742012EA22 ] && sudo mkdir -p /usr/share/debsig/keyrings/AC2D62742012EA22
+    curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
+    sudo apt update && sudo apt install 1password
+
+    if command -v op > /dev/null; then
+      # Mensagem de sucesso em verde com ícone de sucesso
+      echo -e "\033[1;32m✔️  [SUCESSO] O 1Password está disponível \033[0m"
+    else
+      # Mensagem de erro em vermelho com ícone de erro e recomendação de URL
+      echo -e "\033[1;31m❌  [ERRO] O 1Password não foi instalado! \033[0m"
+      echo -e "\033[1;31mPor favor, visite: https://support.1password.com/install-linux/#debian-or-ubuntu para instruções de instalação.\033[0m"
+    fi
+  elif [ $PLATFORM_OS = "MacOS" ]; then
+    
+  else
+    echo "Unsupported platorm"
+  fi
+
+}
+
+
 ### Install base libs
 function install_base_packages() {
   echo "+----------------------------------------------------------+"
   echo "|    *** Installing basic package for O.S platform ***     |"
   echo "+----------------------------------------------------------+"
   echo " === PLATFORM_ARCH=$PLATFORM_ARCH; OS=$PLATFORM_OS ==="
-
+ 
   if [ ! -d $HOME/.local/bin ]; then
     echo "[BASH] Creating .local/bin ..."
     mkdir -p $HOME/.local/bin
@@ -73,9 +114,6 @@ function install_base_packages() {
       lazygit \
       jq
 
-    sudo rpm --import https://downloads.1password.com/linux/keys/1password.asc
-    sudo sh -c 'echo -e "[1password]\nname=1Password Stable Channel\nbaseurl=https://downloads.1password.com/linux/rpm/stable/\$basearch\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=\"https://downloads.1password.com/linux/keys/1password.asc\"" > /etc/yum.repos.d/1password.repo'
-    sudo dnf install 1password
   elif [ $PLATFORM_OS = "Ubuntu" ]; then
     sudo apt upgrade -y
     sudo apt install -y build-essential \
@@ -97,25 +135,16 @@ function install_base_packages() {
       fd-find \
       jq
     
+
+    echo -e "\033[1;33m⚠️  Atenção: O Ubuntu não possui uma versão do LazyGit disponível nos repositórios APT.\033[0m"
+    echo -e "\033[1;33mVamos precisará instalar o LazyGit manualmente via script.\033[0m"
+    echo -e "\033[1;33mPara isso, se esse script não conseguir fazer essa instaação siga as instruções no repositório oficial.\033[0m"
+
     LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
     curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
     tar xf lazygit.tar.gz lazygit
     sudo install lazygit /usr/local/bin
 
-    echo "[INFO] 1Password playbook..."
-    curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
-    echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/amd64 stable main' | sudo tee /etc/apt/sources.list.d/1password.list
-    sudo mkdir -p /etc/debsig/policies/AC2D62742012EA22/
-    curl -sS https://downloads.1password.com/linux/debian/debsig/1password.pol | sudo tee /etc/debsig/policies/AC2D62742012EA22/1password.pol
-    sudo mkdir -p /usr/share/debsig/keyrings/AC2D62742012EA22
-    curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
-    sudo apt update && sudo apt install 1password
-
-    if command -v op > /dev/null; then
-      echo "[INFO] 1Password installed with success"
-    else
-      echo "[ERROR] The 1Password hasn't installed!"
-    fi
   elif [ $PLATFORM_OS = "MacOS" ]; then
     brew upgrade -y
     brew install zsh coreutils curl git wget tmux neovim ripgrep fd lazygit jq
