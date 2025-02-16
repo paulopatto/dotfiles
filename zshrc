@@ -89,9 +89,9 @@ start_time=`date +%s`
 
 case $PLATFORM_ARCH in 
   Linux)
-    if [ -x dnf ]; then
+    if command -v dnf > /dev/null; then
       export PLATFORM_OS="Fedora";
-    elif [ -x apt ]; then
+    elif command -v apt > /dev/null; then
       export PLATFORM_OS="Ubuntu";
     else
       echo "Unsupported linux distro $(uname -a)"
