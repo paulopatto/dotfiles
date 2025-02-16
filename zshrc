@@ -89,9 +89,9 @@ start_time=`date +%s`
 
 case $PLATFORM_ARCH in 
   Linux)
-    if [ -x dnf ]; then
+    if command -v dnf > /dev/null; then
       export PLATFORM_OS="Fedora";
-    elif [ -x apt ]; then
+    elif command -v apt > /dev/null; then
       export PLATFORM_OS="Ubuntu";
     else
       echo "Unsupported linux distro $(uname -a)"
@@ -108,15 +108,39 @@ export ZPLUG_HOME=$XDG_CONFIG_HOME/zsh/plugins/zplug
 if [ -f $ZPLUG_HOME/init.zsh ]; then 
   source $ZPLUG_HOME/init.zsh
 
-  zplug "lib/clipboard",             from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
-  zplug "plugins/asdf",              from:oh-my-zsh
-  zplug "plugins/command-not-found", from:oh-my-zsh
-  zplug "plugins/compleat",          from:oh-my-zsh
-  zplug "plugins/git",               from:oh-my-zsh, if:"which git"
-  zplug "plugins/osx",               from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
-  zplug "themes/agnoster",           from:oh-my-zsh, as:theme
-  zplug "themes/robbyrussell",       from:oh-my-zsh, as:theme
+  # General ZSH Plugins
   zplug "zsh-users/zsh-completions"
+  zplug "zsh-users/zsh-syntax-highlighting",      from:github
+  zplug "zsh-users/zsh-history-substring-search", from:github, defer:2
+  zplug "djui/alias-tips",                        from:github
+  #zplug "plugins/asdf",                           from:oh-my-zsh
+  zplug "plugins/command-not-found",              from:oh-my-zsh
+  zplug "plugins/compleat",                       from:oh-my-zsh
+
+  # SSH
+  zplug "hkupty/ssh-agent",                       from:github
+
+  # Git Plugins
+  zplug "plugins/git",                            from:oh-my-zsh, if:"which git"
+  zplug "Seinh/git-prune",                        from:github
+
+  # NodeJS
+  zplug "lukechilds/zsh-nvm",                     from:github
+  zplug "lukechilds/zsh-better-npm-completion",   from:github
+
+  # Directory Navigation
+  zplug "supercrabtree/k",                        from:github
+  zplug "b4b4r07/enhancd",                        use:init.sh
+  zplug "mollifier/anyframe"
+
+  # OSX Platform
+  zplug "lib/clipboard",                          from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
+  zplug "plugins/osx",                            from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
+
+  
+  # Theme
+  zplug "themes/agnoster",                        from:oh-my-zsh, as:theme
+  zplug "themes/robbyrussell",                    from:oh-my-zsh, as:theme
 
   autoload -U +X bashcompinit && bashcompinit
   autoload -U +X compinit && compinit
@@ -144,9 +168,10 @@ if [ -d $ASDF_HOME/completions/ ]; then
 
   # initialise completions with ZSH's compinit
   autoload -Uz compinit && compinit
+  [ -f $ASDF_HOME/completions/asdf.bash ] && source $ASDF_HOME/completions/asdf.bash
 fi
+
 [ -f $ASDF_HOME/asdf.sh ] && source $ASDF_HOME/asdf.sh
-[ -f $ASDF_HOME/completions/asdf.bash ] && source $ASDF_HOME/completions/asdf.bash
 [ -f $ASDF_HOME/plugins/golang/set-env.zsh ] && source $ASDF_HOME/plugins/golang/set-env.zsh
 [ -f $ASDF_HOME/plugins/java/set-java-home.zsh ] && source $ASDF_HOME/plugins/java/set-java-home.zsh
 [ -d $XDG_CONFIG_HOME/tmux/plugins/tpm/bin ] && export PATH=$PATH:$XDG_CONFIG_HOME/tmux/plugins/tpm/bin
