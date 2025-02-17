@@ -1,5 +1,21 @@
 ## ENVIRONMENTS
 
+## Detectar o sistema operacional
+case "$(uname -s)" in
+  Linux*)
+    OS="Linux"
+    ;;
+  Darwin*)
+    OS="Darwin"
+    ;;
+  CYGWIN*|MINGW32*|MSYS*|MINGW*)
+    OS="Windows"
+    ;;
+  *)
+    OS="Unknown"
+    ;;
+esac
+
 ############################################
 ########          SHELL
 ############################################
