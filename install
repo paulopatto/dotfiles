@@ -92,6 +92,12 @@ function install_base_packages() {
     mkdir -p $HOME/.local/bin
   fi
 
+  if [ ! -d $XDG_CONFIG_HOME/zsh/envs ]; then
+    echo "[BASH] Creating envs dir ..."
+    mkdir -p $XDG_CONFIG_HOME/zsh/envs
+    echo "Now put your shell envs in $XDG_CONFIG_HOME/zsh/envs"
+  fi
+
   if [ $PLATFORM_OS = "Fedora" ]; then
     sudo dnf upgrade -q -y 
     sudo dnf groupinstall @development-tools @development-libraries
