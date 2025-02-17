@@ -9,11 +9,9 @@
 [gpg]
   format = ssh
 
-[gpg "ssh"]
-  # Linux (Ubuntu | Fedora)
-  program = "/opt/1Password/op-ssh-sign"
-  # Mac (Darwin)
-  # program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+
+[include]
+  path = ~/.gitconfig-ssh
 
 [commit]
   gpgsign = true
