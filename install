@@ -183,6 +183,22 @@ function config_git() {
     ln -s $DOTFILES_HOME/gitconfig $HOME/.gitconfig
   fi
 
+  case $PLATFORM_ARCH in
+    Linux)
+      if [ ! -L $HOME/.gitconfig-ssh ]; then
+        echo "[*] Config git for $PLATFORM_ARCH"
+        ln -s $DOTFILES_HOME/gitconfig-linux $HOME/.gitconfig-ssh
+      fi
+      ;;
+    Darwin)
+      if [ ! -L $HOME/.gitconfig-ssh ]; then
+        echo "[*] Config git for $PLATFORM_ARCH"
+        ln -s $DOTFILES_HOME/gitconfig-osx $HOME/.gitconfig-ssh
+      fi
+      ;;
+    *)
+      echo "Invalid option $PLATFORM_ARCH"
+  esac
 
   if [ ! -L $HOME/.gitignore_global ]; then
     echo "[*] Copy .gitignore_global"
