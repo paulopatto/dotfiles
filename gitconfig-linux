@@ -1,0 +1,4 @@
+[gpg "ssh"]
+  # Linux (Ubuntu | Fedora)
+  program = "/opt/1Password/op-ssh-sign"
+
