@@ -186,6 +186,16 @@ if [ -d $HOME/.local/share/Android ]; then
   [ -d $ANDROID_HOME/emulator ] &&  export PATH=$PATH:$ANDROID_HOME/emulator/
 fi
 
+
+# Carregar arquivos .env.zsh da pasta $HOME/.config/zsh/envs
+if [ -d "$HOME/.config/zsh/envs" ]; then
+  for env_file in $HOME/.config/zsh/envs/*.env.zsh; do
+    if [ -f "$env_file" ]; then
+      source "$env_file"
+    fi
+  done
+fi
+
 ## Configs to gcloud
 # Using asdf-gcloud
 # 1. Install plugin
