@@ -26,9 +26,11 @@ version-resolver:
   major:
     labels:
       - 'breaking-change' # Or 'pr:breaking-change'
+      - ':rotating_light: breaking-change'
   minor:
     labels:
       - 'feat'
+      - ':sparkles: feat'
   patch:
     labels:
       - 'fix'
