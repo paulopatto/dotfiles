@@ -7,8 +7,20 @@ local js_based_languages = {
 }
 
 return {
+  { "nvim-neotest/nvim-nio" },
+  {
+    "jay-babu/mason-nvim-dap.nvim",
+    config = function ()
+      require("mason-nvim-dap").setup({
+        automatic_installation = true,
+      })
+    end
+  },
   {
     "mfussenegger/nvim-dap",
+    dependencies = {
+      "jay-babu/mason-nvim-dap.nvim",
+    },
     config = function()
       local dap = require("dap")
 
@@ -69,14 +81,6 @@ return {
         all_references = false,               -- show virtual text on all all references of the variable (not only definitions)
         clear_on_continue = false,            -- clear virtual text on "continue" (might cause flickering when stepping)
         virt_text_pos = vim.fn.has 'nvim-0.10' == 1 and 'inline' or 'eol', -- position of virtual text, see `:h nvim_buf_set_extmark()`
-      })
-    end
-  },
-  {
-    "jay-babu/mason-nvim-dap.nvim",
-    config = function ()
-      require("mason-nvim-dap").setup({
-        automatic_installation = true,
       })
     end
   },
