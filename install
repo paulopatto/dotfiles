@@ -111,6 +111,7 @@ function install_base_packages() {
       gcc-c++ \
       git \
       kernel-devel \
+      libffi-devel \
       libpq-devel \
       lua \
       make \
@@ -137,6 +138,7 @@ function install_base_packages() {
       curl \
       git \
       gnupg2 \
+      libffi-dev \
       libpq-dev \
       libreadline-dev \
       lua5.3 \

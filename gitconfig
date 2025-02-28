@@ -9,7 +9,6 @@
 [gpg]
   format = ssh
 
-
 [include]
   path = ~/.gitconfig-ssh
 
