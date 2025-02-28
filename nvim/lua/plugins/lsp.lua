@@ -16,6 +16,7 @@ return {
           "pyright",
           "tailwindcss",
           "tsserver",
+          "kotlin_language_server",
           "solargraph",
         },
       })
@@ -33,6 +34,9 @@ return {
         capabilities = capabilities
       })
       lspconfig.pyright.setup({
+        capabilities = capabilities
+      })
+      lspconfig.kotlin_language_server.setup({
         capabilities = capabilities
       })
 
