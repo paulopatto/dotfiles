@@ -16,6 +16,8 @@ return {
         "python",
         "ruby",
         "typescript",
+        "java",
+        "kotlin",
       },
       ]]
 			--
