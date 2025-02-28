@@ -26,7 +26,7 @@ export EDITOR='nvim'
 export TERM='xterm-256color' # old: 'screen-256color'
 export PAGER='less -rS'      # By @dlisboa
 export DOTFILES_HOME="$HOME/Code/dotfiles"
-export PATH=$PATH:$HOME/.local/bin
+export PATH=$PATH:$HOME/.local/bin:$HOME/.local/share/nvim/mason/bin
 
 ############################################
 ########          ASDF-VM
