@@ -9,6 +9,14 @@
 # version managers (e.g. .ruby-version in the case of Ruby's rbenv).
 legacy_version_file = yes
 
+
+# The default number of cores to use during compilation.
+# - integer:	Number of cores to use when compiling the source code
+# - auto:	Calculate the number of cores using nproc, then sysctl hw.ncpu, then /proc/cpuinfo or else 1
+concurrency = auto
+
+use_release_candidates = no
+
 # Environment Variables
 # ---------------------
 # * ASDF_CONFIG_FILE - Defaults to ~/.asdfrc as described above. Can be set to any location.
