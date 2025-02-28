@@ -129,7 +129,11 @@ function install_base_packages() {
       fd-find \
       lazygit \
       jq
-    
+  
+    echo "[FEDORA]: Enabling snaps support"
+    sudo dnf install snapd 
+    sudo ln -s /var/lib/snapd/snap /snap 
+    sudo snap install solargraph
 
   elif [ $PLATFORM_OS = "Ubuntu" ]; then
     sudo apt upgrade -qq -y
@@ -152,6 +156,8 @@ function install_base_packages() {
       ripgrep \
       fd-find \
       jq
+
+    sudo snap install solargraph
     
 
     if ! command -v op > /dev/null; then
