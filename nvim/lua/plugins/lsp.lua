@@ -18,6 +18,7 @@ return {
           "tsserver",
           "jdtls",
           "kotlin_language_server",
+          "vscode-java-debug",
           "solargraph",
         },
       })
