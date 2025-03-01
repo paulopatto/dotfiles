@@ -6,7 +6,17 @@ return {
   opts = {
     ---@alias Provider "claude" | "openai" | "azure" | "gemini" | "cohere" | "copilot" | "deepseek" | string
     -- add any opts here
-    -- for example
+    
+
+    vendors = {
+      deepseek = {
+        __inherited_from = "openai",
+        api_key_name = "DEEPSEEK_API_KEY",
+        endpoint = "https://api.deepseek.com/v1",
+        model = "deepseek-coder", -- deeepseek-coder
+      },
+    },
+
     openai = {
       endpoint = "https://api.openai.com/v1",
       model = "gpt-4o", -- your desired model (or use gpt-4o, etc.)
@@ -28,19 +38,11 @@ return {
       max_tokens = 4096,  -- Número máximo de tokens na resposta
     },
 
-    deepseek = {
-      endpoint = "https://api.deepseek.com/v1",
-      model = "deepseek-chat",
-      temperature = 0,
-      max_tokens = 4096,
-    },
-
-
-    provider = "gemini", -- The provider used in Aider mode or in the planning phase of Cursor Planning Mode
+    provider = "deepseek", -- The provider used in Aider mode or in the planning phase of Cursor Planning Mode
     -- WARNING: Since auto-suggestions are a high-frequency operation and therefore expensive,
     -- currently designating it as `copilot` provider is dangerous because: https://github.com/yetone/avante.nvim/issues/1048
     -- Of course, you can reduce the request frequency by increasing `suggestion.debounce`.
-    auto_suggestions_provider = "gemini",
+    auto_suggestions_provider = "deepseek",
 
     ---Specify the special dual_boost mode
     ---1. enabled: Whether to enable dual_boost mode. Default to false.
@@ -53,8 +55,8 @@ return {
     ---Note: This is an experimental feature and may not work as expected.
     dual_boost = {
       enabled = false,
-      first_provider = "gemini",
-      second_provider = "deepseek",
+      first_provider = "deepseek",
+      second_provider = "gemini",
       prompt = "Based on the two reference outputs below, generate a response that incorporates elements from both but reflects your own judgment and unique perspective. Do not provide any explanation, just give the response directly. Reference Output 1: [{{provider1_output}}], Reference Output 2: [{{provider2_output}}]",
       timeout = 60000, -- Timeout in milliseconds
     },
