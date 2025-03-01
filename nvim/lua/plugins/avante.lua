@@ -35,6 +35,7 @@ return {
       max_tokens = 4096,
     },
 
+
     provider = "gemini", -- The provider used in Aider mode or in the planning phase of Cursor Planning Mode
     -- WARNING: Since auto-suggestions are a high-frequency operation and therefore expensive,
     -- currently designating it as `copilot` provider is dangerous because: https://github.com/yetone/avante.nvim/issues/1048
