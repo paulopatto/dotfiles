@@ -4,6 +4,23 @@ return {
     config = function()
       local dap = require("dap")
 
+      dap.adapters.java = {
+        type = 'executable',
+        command = "$HOME/.local/share/nvim/mason/bin/vscode-java-debug",
+        options = {
+          cwd = vim.fn.getcwd()
+        }
+      }
+
+      dap.configurations.java = {
+        {
+          name = "Launch Current File",
+          type = "java",
+          request = "launch",
+          mainClass = "${file}",
+        }
+      }
+
       -- Key maps
       -- See :help dap.txt, :help dap-mapping and :help dap-api.
       -- debug toogle (breakpoint)
