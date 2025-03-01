@@ -52,7 +52,7 @@ return {
       })
       lspconfig.jdtls.setup({
         cmd = { "jdtls" },
-        root_dir = lspconfig.util.root_pattern("pom.xml", "build.gradle", ".git"), -- Define o diretório raiz do projector
+        root_dir = lspconfig.util.root_pattern("pom.xml", "build.gradle", ".git", "gradlew", "mvnw"), -- Define o diretório raiz do projector
         settings = {
           java = {
             configuration = {
@@ -69,7 +69,7 @@ return {
 
       jdtls.start_or_attach({
         cmd = { vim.fn.expand("$HOME/.local/share/nvim/mason/bin/jdtls") }, -- Caminho do jdtls
-        root_dir = vim.fs.dirname(vim.fs.find({ "pom.xml", "build.gradle", ".git" }, { upward = true })[1]), -- Define o diretório raiz do projeto
+        root_dir = vim.fs.dirname(vim.fs.find({ "pom.xml", "build.gradle", ".git", "gradlew", "mvnw" }, { upward = true })[1]), -- Define o diretório raiz do projeto
         settings = {
           java = {
             configuration = {
