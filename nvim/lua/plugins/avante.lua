@@ -4,7 +4,7 @@ return {
   lazy = false,
   version = false, -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
   opts = {
-    ---@alias Provider "claude" | "openai" | "azure" | "gemini" | "cohere" | "copilot" | string
+    ---@alias Provider "claude" | "openai" | "azure" | "gemini" | "cohere" | "copilot" | "deepseek" | string
     -- add any opts here
     -- for example
     openai = {
@@ -28,6 +28,13 @@ return {
       max_tokens = 4096,  -- Número máximo de tokens na resposta
     },
 
+    deepseek = {
+      endpoint = "https://api.deepseek.com/v1",
+      model = "deepseek-chat",
+      temperature = 0,
+      max_tokens = 4096,
+    },
+
     provider = "gemini", -- The provider used in Aider mode or in the planning phase of Cursor Planning Mode
     -- WARNING: Since auto-suggestions are a high-frequency operation and therefore expensive,
     -- currently designating it as `copilot` provider is dangerous because: https://github.com/yetone/avante.nvim/issues/1048
@@ -46,7 +53,7 @@ return {
     dual_boost = {
       enabled = false,
       first_provider = "gemini",
-      second_provider = "openai",
+      second_provider = "deepseek",
       prompt = "Based on the two reference outputs below, generate a response that incorporates elements from both but reflects your own judgment and unique perspective. Do not provide any explanation, just give the response directly. Reference Output 1: [{{provider1_output}}], Reference Output 2: [{{provider2_output}}]",
       timeout = 60000, -- Timeout in milliseconds
     },
