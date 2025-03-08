@@ -18,6 +18,7 @@ return {
           "tsserver",
           "jdtls",
           "kotlin_language_server",
+          "terraformls",
           "solargraph",
         },
       })
@@ -82,6 +83,10 @@ return {
             },
           },
         },
+      })
+
+      lspconfig.terraformls.setup({
+        capabilities = capabilities,
       })
 
       -- Buffer local mappings.
