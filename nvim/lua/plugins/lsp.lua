@@ -106,6 +106,19 @@ return {
           vim.lsp.buf.format()
         end,
       })
+
+      -- Add blankline at EOF on save
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        group = vim.api.nvim_create_augroup("AddBlankLine", { clear = true }),
+        callback = function()
+          local last_line = vim.api.nvim_buf_line_count(0)
+          local last_line_content = vim.api.nvim_buf_get_lines(0, last_line - 1, last_line, false)[1]
+          if last_line_content ~= "" then
+            vim.api.nvim_buf_set_lines(0, last_line, last_line, false, { "" })
+          end
+        end,
+      })
+
     end,
   },
 }
