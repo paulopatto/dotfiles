@@ -119,6 +119,15 @@ return {
         end,
       })
 
+      -- Organize import
+      vim.keymap.set({ "n", "v" }, "<leader>oi", function()
+        vim.lsp.buf.code_action({
+          context = {
+            only = { "source.organizeImports" },
+          },
+        })
+      end)
+
     end,
   },
 }
