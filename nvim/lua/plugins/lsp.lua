@@ -12,14 +12,15 @@ return {
         -- Availables LSP Servers
         -- https://github.com/williamboman/mason-lspconfig.nvim?tab=readme-ov-file#available-lsp-servers
         ensure_installed = {
-          "lua_ls",
-          "pyright",
-          "tailwindcss",
-          "tsserver",
           "jdtls",
           "kotlin_language_server",
-          "terraformls",
+          "lua_ls",
+          "pyright",
+          "ruff",
           "solargraph",
+          "tailwindcss",
+          "terraformls",
+          "tsserver",
         },
       })
     end,
@@ -69,7 +70,7 @@ return {
       })
 
       jdtls.start_or_attach({
-        cmd = { vim.fn.expand("$HOME/.local/share/nvim/mason/bin/jdtls") }, -- Caminho do jdtls
+        cmd = { vim.fn.expand("$HOME/.local/share/nvim/mason/bin/jdtls") },                                  -- Caminho do jdtls
         root_dir = vim.fs.dirname(vim.fs.find({ "pom.xml", "build.gradle", ".git" }, { upward = true })[1]), -- Define o diretório raiz do projeto
         settings = {
           java = {
@@ -127,7 +128,7 @@ return {
           },
         })
       end)
-
     end,
   },
 }
+
