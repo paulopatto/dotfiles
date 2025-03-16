@@ -38,12 +38,12 @@ return {
         null_ls.builtins.formatting.black.with({
           extra_args = { "--line-length", "89", "--skip-string-normalization" }
         }),
-        null_ls.builtins.formatting.ruff.with({
+        --[[ null_ls.builtins.formatting.ruff.with({
           extra_args = { "--line-length", "89" }
-        }),
-        null_ls.builtins.diagnostics.ruff.with({
+        }), ]]
+        --[[ null_ls.builtins.diagnostics.ruff.with({
           extra_args = { "--select", "E,W,F" }
-        }),
+        }), ]]
         null_ls.builtins.formatting.isort,
       },
     })
