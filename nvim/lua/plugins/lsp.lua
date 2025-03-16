@@ -20,7 +20,7 @@ return {
           "solargraph",
           "tailwindcss",
           "terraformls",
-          "tsserver",
+          "ts_ls",
         },
       })
     end,
@@ -43,7 +43,7 @@ return {
       lspconfig.lua_ls.setup({
         capabilities = capabilities
       })
-      lspconfig.tsserver.setup({
+      lspconfig.ts_ls.setup({
         capabilities = capabilities
       })
       lspconfig.pyright.setup({
