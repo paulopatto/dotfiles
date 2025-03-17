@@ -18,8 +18,16 @@ return {
           type = "java",
           request = "launch",
           mainClass = "${file}",
-        }
+        },
+        {
+          name = 'Attach to Remote JVM',
+          type = 'java',
+          request = 'attach',
+          hostName = 'localhost',
+          port = 5005,
+        },
       }
+    }
 
       -- Key maps
       -- See :help dap.txt, :help dap-mapping and :help dap-api.
