@@ -35,22 +35,30 @@ return {
       "mfussenegger/nvim-jdtls",
     },
     config = function()
-      local capabilities = require('cmp_nvim_lsp').default_capabilities()
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
       local lspconfig = require("lspconfig")
       local java_path = vim.fn.expand("~/.asdf/shims/java")
       local jdtls = require("jdtls")
+      local on_attach = require("cmp_nvim_lsp").on_attach
 
       lspconfig.lua_ls.setup({
-        capabilities = capabilities
+        capabilities = capabilities,
       })
       lspconfig.ts_ls.setup({
-        capabilities = capabilities
+        capabilities = capabilities,
       })
       lspconfig.pyright.setup({
-        capabilities = capabilities
+        capabilities = capabilities,
+        on_attach = on_attach,
+        filetypes = { "python" },
+      })
+      lspconfig.ruff.setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+        filetypes = { "python" },
       })
       lspconfig.kotlin_language_server.setup({
-        capabilities = capabilities
+        capabilities = capabilities,
       })
       lspconfig.jdtls.setup({
         cmd = { "jdtls" },
@@ -70,7 +78,7 @@ return {
       })
 
       jdtls.start_or_attach({
-        cmd = { vim.fn.expand("$HOME/.local/share/nvim/mason/bin/jdtls") },                                  -- Caminho do jdtls
+        cmd = { vim.fn.expand("$HOME/.local/share/nvim/mason/bin/jdtls") },                              -- Caminho do jdtls
         root_dir = vim.fs.dirname(vim.fs.find({ "pom.xml", "build.gradle", ".git" }, { upward = true })[1]), -- Define o diretório raiz do projeto
         settings = {
           java = {
