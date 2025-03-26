@@ -1,9 +1,9 @@
-black
-flake8
 ipython
 pipenv
 pynvim
-pyright
 pytest
 requests
+ruff
+ruff-lsp
 virtualenv
+

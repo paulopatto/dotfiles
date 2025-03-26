@@ -2,6 +2,7 @@ return {
   "nvimtools/none-ls.nvim",
   dependencies = {
     "nvimtools/none-ls-extras.nvim",
+    "jayp0521/mason-null-ls.nvim",
   },
   config = function()
     local null_ls = require("null-ls")
@@ -29,23 +30,23 @@ return {
 
         -- JavaScript / Typescript Stack
         require("none-ls.diagnostics.eslint_d"),
-        null_ls.builtins.formatting.prettier,
 
         -- Python Formatter
-        -- links:
-        -- - https://www.reddit.com/r/neovim/comments/1069wto/what_python_lsp_and_linter/
-        -- - https://www.reddit.com/r/neovim/comments/1b5hc2p/nonels_giving_me_errors_starting_from_today/
-        null_ls.builtins.formatting.black.with({
-          extra_args = { "--line-length", "89", "--skip-string-normalization" }
-        }),
-        --[[ null_ls.builtins.formatting.ruff.with({
-          extra_args = { "--line-length", "89" }
-        }), ]]
-        --[[ null_ls.builtins.diagnostics.ruff.with({
-          extra_args = { "--select", "E,W,F" }
-        }), ]]
-        null_ls.builtins.formatting.isort,
+        require('none-ls.formatting.ruff').with { extra_args = { 'extend-select', 'E,I,F' } },
+        require 'none-ls.formatting.ruff_format',
+
+        null_ls.builtins.formatting.shfmt.with { args = { '-i', '4' } },
+        null_ls.builtins.formatting.prettier.with { filetypes = { 'json', 'yaml', 'markdown', 'typescript', 'javascript' } },
       },
+    })
+
+    require('mason-null-ls').setup({
+      ensure_installed = {
+        'ruff',
+        'prettier',
+        'shfmt',
+      },
+      automatic_installation = true,
     })
 
     vim.keymap.set("n", "<leader>fm", vim.lsp.buf.format, {})
