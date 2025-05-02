@@ -52,16 +52,18 @@ return {
           end,
         }),
 
-        null_ls.builtins.formatting.shfmt.with { args = { '-i', '4' } },
-        null_ls.builtins.formatting.prettier.with { filetypes = { 'json', 'yaml', 'markdown', 'typescript', 'javascript' } },
+        null_ls.builtins.formatting.shfmt.with({ args = { "-i", "4" } }),
+        null_ls.builtins.formatting.prettier.with({
+          filetypes = { "json", "yaml", "markdown", "typescript", "javascript" },
+        }),
       },
     })
 
-    require('mason-null-ls').setup({
+    require("mason-null-ls").setup({
       ensure_installed = {
-        'ruff',
-        'prettier',
-        'shfmt',
+        "ruff",
+        "prettier",
+        "shfmt",
       },
       automatic_installation = true,
     })
