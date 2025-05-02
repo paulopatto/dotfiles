@@ -10,7 +10,13 @@ return {
       sources = {
         require("none-ls.code_actions.eslint"),
         require("none-ls.diagnostics.eslint_d"),
-        require("none-ls.diagnostics.flake8"),
+
+        -- Habilitar Flake8 configurado para usar as regras do projeto
+        require("none-ls.diagnostics.flake8").with({
+          cwd = function(params)
+            return vim.fn.fnamemodify(params.bufname, ":h")
+          end,
+        }),
         require("none-ls.diagnostics.ruff"),
         require("none-ls.formatting.ruff"),
         require("none-ls.formatting.jq"),
@@ -32,8 +38,19 @@ return {
         require("none-ls.diagnostics.eslint_d"),
 
         -- Python Formatter
-        require('none-ls.formatting.ruff').with { extra_args = { 'extend-select', 'E,I,F' } },
-        require 'none-ls.formatting.ruff_format',
+        require("none-ls.formatting.ruff").with({
+          extra_args = { "extend-select", "E,I,F" },
+          -- Para fazer o ruff também pegar as config do projeto
+          cwd = function(params)
+            return vim.fn.fnamemodify(params.bufname, ":h")
+          end,
+        }),
+        require("none-ls.formatting.ruff_format").with({
+          -- Respeitar configurações do projeto
+          cwd = function(params)
+            return vim.fn.fnamemodify(params.bufname, ":h")
+          end,
+        }),
 
         null_ls.builtins.formatting.shfmt.with { args = { '-i', '4' } },
         null_ls.builtins.formatting.prettier.with { filetypes = { 'json', 'yaml', 'markdown', 'typescript', 'javascript' } },
