@@ -12,14 +12,16 @@ return {
         -- Availables LSP Servers
         -- https://github.com/williamboman/mason-lspconfig.nvim?tab=readme-ov-file#available-lsp-servers
         ensure_installed = {
-          "lua_ls",
-          "pyright",
-          "tailwindcss",
-          "tsserver",
           "jdtls",
           "kotlin_language_server",
           "vscode-java-debug",
+          "lua_ls",
+          "pyright",
+          "ruff",
           "solargraph",
+          "tailwindcss",
+          "terraformls",
+          "ts_ls",
         },
       })
     end,
@@ -42,7 +44,7 @@ return {
       lspconfig.lua_ls.setup({
         capabilities = capabilities
       })
-      lspconfig.tsserver.setup({
+      lspconfig.ts_ls.setup({
         capabilities = capabilities
       })
       lspconfig.pyright.setup({
@@ -85,6 +87,10 @@ return {
         },
       })
 
+      lspconfig.terraformls.setup({
+        capabilities = capabilities,
+      })
+
       -- Buffer local mappings.
       -- See `:help vim.lsp.*` for documentation on any of the below functions
       -- Read more: https://github.com/neovim/nvim-lspconfig?tab=readme-ov-file#suggested-configuration
@@ -94,6 +100,36 @@ return {
       vim.keymap.set("n", "gD", vim.lsp.buf.declaration, {})
       vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, {})
       vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
+
+      -- Format on save
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        group = vim.api.nvim_create_augroup("Format", { clear = true }),
+        callback = function()
+          vim.lsp.buf.format()
+        end,
+      })
+
+      -- Add blankline at EOF on save
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        group = vim.api.nvim_create_augroup("AddBlankLine", { clear = true }),
+        callback = function()
+          local last_line = vim.api.nvim_buf_line_count(0)
+          local last_line_content = vim.api.nvim_buf_get_lines(0, last_line - 1, last_line, false)[1]
+          if last_line_content ~= "" then
+            vim.api.nvim_buf_set_lines(0, last_line, last_line, false, { "" })
+          end
+        end,
+      })
+
+      -- Organize import
+      vim.keymap.set({ "n", "v" }, "<leader>oi", function()
+        vim.lsp.buf.code_action({
+          context = {
+            only = { "source.organizeImports" },
+          },
+        })
+      end)
     end,
   },
 }
+
