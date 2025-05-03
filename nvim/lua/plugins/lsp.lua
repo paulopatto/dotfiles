@@ -2,8 +2,12 @@ return {
   {
     "williamboman/mason.nvim",
     config = function()
-      require("mason").setup()
-    end,
+			require("mason").setup({
+				ensure_installed = {
+					"debugpy",
+				},
+			})
+		end,
   },
   {
     "williamboman/mason-lspconfig.nvim",
@@ -48,8 +52,15 @@ return {
         capabilities = capabilities
       })
       lspconfig.pyright.setup({
-        capabilities = capabilities
-      })
+				capabilities = capabilities,
+				on_attach = on_attach,
+				filetypes = { "python" },
+			})
+			lspconfig.ruff.setup({
+				capabilities = capabilities,
+				on_attach = on_attach,
+				filetypes = { "python" },
+			})
       lspconfig.kotlin_language_server.setup({
         capabilities = capabilities
       })
@@ -86,50 +97,50 @@ return {
           },
         },
       })
+      
+			lspconfig.terraformls.setup({
+				capabilities = capabilities,
+			})
 
-      lspconfig.terraformls.setup({
-        capabilities = capabilities,
-      })
+			-- Buffer local mappings.
+			-- See `:help vim.lsp.*` for documentation on any of the below functions
+			-- Read more: https://github.com/neovim/nvim-lspconfig?tab=readme-ov-file#suggested-configuration
+			vim.keymap.set("n", "K", vim.lsp.buf.hover, {}) -- Will open helper pop-up
+			vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
+			vim.keymap.set("n", "gr", vim.lsp.buf.references, {})
+			vim.keymap.set("n", "gD", vim.lsp.buf.declaration, {})
+			vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, {})
+			vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
 
-      -- Buffer local mappings.
-      -- See `:help vim.lsp.*` for documentation on any of the below functions
-      -- Read more: https://github.com/neovim/nvim-lspconfig?tab=readme-ov-file#suggested-configuration
-      vim.keymap.set("n", "K", vim.lsp.buf.hover, {}) -- Will open helper pop-up
-      vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
-      vim.keymap.set("n", "gr", vim.lsp.buf.references, {})
-      vim.keymap.set("n", "gD", vim.lsp.buf.declaration, {})
-      vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, {})
-      vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
+			-- Format on save
+			vim.api.nvim_create_autocmd("BufWritePre", {
+				group = vim.api.nvim_create_augroup("Format", { clear = true }),
+				callback = function()
+					vim.lsp.buf.format()
+				end,
+			})
 
-      -- Format on save
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        group = vim.api.nvim_create_augroup("Format", { clear = true }),
-        callback = function()
-          vim.lsp.buf.format()
-        end,
-      })
+			-- Add blankline at EOF on save
+			vim.api.nvim_create_autocmd("BufWritePre", {
+				group = vim.api.nvim_create_augroup("AddBlankLine", { clear = true }),
+				callback = function()
+					local last_line = vim.api.nvim_buf_line_count(0)
+					local last_line_content = vim.api.nvim_buf_get_lines(0, last_line - 1, last_line, false)[1]
+					if last_line_content ~= "" then
+						vim.api.nvim_buf_set_lines(0, last_line, last_line, false, { "" })
+					end
+				end,
+			})
 
-      -- Add blankline at EOF on save
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        group = vim.api.nvim_create_augroup("AddBlankLine", { clear = true }),
-        callback = function()
-          local last_line = vim.api.nvim_buf_line_count(0)
-          local last_line_content = vim.api.nvim_buf_get_lines(0, last_line - 1, last_line, false)[1]
-          if last_line_content ~= "" then
-            vim.api.nvim_buf_set_lines(0, last_line, last_line, false, { "" })
-          end
-        end,
-      })
-
-      -- Organize import
-      vim.keymap.set({ "n", "v" }, "<leader>oi", function()
-        vim.lsp.buf.code_action({
-          context = {
-            only = { "source.organizeImports" },
-          },
-        })
-      end)
-    end,
-  },
+			-- Organize import
+			vim.keymap.set({ "n", "v" }, "<leader>oi", function()
+				vim.lsp.buf.code_action({
+					context = {
+						only = { "source.organizeImports" },
+					},
+				})
+			end)
+		end,
+	},
 }
 
