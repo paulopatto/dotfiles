@@ -7,6 +7,9 @@ on:
     paths:
       - "docs/**"
 
+permissions:
+  contents: write
+
 jobs:
   sync-wiki:
     runs-on: ubuntu-latest
@@ -20,8 +23,8 @@ jobs:
           git config --global user.email "action@github.com"
 
       - name: Clone Wiki
-        run: git clone https://github.com/${{ github.repository }}.wiki.git wiki
-        # git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.wiki.git wiki
+        # run: git clone https://github.com/${{ github.repository }}.wiki.git wiki
+        run: git clone "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.wiki.git" wiki
 
       - name: Get commit info
         id: commit_info
@@ -36,7 +39,13 @@ jobs:
           cp -r docs/* wiki/
           cd wiki
           git add .
-          git diff-index --quiet HEAD || git commit -m "docs: Add documentation to '${{ steps.commit_info.outputs.title }}' (ref: ${{ steps.commit_info.outputs.hash }})" && git push
+          # Verifica se há alterações para comitar
+          if git diff --staged --quiet; then
+            echo "Nenhuma alteração para sincronizar com a wiki."
+          else
+            git commit -m "docs: Add documentation to '${{ steps.commit_info.outputs.title }}' (ref: ${{ steps.commit_info.outputs.hash }})"
+            git push
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
