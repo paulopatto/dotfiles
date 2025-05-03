@@ -1,8 +1,11 @@
-name: Generate new release
+name: Tagging pull request
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
 permissions:
   contents: read
 
