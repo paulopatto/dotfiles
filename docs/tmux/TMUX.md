@@ -1,4 +1,6 @@
-# Tmux configs
+# Tmux
+
+## About
 
 [TMux](https://tmux.github.io/) is a "terminal multiplexer: it enables a number of terminals (or windows), each running a separate program, to be created, accessed, and controlled from a single screen. TMux may be detached from a screen and continue running in the background, then later reattached."
 

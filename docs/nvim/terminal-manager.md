@@ -1,4 +1,4 @@
-# Terminal manager for (neo)vim
+# Neovim: Terminal manager
 
 Source: https://github.com/voldikss/vim-floaterm
 

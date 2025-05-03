@@ -1,2 +1,2 @@
-Welcome to the dotfiles wiki!
+Welcome to the ~dotfiles wiki!
 
