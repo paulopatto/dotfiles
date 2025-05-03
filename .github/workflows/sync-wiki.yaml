@@ -1,0 +1,42 @@
+name: Sincronizar Wiki
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "docs/**"
+
+jobs:
+  sync-wiki:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código fonte
+        uses: actions/checkout@v3
+
+      - name: Configurar Git
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+
+      - name: Clone Wiki
+        run: git clone https://github.com/${{ github.repository }}.wiki.git wiki
+        # git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.wiki.git wiki
+
+      - name: Get commit info
+        id: commit_info
+        run: |
+          COMMIT_HASH=$(git rev-parse HEAD)
+          COMMIT_TITLE=$(git log -1 --pretty=%s)
+          echo "hash=$COMMIT_HASH" >> $GITHUB_OUTPUT
+          echo "title=$COMMIT_TITLE" >> $GITHUB_OUTPUT
+
+      - name: Copy & Sync
+        run: |
+          cp -r docs/* wiki/
+          cd wiki
+          git add .
+          git diff-index --quiet HEAD || git commit -m "docs: Add documentation to '${{ steps.commit_info.outputs.title }}' (ref: ${{ steps.commit_info.outputs.hash }})" && git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
