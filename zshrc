@@ -187,6 +187,7 @@ if [ -d $ASDF_HOME/completions/ ]; then
   [ -f $ASDF_HOME/completions/asdf.bash ] && source $ASDF_HOME/completions/asdf.bash
 fi
 
+export ASDF_NODEJS_LEGACY_FILE_DYNAMIC_STRATEGY=latest_installed
 [ -f $ASDF_HOME/asdf.sh ] && source $ASDF_HOME/asdf.sh
 [ -f $ASDF_HOME/plugins/golang/set-env.zsh ] && source $ASDF_HOME/plugins/golang/set-env.zsh
 [ -f $ASDF_HOME/plugins/java/set-java-home.zsh ] && source $ASDF_HOME/plugins/java/set-java-home.zsh
@@ -220,3 +221,4 @@ fi
 #   asdf install gcloud latest
 # 3. Set global version
 #   asdf global gcloud latest
+
