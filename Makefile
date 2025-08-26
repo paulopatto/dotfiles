@@ -72,9 +72,9 @@ git_config:
 	@ln -sf $(DOTFILES_HOME)/gitignore_global $(HOME)/.gitignore_global
 	@if [ "$(uname -s)" = "Darwin" ]; then \
 		ln -sf $(DOTFILES_HOME)/gitconfig-osx $(HOME)/.gitconfig-ssh; \
-	elif [ "$(uname -s)" = "Linux" ]; then \
+		elif [ "$(uname -s)" = "Linux" ]; then \
 		ln -sf $(DOTFILES_HOME)/gitconfig-linux $(HOME)/.gitconfig-ssh; \
-	fi
+		fi
 	@echo "Configuração do Git concluída."
 
 zsh_config: .zplug_installed
@@ -83,10 +83,10 @@ zsh_config: .zplug_installed
 zplug_installed:
 	@echo "Configurando Zsh e instalando Zplug..."
 	@if [ ! -d "$(XDG_CONFIG_HOME)/zsh/plugins/zplug" ]; then \
-					echo "Instalando Zplug..."; \
-					git clone https://github.com/zplug/zplug $(XDG_CONFIG_HOME)/zsh/plugins/zplug; \
-	fi
-	@touch $@
+		echo "Instalando Zplug..."; \
+		git clone https://github.com/zplug/zplug $(XDG_CONFIG_HOME)/zsh/plugins/zplug; \
+		fi
+	@touch $@ # Cria o arquivo marcador para indicar que a instalação foi feita.
 
 asdf_config:
 	@echo "Configurando ASDF..."
@@ -107,4 +107,5 @@ tmux_config: .tmux_configured
 	fi
 	@mkdir -p $(XDG_CONFIG_HOME)/tmux/
 	@ln -sf $(DOTFILES_HOME)/tmux/tmux.conf $(XDG_CONFIG_HOME)/tmux/tmux.conf
-	@touch $@
+	@touch $@ # Cria o arquivo marcador para indicar que a instalação foi feita.
+
