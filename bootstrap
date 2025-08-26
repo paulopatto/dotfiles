@@ -7,91 +7,77 @@ echo "[SYSTEM]--> OS=$OS"
 echo "[SYSTEM]--> DOTFILES_HOME=$DOTFILES_HOME"
 
 # Install packages
-if [ $OS = "\"Ubuntu\"" ]
-then
-  echo "[UBUNTU] Install essential packages via APT"
-  sudo apt install --yes curl \
-    gawk \
-    tmux \
-    zsh \
-    neovim \
-    jq \
-    git
+if [ $OS = "\"Ubuntu\"" ]; then
+    echo "[UBUNTU] Install essential packages via APT"
+    sudo apt install --yes curl gawk tmux zsh neovim jq git stow
 
-  echo "[UBUNTU] Install snaps"
-  sudo snap install --classic code
-  sudo snap install postman
+    echo "[UBUNTU] Install snaps"
+    sudo snap install --classic code
+    sudo snap install postman
 
-  echo "[1password] Visit: https://support.1password.com/install-linux/"
-  if [ ! -f /usr/share/keyrings/1password-archive-keyring.gpg ]; then
-    echo "[1password] Add the key for the 1Password apt repository."
-    curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
-  fi
-  
+    echo "[1password] Visit: https://support.1password.com/install-linux/"
+    if [ ! -f /usr/share/keyrings/1password-archive-keyring.gpg ]; then
+        echo "[1password] Add the key for the 1Password apt repository."
+        curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
+    fi
 
-  echo "[1password] Add the debsig-verify policy"
-  if [ ! -d /etc/debsig/policies/AC2D62742012EA22/ ]; then
-    sudo mkdir -p /etc/debsig/policies/AC2D62742012EA22/
-    curl -sS https://downloads.1password.com/linux/debian/debsig/1password.pol | sudo tee /etc/debsig/policies/AC2D62742012EA22/1password.pol
-  fi
+    echo "[1password] Add the debsig-verify policy"
+    if [ ! -d /etc/debsig/policies/AC2D62742012EA22/ ]; then
+        sudo mkdir -p /etc/debsig/policies/AC2D62742012EA22/
+        curl -sS https://downloads.1password.com/linux/debian/debsig/1password.pol | sudo tee /etc/debsig/policies/AC2D62742012EA22/1password.pol
+    fi
 
-  if [ ! -f /etc/apt/sources.list.d/1password.list ]; then
-    echo "[1password] Add the 1Password apt repository"
-    echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/amd64 stable main' | sudo tee /etc/apt/sources.list.d/1password.list
-    sudo apt update
-  fi
+    if [ ! -f /etc/apt/sources.list.d/1password.list ]; then
+        echo "[1password] Add the 1Password apt repository"
+        echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/amd64 stable main' | sudo tee /etc/apt/sources.list.d/1password.list
+        sudo apt update
+    fi
 
-  if [ ! -d /usr/share/debsig/keyrings/AC2D62742012EA22 ]; then
-    sudo mkdir -p /usr/share/debsig/keyrings/AC2D62742012EA22
-    curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
-  fi
+    if [ ! -d /usr/share/debsig/keyrings/AC2D62742012EA22 ]; then
+        sudo mkdir -p /usr/share/debsig/keyrings/AC2D62742012EA22
+        curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
+    fi
 fi
 
-if [ $OS = "\"Fedora Linux\"" ]
-then
-  echo "[FEDORA] Install essential packages via DNF"
-  sudo dnf install -y curl \
-    gawk \
-    git \
-    gitk \
-    tmux \
-    zsh \
-    neovim \
-    jq
+if [ $OS = "\"Fedora Linux\"" ]; then
+    echo "[FEDORA] Install essential packages via DNF"
+    sudo dnf install -y curl gawk git gitk tmux zsh neovim jq
 
-  
-  if [ ! -f /etc/yum.repos.d/1password.repo ]; then
-    echo "[1password] Visit: https://support.1password.com/install-linux/"
-    echo "[1password] Add the key for the 1Password yum repository."
-    sudo rpm --import https://downloads.1password.com/linux/keys/1password.asc
-    echo "[1password] Add the 1Password yum repository."
-    sudo sh -c 'echo -e "[1password]\nname=1Password Stable Channel\nbaseurl=https://downloads.1password.com/linux/rpm/stable/\$basearch\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=\"https://downloads.1password.com/linux/keys/1password.asc\"" > /etc/yum.repos.d/1password.repo'
-    echo "[1password] Install 1Password."
-    sudo dnf install -y 1password
-  fi
+    if [ ! -f /etc/yum.repos.d/1password.repo ]; then
+        echo "[1password] Visit: https://support.1password.com/install-linux/"
+        echo "[1password] Add the key for the 1Password yum repository."
+        sudo rpm --import https://downloads.1password.com/linux/keys/1password.asc
+        echo "[1password] Add the 1Password yum repository."
+        sudo sh -c 'echo -e "[1password]\nname=1Password Stable Channel\nbaseurl=https://downloads.1password.com/linux/rpm/stable/\$basearch\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=\"https://downloads.1password.com/linux/keys/1password.asc\"" > /etc/yum.repos.d/1password.repo'
+        echo "[1password] Install 1Password."
+        sudo dnf install -y 1password
+    fi
+fi
+
+if [ "$OS" = "\"Darwin\"" ]; then
+    echo "[MACOS] Install GNU Stow via Brew"
+    brew install git stow
 fi
 
 echo "[NEOVIM] Config neovim"
 [ ! -d $HOME/.config/nvim ] && mkdir $HOME/.config/nvim
 if [ ! -f $HOME/.local/share/nvim/site/autoload/plug.vim ]; then
-  mkdir -p $HOME/.local/share/nvim/site/autoload/
-  curl -o $HOME/.local/share/nvim/site/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim 
+    mkdir -p $HOME/.local/share/nvim/site/autoload/
+    curl -o $HOME/.local/share/nvim/site/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 if [ ! -f $HOME/.config/nvim/init.vim ]; then
-  ln -s $DOTFILES_HOME/vimrc.vim $HOME/.config/nvim/init.vim 
+    ln -s $DOTFILES_HOME/vimrc.vim $HOME/.config/nvim/init.vim
 fi
-
 
 if [ ! -d $HOME/.local/share/fonts/ ]; then
-echo "---> Install fonts ..."
-  mkdir -p $HOME/.local/share/fonts/
+    echo "---> Install fonts ..."
+    mkdir -p $HOME/.local/share/fonts/
 
-  curl -fL https://github.com/ryanoasis/nerd-fonts/raw/HEAD/patched-fonts/DroidSansMono/DroidSansMNerdFont-Regular.otf --output $HOME/.local/share/fonts/DroidSansMNerdFont-Regular.otf
-  curl -fL https://github.com/ryanoasis/nerd-fonts/raw/HEAD/patched-fonts/JetBrainsMono/Ligatures/Regular/JetBrainsMonoNerdFont-Regular.ttf --output $HOME/.local/share/fonts/JetBrainsMonoNerdFont-Regular.ttf
-  curl -fL https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/L/Regular/MesloLGLNerdFont-Regular.ttf --output $HOME/.local/share/fonts/MesloLGLNerdFont-Regular.ttf
-  curl -fL https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Ubuntu/Regular/UbuntuNerdFont-Regular.ttf --output $HOME/.local/share/fonts/UbuntuNerdFont-Regular.ttf
+    curl -fL https://github.com/ryanoasis/nerd-fonts/raw/HEAD/patched-fonts/DroidSansMono/DroidSansMNerdFont-Regular.otf --output $HOME/.local/share/fonts/DroidSansMNerdFont-Regular.otf
+    curl -fL https://github.com/ryanoasis/nerd-fonts/raw/HEAD/patched-fonts/JetBrainsMono/Ligatures/Regular/JetBrainsMonoNerdFont-Regular.ttf --output $HOME/.local/share/fonts/JetBrainsMonoNerdFont-Regular.ttf
+    curl -fL https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/L/Regular/MesloLGLNerdFont-Regular.ttf --output $HOME/.local/share/fonts/MesloLGLNerdFont-Regular.ttf
+    curl -fL https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Ubuntu/Regular/UbuntuNerdFont-Regular.ttf --output $HOME/.local/share/fonts/UbuntuNerdFont-Regular.ttf
 fi
-
 
 echo "[ZSH] Current shell is $SHELL, choosing zsh default..." && chsh -s $(which zsh)
 [ ! -f $HOME/.zshrc ] && ln -s $DOTFILES_HOME/zshrc $HOME/.zshrc
@@ -103,3 +89,4 @@ echo "[ZSH] Current shell is $SHELL, choosing zsh default..." && chsh -s $(which
 [ ! -f $HOME/.gitignore_global ] && ln -s $DOTFILES_HOME/gitignore_global $HOME/.gitignore_global
 
 echo "Install ZSH plugin with: \`zplug install\`"
+
