@@ -1,4 +1,6 @@
-.PHONY: all base_packages git_config zsh_config asdf_config tmux_config
+.PHONY: all base_packages git_config zsh_config asdf_config tmux_config nvim
+
+all: base_packages git_config zsh_config asdf_config tmux_config nvim
 
 # Variaveis
 SHELL := /bin/bash
@@ -6,7 +8,6 @@ HOME := $(shell echo ~)
 XDG_CONFIG_HOME := $(shell echo ~)/.config
 DOTFILES_HOME := $(shell pwd)
 
-all: base_packages git_config zsh_config asdf_config tmux_config
 
 base_packages: .base_packages_installed
 	@echo "Pacotes base já estão instalados."
@@ -50,6 +51,7 @@ base_packages: .base_packages_installed
 			sudo apt-get update -qq;
 			sudo apt-get upgrade -qq -y;
 			sudo apt-get install -qq -y build-essential apt-transport-https curl git gnupg2 libffi-dev libpq-dev libreadline-dev lua5.3 neovim python3 python3-dev python3-pip tmux wget zsh stow ripgrep fd-find jq;
+
 			if ! command -v lazygit >/dev/null; then
 				echo "Instalando LazyGit manualmente...";
 				LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*');
@@ -58,6 +60,7 @@ base_packages: .base_packages_installed
 				sudo install /tmp/lazygit /usr/local/bin;
 				rm -f /tmp/lazygit.tar.gz /tmp/lazygit;
 			fi;
+
 		fi;
 	else
 		echo "Sistema operacional não suportado por esta regra.";
@@ -108,4 +111,16 @@ tmux_config: .tmux_configured
 	@mkdir -p $(XDG_CONFIG_HOME)/tmux/
 	@ln -sf $(DOTFILES_HOME)/tmux/tmux.conf $(XDG_CONFIG_HOME)/tmux/tmux.conf
 	@touch $@ # Cria o arquivo marcador para indicar que a instalação foi feita.
+
+nvim:
+	@echo "--> Configuring neovim"
+	@if [ ! -L "$(XDG_CONFIG_HOME)/nvim" ]; then \
+		echo "Creating symlink for neovim config"; \
+		ln -s "$(DOTFILES_DIR)/nvim" "$(XDG_CONFIG_DIR)/nvim"; \
+		else \
+		echo "neovim config symlink already exists"; \
+		fi
+	@echo "Installing/updating neovim plugins..."
+	# @nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+	@nvim --headless "+Lazy! sync" +qa
 
