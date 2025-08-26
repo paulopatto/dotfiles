@@ -1,6 +1,6 @@
 # Makefile
 
-.PHONY: all base_packages git_config
+.PHONY: all base_packages git_config zsh_config
 
 # Variaveis
 SHELL := /bin/bash
@@ -8,7 +8,7 @@ HOME := $(shell echo ~)
 XDG_CONFIG_HOME := $(shell echo ~)/.config
 DOTFILES_HOME := $(shell pwd)
 
-all: base_packages git_config
+all: base_packages git_config zsh_config
 
 base_packages: .base_packages_installed
 	@echo "Pacotes base já estão instalados."
@@ -80,4 +80,15 @@ git_config:
 		ln -sf $(DOTFILES_HOME)/gitconfig-linux $(HOME)/.gitconfig-ssh; \
 	fi
 	@echo "Configuração do Git concluída."
+
+zsh_config: .zplug_installed
+	@echo "Zplug já está instalado."
+
+zplug_installed:
+	@echo "Configurando Zsh e instalando Zplug..."
+	@if [ ! -d "$(XDG_CONFIG_HOME)/zsh/plugins/zplug" ]; then \
+					echo "Instalando Zplug..."; \
+					git clone https://github.com/zplug/zplug $(XDG_CONFIG_HOME)/zsh/plugins/zplug; \
+	fi
+	@touch $@
 
