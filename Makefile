@@ -1,4 +1,4 @@
-.PHONY: all base_packages git_config zsh_config asdf_config
+.PHONY: all base_packages git_config zsh_config asdf_config tmux_config
 
 # Variaveis
 SHELL := /bin/bash
@@ -6,7 +6,7 @@ HOME := $(shell echo ~)
 XDG_CONFIG_HOME := $(shell echo ~)/.config
 DOTFILES_HOME := $(shell pwd)
 
-all: base_packages git_config zsh_config asdf_config
+all: base_packages git_config zsh_config asdf_config tmux_config
 
 base_packages: .base_packages_installed
 	@echo "Pacotes base já estão instalados."
@@ -97,3 +97,14 @@ asdf_config:
 	@ln -sf $(DOTFILES_HOME)/default-golang-pkgs $(HOME)/.default-golang-pkgs
 	@echo "Configuração do ASDF concluída."
 
+tmux_config: .tmux_configured
+	@echo "Tmux já está configurado."
+	.tmux_configured:
+	@echo "Configurando Tmux..."
+	@if [ ! -d "$(XDG_CONFIG_HOME)/tmux/plugins/tpm" ]; then \
+	echo "Instalando Tmux Plugin Manager (TPM)..."; \
+	git clone https://github.com/tmux-plugins/tpm $(XDG_CONFIG_HOME)/tmux/plugins/tpm; \
+	fi
+	@mkdir -p $(XDG_CONFIG_HOME)/tmux/
+	@ln -sf $(DOTFILES_HOME)/tmux/tmux.conf $(XDG_CONFIG_HOME)/tmux/tmux.conf
+	@touch $@
