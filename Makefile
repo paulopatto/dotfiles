@@ -1,6 +1,4 @@
-# Makefile
-
-.PHONY: all base_packages git_config zsh_config
+.PHONY: all base_packages git_config zsh_config asdf_config
 
 # Variaveis
 SHELL := /bin/bash
@@ -8,7 +6,7 @@ HOME := $(shell echo ~)
 XDG_CONFIG_HOME := $(shell echo ~)/.config
 DOTFILES_HOME := $(shell pwd)
 
-all: base_packages git_config zsh_config
+all: base_packages git_config zsh_config asdf_config
 
 base_packages: .base_packages_installed
 	@echo "Pacotes base já estão instalados."
@@ -68,8 +66,6 @@ base_packages: .base_packages_installed
 	@echo "Instalação dos pacotes base concluída."
 	@touch $@ # Cria o arquivo marcador para indicar que a instalação foi feita.
 
-# Configura o Git criando symlinks para os arquivos de configuração.
-# A flag -f em ln -sf força a sobreescrita caso os links já existam.
 git_config:
 	@echo "Configurando o Git..."
 	@ln -sf $(DOTFILES_HOME)/gitconfig $(HOME)/.gitconfig
@@ -91,4 +87,13 @@ zplug_installed:
 					git clone https://github.com/zplug/zplug $(XDG_CONFIG_HOME)/zsh/plugins/zplug; \
 	fi
 	@touch $@
+
+asdf_config:
+	@echo "Configurando ASDF..."
+	@ln -sf $(DOTFILES_HOME)/asdfrc $(HOME)/.asdfrc
+	@ln -sf $(DOTFILES_HOME)/default-gems $(HOME)/.default-gems
+	@ln -sf $(DOTFILES_HOME)/default-npm-packages $(HOME)/.default-npm-packages
+	@ln -sf $(DOTFILES_HOME)/default-python-packages $(HOME)/.default-python-packages
+	@ln -sf $(DOTFILES_HOME)/default-golang-pkgs $(HOME)/.default-golang-pkgs
+	@echo "Configuração do ASDF concluída."
 
