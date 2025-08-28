@@ -35,20 +35,6 @@ return {
 			local jdtls = require("jdtls")
 			local on_attach = require("cmp_nvim_lsp").on_attach
 
-      -- Função para ler um arquivo JSON
-      --[[ local function read_json_file(file_path)
-        local file = io.open(file_path, "r")
-        if not file then
-          return nil
-        end
-        local content = file:read("*all")
-        file:close()
-        return vim.fn.json_decode(content)
-      end ]]
-
-      --[[ local jdtls_config_path = vim.fn.expand("$HOME/.config/nvim/jdtls-config.json")
-      local jdtls_settings = read_json_file(jdtls_config_path) ]]
-
       lspconfig.lua_ls.setup({
         capabilities = capabilities,
       })
@@ -109,6 +95,19 @@ return {
               referencesCodeLens = { enabled = true },
               references = { includeDecompiledSources = true },
               format = { enabled = true },
+            },
+
+            imports = {
+              gradle = {
+                wrapper = {
+                  checksums = {
+                    {
+                      sha256 = "76805e32c009c0cf0dd5d206bddc9fb22ea42e84db904b764f3047de095493f3",
+                      allowed = true,
+                    },
+                  },
+                },
+              },
             },
           },
         },
