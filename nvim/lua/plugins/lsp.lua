@@ -65,6 +65,13 @@ return {
                   path = java_path, -- Usa o caminho do JDK gerenciado pelo asdf
                 },
               },
+              eclipse = { downloadSources = true },
+              configuration = { updateBuildConfiguration = "interactive" },
+              maven = { downloadSources = true },
+              implementationsCodeLens = { enabled = true },
+              referencesCodeLens = { enabled = true },
+              references = { includeDecompiledSources = true },
+              format = { enabled = true },
             },
           },
         },
