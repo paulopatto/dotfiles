@@ -22,7 +22,6 @@ return {
         ensure_installed = {
           "jdtls",
           "kotlin_language_server",
-          "vscode-java-debug",
           "lua_ls",
           "pyright",
           "ruff",

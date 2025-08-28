@@ -17,6 +17,7 @@ return {
         ensure_installed = {
           "python",
           "debugpy",
+          "vscode-java-debug",
         },
       },
     },

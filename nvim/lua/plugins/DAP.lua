@@ -40,7 +40,7 @@ return {
           name = "Attach to Remote JVM",
           type = "java",
           request = "attach",
-          hostName = "localhost", -- Or 127.0.0.1
+          hostName = "127.0.0.1", -- Or localhost
           port = 5005,
         },
       }
