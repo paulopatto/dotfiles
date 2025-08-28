@@ -38,6 +38,9 @@ base_packages: .base_packages_installed
 		brew "lazygit"
 		brew "jq"
 		brew "stow"
+		brew "lazygit"
+		brew "lazydocker"
+		brew "xclip"
 		EOF;
 	elif [ "$(uname -s)" = "Linux" ]; then
 		if command -v dnf >/dev/null; then
@@ -45,20 +48,32 @@ base_packages: .base_packages_installed
 			sudo dnf upgrade -q -y;
 			sudo dnf groupinstall -y '@development-tools' '@development-libraries';
 			sudo dnf copr enable -y atim/lazygit;
-			sudo dnf install -q -y automake curl gcc gcc-c++ git kernel-devel libffi-devel libpq-devel lua make neovim nodejs python3 python3-devel python3-pip readline readline-devel tmux wget zsh ripgrep fd-find lazygit jq stow;
+			sudo dnf copr enable -y atim/lazydocker
+			sudo dnf install -q -y automake curl gcc gcc-c++ git kernel-devel libffi-devel libpq-devel lua make neovim nodejs python3 python3-devel python3-pip readline readline-devel tmux wget zsh ripgrep fd-find lazygit lazydocker jq stow xclip;
 		elif command -v apt >/dev/null; then
 			echo "Plataforma Ubuntu/Debian detectada. Instalando pacotes...";
 			sudo apt-get update -qq;
 			sudo apt-get upgrade -qq -y;
-			sudo apt-get install -qq -y build-essential apt-transport-https curl git gnupg2 libffi-dev libpq-dev libreadline-dev lua5.3 neovim python3 python3-dev python3-pip tmux wget zsh stow ripgrep fd-find jq;
+			sudo apt-get install -qq -y build-essential apt-transport-https curl git gnupg2 libffi-dev libpq-dev libreadline-dev lua5.3 neovim python3 python3-dev python3-pip tmux wget zsh stow ripgrep fd-find jq xclip;
 
 			if ! command -v lazygit >/dev/null; then
-				echo "Instalando LazyGit manualmente...";
+				echo "Instalando LazyGit dos fontes...";
 				LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*');
 				curl -Lo /tmp/lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz";
 				tar xf /tmp/lazygit.tar.gz -C /tmp lazygit;
 				sudo install /tmp/lazygit /usr/local/bin;
 				rm -f /tmp/lazygit.tar.gz /tmp/lazygit;
+			fi;
+
+			if ! command -v lazydocker >/dev/null; then
+				echo "Instalando LazyDocker dos fontes...";
+				curl -s https://api.github.com/repos/jesseduffield/lazydocker/releases/latest \
+					| grep browser_download_url \
+					| grep Linux_x86_64 \
+					| cut -d '"' -f 4 \
+					| wget -qi -
+					tar xf lazydocker_*_Linux_x86_64.tar.gz lazydocker
+					sudo install lazydocker /usr/local/bin
 			fi;
 
 		fi;
