@@ -1,6 +1,26 @@
+local js_based_languages = {
+  "typescript",
+  "javascript",
+  "typescriptreact",
+  "javascriptreact",
+  "vue",
+}
+
 return {
+  { "nvim-neotest/nvim-nio" },
+  {
+    "jay-babu/mason-nvim-dap.nvim",
+    config = function ()
+      require("mason-nvim-dap").setup({
+        automatic_installation = true,
+      })
+    end
+  },
   {
     "mfussenegger/nvim-dap",
+    dependencies = {
+      "jay-babu/mason-nvim-dap.nvim",
+    },
     config = function()
       local dap = require("dap")
 
