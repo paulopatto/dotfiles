@@ -128,7 +128,8 @@ function install_base_packages() {
       ripgrep \
       fd-find \
       lazygit \
-      jq
+      jq \
+      stow
   
     echo "[FEDORA]: Enabling snaps support"
     sudo dnf install snapd 
@@ -153,6 +154,7 @@ function install_base_packages() {
       tmux \
       wget \
       zsh \
+      stow \
       ripgrep \
       fd-find \
       jq
@@ -172,7 +174,7 @@ function install_base_packages() {
     fi
   elif [ $PLATFORM_OS = "MacOS" ]; then
     brew upgrade -y
-    brew install zsh coreutils curl git wget tmux neovim ripgrep fd lazygit jq
+    brew install zsh coreutils curl git wget tmux neovim ripgrep fd lazygit jq stow
   else
     echo -e "\033[1;31m❌  [ERRO] Unsupported platorm. \033[0m"
     return
