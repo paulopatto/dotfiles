@@ -1,14 +1,39 @@
 return {
-  {
-    "neovim/nvim-lspconfig",
-    dependencies = {
-      "mfussenegger/nvim-jdtls",
-    },
-    config = function()
-      local capabilities = require("cmp_nvim_lsp").default_capabilities()
-      local lspconfig = require("lspconfig")
-      local java_path = vim.fn.expand("~/.asdf/shims/java")
-      local jdtls = require("jdtls")
+	{
+		"williamboman/mason-lspconfig.nvim",
+		config = function()
+			require("mason-lspconfig").setup({
+				-- Availables LSP Servers
+				-- https://github.com/williamboman/mason-lspconfig.nvim?tab=readme-ov-file#available-lsp-servers
+				ensure_installed = {
+					"jdtls",
+					"kotlin_language_server",
+					"lua_ls",
+					"pyright",
+					"ruff",
+					"solargraph",
+					"tailwindcss",
+					"terraformls",
+					"ts_ls",
+				},
+			})
+		end,
+	},
+	{
+		"mfussenegger/nvim-jdtls",
+		ft = { "java" }, -- Carrega apenas para arquivos Java
+	},
+	{
+		"neovim/nvim-lspconfig",
+		dependencies = {
+			"mfussenegger/nvim-jdtls",
+		},
+		config = function()
+			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+			local lspconfig = require("lspconfig")
+			local java_path = vim.fn.expand("~/.asdf/shims/java")
+			local jdtls = require("jdtls")
+			local on_attach = require("cmp_nvim_lsp").on_attach
 
       lspconfig.lua_ls.setup({
         capabilities = capabilities,
