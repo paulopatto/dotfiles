@@ -1,15 +1,5 @@
 return {
 	{
-		"williamboman/mason.nvim",
-		config = function()
-			require("mason").setup({
-				ensure_installed = {
-					"debugpy",
-				},
-			})
-		end,
-	},
-	{
 		"williamboman/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
