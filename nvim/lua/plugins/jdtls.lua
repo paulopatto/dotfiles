@@ -4,4 +4,3 @@ return {
     ft = { "java" }, -- Carrega apenas para arquivos Java
   },
 }
-

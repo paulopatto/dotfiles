@@ -10,3 +10,6 @@ prettier
 pyright
 request
 ts-node
+typescript
+typescript-language-server
+
