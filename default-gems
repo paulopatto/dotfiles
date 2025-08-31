@@ -6,4 +6,5 @@ puma
 rails
 rspec
 rubocop
+ruby-lsp
 solargraph

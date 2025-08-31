@@ -1,136 +1,91 @@
 return {
-	{
-		"williamboman/mason-lspconfig.nvim",
-		config = function()
-			require("mason-lspconfig").setup({
-				-- Availables LSP Servers
-				-- https://github.com/williamboman/mason-lspconfig.nvim?tab=readme-ov-file#available-lsp-servers
-				ensure_installed = {
-					"jdtls",
-					"kotlin_language_server",
-					"lua_ls",
-					"pyright",
-					"ruff",
-					"solargraph",
-					"tailwindcss",
-					"terraformls",
-					"ts_ls",
-				},
-			})
-		end,
-	},
-	{
-		"mfussenegger/nvim-jdtls",
-		ft = { "java" }, -- Carrega apenas para arquivos Java
-	},
-	{
-		"neovim/nvim-lspconfig",
-		dependencies = {
-			"mfussenegger/nvim-jdtls",
-		},
-		config = function()
-			local capabilities = require("cmp_nvim_lsp").default_capabilities()
-			local lspconfig = require("lspconfig")
-			local java_path = vim.fn.expand("~/.asdf/shims/java")
-			local jdtls = require("jdtls")
-			local on_attach = require("cmp_nvim_lsp").on_attach
+  {
+    "williamboman/mason-lspconfig.nvim",
+    config = function()
+      require("mason-lspconfig").setup({
+        -- Availables LSP Servers
+        -- https://github.com/williamboman/mason-lspconfig.nvim?tab=readme-ov-file#available-lsp-servers
+        ensure_installed = {
+          "autopep8",
+          "jdtls",
+          "kotlin_language_server",
+          "lua_ls",
+          "pyright",
+          "ruby-lsp",
+          "ruff",
+          "solargrah",
+          "tailwindcss",
+          "terraformls",
+          "tsserver",
+        },
+      })
+    end,
+  },
+  {
+    "neovim/nvim-lspconfig",
+    dependencies = {
+      "mfussenegger/nvim-jdtls",
+    },
+    config = function()
+      local lspconfig = require("lspconfig")
+      local mason_lspconfig = require("mason-lspconfig")
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+      local on_attach = require("cmp_nvim_lsp").on_attach
 
-			lspconfig.lua_ls.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.ts_ls.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.pyright.setup({
-				capabilities = capabilities,
-				on_attach = on_attach,
-				filetypes = { "python" },
-			})
-			lspconfig.ruff.setup({
-				capabilities = capabilities,
-				on_attach = on_attach,
-				filetypes = { "python" },
-			})
-			lspconfig.kotlin_language_server.setup({
-				capabilities = capabilities,
-			})
-			lspconfig.jdtls.setup({
-				cmd = { "jdtls" },
-				root_dir = lspconfig.util.root_pattern("pom.xml", "build.gradle", ".git"), -- Define o diretório raiz do projector
-				settings = {
-					java = {
-						configuration = {
-							runtimes = {
-								{
-									name = "JavaSE-17",
-									path = java_path, -- Usa o caminho do JDK gerenciado pelo asdf
-								},
-							},
-						},
-					},
-				},
-			})
+      -- Setup language servers installed through Mason
+      local servers = mason_lspconfig.get_installed_servers()
+      for _, server_name in ipairs(servers) do
+        -- Exclude jdtls from the general setup, as it has a custom one
+        if server_name ~= "jdtls" then
+          lspconfig[server_name].setup({
+            on_attach = on_attach,
+            capabilities = capabilities,
+          })
+        end
+      end
 
-			jdtls.start_or_attach({
-				cmd = { vim.fn.expand("$HOME/.local/share/nvim/mason/bin/jdtls") }, -- Caminho do jdtls
-				root_dir = vim.fs.dirname(vim.fs.find({ "pom.xml", "build.gradle", ".git" }, { upward = true })[1]), -- Define o diretório raiz do projeto
-				settings = {
-					java = {
-						configuration = {
-							runtimes = {
-								{
-									name = "JavaSE-17",
-									path = java_path, -- Usa o caminho do JDK gerenciado pelo asdf
-								},
-							},
-						},
-					},
-				},
-			})
+      -- Custom setup for jdtls
+      local java_path = vim.fn.expand("~/.asdf/shims/java")
+      local jdtls = require("jdtls")
+      lspconfig.jdtls.setup({
+        cmd = { "jdtls" },
+        root_dir = lspconfig.util.root_pattern("pom.xml", "build.gradle", ".git"),
+        settings = {
+          java = {
+            configuration = {
+              runtimes = {
+                {
+                  name = "JavaSE-17",
+                  path = java_path,
+                },
+              },
+            },
+          },
+        },
+      })
+      jdtls.start_or_attach({
+        cmd = { vim.fn.expand("$HOME/.local/share/nvim/mason/bin/jdtls") },
+        root_dir = vim.fs.dirname(vim.fs.find({ "pom.xml", "build.gradle", ".git" }, { upward = true })[1]),
+      })
 
-			lspconfig.terraformls.setup({
-				capabilities = capabilities,
-			})
+      -- Global keymaps
+      vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
+      vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
+      vim.keymap.set("n", "gr", vim.lsp.buf.references, {})
+      vim.keymap.set("n", "gD", vim.lsp.buf.declaration, {})
+      vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, {})
+      vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
+      vim.keymap.set({ "n", "v" }, "<leader>oi", function()
+        vim.lsp.buf.code_action({ context = { only = { "source.organizeImports" } } })
+      end, { desc = "Organize Imports" })
 
-			-- Buffer local mappings.
-			-- See `:help vim.lsp.*` for documentation on any of the below functions
-			-- Read more: https://github.com/neovim/nvim-lspconfig?tab=readme-ov-file#suggested-configuration
-			vim.keymap.set("n", "K", vim.lsp.buf.hover, {}) -- Will open helper pop-up
-			vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
-			vim.keymap.set("n", "gr", vim.lsp.buf.references, {})
-			vim.keymap.set("n", "gD", vim.lsp.buf.declaration, {})
-			vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, {})
-			vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
-
-			-- Format on save
-			vim.api.nvim_create_autocmd("BufWritePre", {
-				group = vim.api.nvim_create_augroup("Format", { clear = true }),
-				callback = function()
-					vim.lsp.buf.format()
-				end,
-			})
-
-			-- Add blankline at EOF on save
-			vim.api.nvim_create_autocmd("BufWritePre", {
-				group = vim.api.nvim_create_augroup("AddBlankLine", { clear = true }),
-				callback = function()
-					local last_line = vim.api.nvim_buf_line_count(0)
-					local last_line_content = vim.api.nvim_buf_get_lines(0, last_line - 1, last_line, false)[1]
-					if last_line_content ~= "" then
-						vim.api.nvim_buf_set_lines(0, last_line, last_line, false, { "" })
-					end
-				end,
-			})
-
-			-- Organize import
-			vim.keymap.set({ "n", "v" }, "<leader>oi", function()
-				vim.lsp.buf.code_action({
-					context = {
-						only = { "source.organizeImports" },
-					},
-				})
-			end)
-		end,
-	},
+      -- Format on save
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        group = vim.api.nvim_create_augroup("LspFormatOnSave", { clear = true }),
+        callback = function(args)
+          vim.lsp.buf.format({ bufnr = args.buf })
+        end,
+      })
+    end,
+  },
 }
-
