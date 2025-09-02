@@ -1,30 +1,11 @@
 return {
   {
-    "williamboman/mason-lspconfig.nvim",
-    config = function()
-      require("mason-lspconfig").setup({
-        -- Availables LSP Servers
-        -- https://github.com/williamboman/mason-lspconfig.nvim?tab=readme-ov-file#available-lsp-servers
-        ensure_installed = {
-          "autopep8",
-          "jdtls",
-          "kotlin_language_server",
-          "lua_ls",
-          "pyright",
-          "ruby-lsp",
-          "ruff",
-          "solargrah",
-          "tailwindcss",
-          "terraformls",
-          "tsserver",
-        },
-      })
-    end,
-  },
-  {
     "neovim/nvim-lspconfig",
     dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/nvim-cmp",
       "mfussenegger/nvim-jdtls",
+      "williamboman/mason-lspconfig.nvim",
     },
     config = function()
       local lspconfig = require("lspconfig")
