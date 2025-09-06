@@ -41,6 +41,7 @@ base_packages: .base_packages_installed
 		brew "lazygit"
 		brew "lazydocker"
 		brew "xclip"
+		brew "editorconfig-checker"
 		EOF;
 	elif [ "$(uname -s)" = "Linux" ]; then
 		if command -v dnf >/dev/null; then
@@ -49,12 +50,12 @@ base_packages: .base_packages_installed
 			sudo dnf groupinstall -y '@development-tools' '@development-libraries';
 			sudo dnf copr enable -y atim/lazygit;
 			sudo dnf copr enable -y atim/lazydocker
-			sudo dnf install -q -y automake curl gcc gcc-c++ git kernel-devel libffi-devel libpq-devel lua make neovim nodejs python3 python3-devel python3-pip readline readline-devel tmux wget zsh ripgrep fd-find lazygit lazydocker jq stow xclip;
+			sudo dnf install -q -y automake curl gcc gcc-c++ git kernel-devel libffi-devel libpq-devel editorconfig-checker lua make neovim nodejs python3 python3-devel python3-pip readline readline-devel tmux wget zsh ripgrep fd-find lazygit lazydocker jq stow xclip;
 		elif command -v apt >/dev/null; then
 			echo "Plataforma Ubuntu/Debian detectada. Instalando pacotes...";
 			sudo apt-get update -qq;
 			sudo apt-get upgrade -qq -y;
-			sudo apt-get install -qq -y build-essential apt-transport-https curl git gnupg2 libffi-dev libpq-dev libreadline-dev lua5.3 neovim python3 python3-dev python3-pip tmux wget zsh stow ripgrep fd-find jq xclip;
+			sudo apt-get install -qq -y build-essential apt-transport-https curl git gnupg2 libffi-dev libpq-dev libreadline-dev editorconfig-checker lua5.3 neovim python3 python3-dev python3-pip tmux wget zsh stow ripgrep fd-find jq xclip;
 
 			if ! command -v lazygit >/dev/null; then
 				echo "Instalando LazyGit dos fontes...";
