@@ -7,4 +7,4 @@ ruff
 ruff-lsp
 virtualenv
 pipx
-poetry
+uv
