@@ -3,6 +3,7 @@ return {
   dependencies = {
     "Kaiser-Yang/blink-cmp-avante",
     "rafamadriz/friendly-snippets",
+    "onsails/lspkind.nvim",
   },
   ---@module 'blink.cmp'
   ---@type blink.cmp.Config
@@ -27,7 +28,7 @@ return {
 
       -- Default list of enabled providers defined so that you can extend it
       -- elsewhere in your config, without redefining it, due to `opts_extend`
-      default = { "lsp", "avante", "path", "snippets", "buffer" },
+      default = { "avante", "lsp", "path", "snippets", "buffer" },
 
       providers = {
         avante = {
@@ -35,6 +36,43 @@ return {
           name = "Avante",
           opts = {
             -- options for blink-cmp-avante
+            provider = "google",
+            enable_ghost_text = true,
+            -- api_key = vim.fn.expand("$GOOGLE_API_KEY"),
+            api_key = vim.fn.expand("$GEMINI_API_KEY"),
+            model = "gemini-1.5-flash", -- Using the latest Flash model
+          },
+        },
+        snippets = {
+          preset = "luasnip",
+        },
+      },
+    },
+    menu = {
+      draw = {
+        columns = {
+          { "kind_icon", "label", gap = 1 },
+          { "kind" },
+        },
+        components = {
+          kind_icon = {
+            text = function(item)
+              local kind = require("lspkind").symbol_map[item.kind] or ""
+              return kind .. " "
+            end,
+            highlight = "CmpItemKind",
+          },
+          label = {
+            text = function(item)
+              return item.label
+            end,
+            highlight = "CmpItemAbbr",
+          },
+          kind = {
+            text = function(item)
+              return item.kind
+            end,
+            highlight = "CmpItemKind",
           },
         },
       },
