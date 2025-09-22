@@ -3,6 +3,44 @@ return {
   event = "InsertEnter",
   lazy = false,
   version = "*", -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
+  -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+  build = "make",
+  -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
+  dependencies = {
+    "MunifTanjim/nui.nvim",
+    "nvim-lua/plenary.nvim",
+    "stevearc/dressing.nvim",
+    --- The below dependencies are optional,
+    "echasnovski/mini.pick",         -- for file_selector provider mini.pick
+    "ibhagwan/fzf-lua",              -- for file_selector provider fzf
+    "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+    "nvim-tree/nvim-web-devicons",   -- or echasnovski/mini.icons
+    {
+      -- support for image pasting
+      "HakonHarnes/img-clip.nvim",
+      event = "VeryLazy",
+      opts = {
+        -- recommended settings
+        default = {
+          embed_image_as_base64 = false,
+          prompt_for_file_name = false,
+          drag_and_drop = {
+            insert_mode = true,
+          },
+          -- required for Windows users
+          use_absolute_path = true,
+        },
+      },
+    },
+    {
+      -- Make sure to set this up properly if you have lazy=true
+      "MeanderingProgrammer/render-markdown.nvim",
+      opts = {
+        file_types = { "markdown", "Avante" },
+      },
+      ft = { "markdown", "Avante" },
+    },
+  },
   opts = {
     ---@alias Provider "claude" | "openai" | "azure" | "gemini" | "cohere" | "copilot" | string
     -- add any opts here
@@ -15,22 +53,14 @@ return {
         extra_request_body = {
           temperature = 0,
           max_tokens = 4096,
-        }
-      },
-      claude = {
-        endpoint = "https://api.anthropic.com",
-        model = "claude-3-5-sonnet-20241022",
-        extra_request_body = {
-          temperature = 0,
-          max_tokens = 4096,
-        }
+        },
       },
       gemini = {
         endpoint = "https://generativelanguage.googleapis.com/v1beta/models", -- Endpoint da API do Gemini
         -- @see https://ai.google.dev/gemini-api/docs/models/gemini
         model = "gemini-2.5-pro",                                             -- Modelo do Gemini (ex: "gemini-pro" ou "gemini-ultra")
         temperature = 0,                                                      -- Controla a criatividade (0 para respostas mais determinísticas)
-        max_tokens = 4096,                                                    -- Número máximo de tokens na resposta
+        max_tokens = 8192,                                                    -- Número máximo de tokens na resposta
       },
     },
 
@@ -52,7 +82,7 @@ return {
     dual_boost = {
       enabled = true,
       first_provider = "gemini",
-      seond_provider = "openai",
+      second_provider = "openai",
       prompt =
       "Based on the two reference outputs below, generate a response that incorporates elements from both but reflects your own judgment and unique perspective. Do not provide any explanation, just give the response directly. Reference Output 1: [{{provider1_output}}], Reference Output 2: [{{provider2_output}}]",
       timeout = 60000, -- Timeout in milliseconds
@@ -100,46 +130,6 @@ return {
         switch_windows = "<Tab>",
         reverse_switch_windows = "<S-Tab>",
       },
-    },
-  },
-  -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-  build = "make",
-  -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
-  dependencies = {
-    "stevearc/dressing.nvim",
-    "nvim-lua/plenary.nvim",
-    "MunifTanjim/nui.nvim",
-    --- The below dependencies are optional,
-    "echasnovski/mini.pick",         -- for file_selector provider mini.pick
-    "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
-    "hrsh7th/nvim-cmp",              -- autocompletion for avante commands and mentions
-    "ibhagwan/fzf-lua",              -- for file_selector provider fzf
-    "nvim-tree/nvim-web-devicons",   -- or echasnovski/mini.icons
-    "zbirenbaum/copilot.lua",        -- for providers='copilot'
-    {
-      -- support for image pasting
-      "HakonHarnes/img-clip.nvim",
-      event = "VeryLazy",
-      opts = {
-        -- recommended settings
-        default = {
-          embed_image_as_base64 = false,
-          prompt_for_file_name = false,
-          drag_and_drop = {
-            insert_mode = true,
-          },
-          -- required for Windows users
-          use_absolute_path = true,
-        },
-      },
-    },
-    {
-      -- Make sure to set this up properly if you have lazy=true
-      "MeanderingProgrammer/render-markdown.nvim",
-      opts = {
-        file_types = { "markdown", "Avante" },
-      },
-      ft = { "markdown", "Avante" },
     },
   },
 }
