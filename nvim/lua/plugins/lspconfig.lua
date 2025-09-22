@@ -2,16 +2,18 @@ return {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/nvim-cmp",
       "mfussenegger/nvim-jdtls",
       "williamboman/mason-lspconfig.nvim",
+      "williamboman/mason.nvim",
     },
     config = function()
       local lspconfig = require("lspconfig")
       local mason_lspconfig = require("mason-lspconfig")
-      local capabilities = require("cmp_nvim_lsp").default_capabilities()
-      local on_attach = require("cmp_nvim_lsp").on_attach
+      local on_attach = function(client, bufnr)
+        -- Enable completion triggered by <c-x><c-o>
+        vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+      end
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
 
       -- Setup language servers installed through Mason
       local servers = mason_lspconfig.get_installed_servers()
