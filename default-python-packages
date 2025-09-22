@@ -6,4 +6,5 @@ requests
 ruff
 ruff-lsp
 virtualenv
-
+pipx
+uv
