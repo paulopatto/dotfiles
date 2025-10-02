@@ -1,3 +1,6 @@
 [submodule "tmux/plugins/tpm"]
 	path = tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
+[submodule "tests/bats-core"]
+	path = tests/bats-core
+	url = https://github.com/bats-core/bats-core.git
