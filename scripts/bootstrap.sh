@@ -53,7 +53,8 @@ install_fedora_packages() {
     sudo dnf copr enable -y atim/lazydocker
     sudo dnf groupinstall -y '@development-tools' '@development-libraries'
     sudo dnf install -q -y util-linux-user
-    sudo dnf install -q -y  git kernel-devel libffi-devel libpq-devel editorconfig-checker lua make neovim nodejs python3 python3-devel python3-pip readline readline-devel tmux wget zsh ripgrep fd-find lazygit lazydocker jq stow xclip
+    sudo dnf install -q -y  git kernel-devel libffi-devel libpq-devel editorconfig-checker lua make nodejs python3 python3-devel python3-pip readline readline-devel tmux wget  xclip
+    sudo dnf install -y ripgrep zsh  fd-find lazygit lazydocker jq stow neovim tmux
 
     if command -v fd >/dev/null; then
       echo "✔️  fd já instalado"
