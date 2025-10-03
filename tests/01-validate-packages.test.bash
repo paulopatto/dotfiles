@@ -26,8 +26,8 @@ load test_helper
     [ "$status" -eq 0 ]
 }
 
-@test "it nvim be present" {
-    run command -v nvim
+@test "it neovim be present" {
+    run command -v neovim
     [ "$status" -eq 0 ]
 }
 

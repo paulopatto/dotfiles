@@ -45,11 +45,27 @@ install_fedora_packages() {
     echo "🐧 Plataforma Fedora detectada. "
     echo "📦 Instalando pacotes..."
     sudo dnf upgrade -q -y
-    sudo dnf groupinstall -y '@development-tools' '@development-libraries'
     sudo dnf copr enable -y atim/lazygit
     sudo dnf copr enable -y atim/lazydocker
-    sudo dnf install -q -y automake curl gcc gcc-c++ git kernel-devel libffi-devel libpq-devel editorconfig-checker lua make neovim nodejs python3 python3-devel python3-pip readline readline-devel tmux wget zsh ripgrep fd-find lazygit lazydocker jq stow xclip
-    sudo dnf install -y stow
+    sudo dnf groupinstall -y '@development-tools' '@development-libraries'
+    sudo dnf install -q -y  git kernel-devel libffi-devel libpq-devel editorconfig-checker lua make neovim nodejs python3 python3-devel python3-pip readline readline-devel tmux wget zsh ripgrep fd-find lazygit lazydocker jq stow xclip
+
+    if command -v fd >/dev/null; then
+      echo "✔️  fd já instalado"
+    else
+      echo "Criando link simbólico para fd-find como fd (hack)"
+      #sudo ln -s $(which fdfind) /usr/local/bin/fd
+    fi
+
+    if command -v stow >/dev/null; then
+      echo "✔️  Stow já instalado"
+    else
+      echo "☠️ Stow não instalado."
+      echo "Instalando Stow isoladamente..."
+      sudo dnf install -y stow
+    fi
+
+
 }
 
 # Função para instalar pacotes no Debian/Ubuntu.
@@ -117,9 +133,26 @@ run_bootstrap() {
         exit 1
     fi
     echo "🏆 Instalação dos pacotes base concluída."
+    change_shell_to_zsh
     ensure_zplug_installed
     ensure_tmux_tpm_installed
     echo "🎉 Bootstrap concluído com sucesso!"
+}
+
+function change_shell_to_zsh() {
+  if command -v zsh >/dev/null 2>&1; then
+    echo "✔️  Zsh já instalado."
+    if [ "$SHELL" != "$(which zsh)" ]; then
+      echo "🔄 Alterando shell padrão para zsh..."
+      chsh -s "$(which zsh)"
+      echo "✔️  Shell padrão alterado para zsh. Por favor, reinicie o terminal."
+    else
+      echo "✔️  Shell padrão já é zsh."
+    fi
+  else
+    echo "☠️ Zsh não está instalado. Por favor, instale o zsh e execute este script novamente."
+    exit 1
+  fi
 }
 
 function ensure_zplug_installed() {
