@@ -19,6 +19,10 @@ install_macos_packages() {
         echo "Homebrew já instalado."
     fi
 
+    echo "⚠️ Para manter compatibilidade entre Mac e Linux e vez de usar o pbcopy, use o xclip"
+    echo "alias pbcopy='xclip -selection clipboard -i' >> ~/.zshrc"
+    echo "alias pbpaste='xclip -selection clipboard -o' >> ~/.zshrc"
+
     echo "📦 Instalando pacotes via Brew..."
     brew bundle --file=- <<EOF
     brew "git"
@@ -38,11 +42,6 @@ install_macos_packages() {
     brew "editorconfig-checker"
     brew "zplug"
 EOF
-
-echo "⚠️ Para manter compatibilidade entre Mac e Linux e vez de usar o pbcopy, use o xclip"
-echo "alias pbcopy='xclip -selection clipboard -i' >> ~/.zshrc"
-echo "alias pbpaste='xclip -selection clipboard -o' >> ~/.zshrc"
-
 }
 
 # Função para instalar pacotes no Fedora.
@@ -136,9 +135,10 @@ install_debian_packages() {
   if command -v stow >/dev/null; then
     echo "✔️  Stow já instalado"
   else
-    echo "☠️ Stow não instalado."
-    echo "Instalando Stow..."
-    sudo apt install -y stow
+    echo "☠️ Stow não instalado e já deveria estar disponível"
+    echo "Tentando instalar novamente Stow..."
+    sudo apt-get install -y stow
+    stow --version
   fi
 }
 
