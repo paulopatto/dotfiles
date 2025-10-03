@@ -31,9 +31,6 @@ jobs:
       - name: Set TERM environment variable
         run: export TERM='xterm-256color'
 
-      - name: Verify bats installation
-        run: bats --version
-
       - name: Add bats to PATH
         run: echo "$(npm bin)" >> $GITHUB_PATH
 
