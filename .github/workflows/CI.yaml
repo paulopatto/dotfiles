@@ -32,6 +32,9 @@ jobs:
       - name: Install bats and helpers
         run: npm ci
 
+      - name: Run install script (bootstrap)
+        run: make bootstrap
+
       - name: Add bats to PATH
         run: echo "$(npm bin)" >> $GITHUB_PATH
 
