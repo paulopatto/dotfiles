@@ -1,0 +1,43 @@
+name: Bats Tests
+
+on:
+  push:
+    paths:
+      - '**.bash'
+      - '**.sh'
+      - '**.zsh'
+      - 'tests/**'
+      - '.github/workflows/bats.yml'
+      - 'package.json'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '**.bash'
+      - '**.sh'
+      - '**.zsh'
+      - 'tests/**'
+      - '.github/workflows/bats.yml'
+      - 'package.json'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install bats and helpers
+        run: npm ci
+
+      - name: Add bats to PATH
+        run: echo "$(npm bin)" >> $GITHUB_PATH
+
+      - name: Run bats tests
+        run: npm test

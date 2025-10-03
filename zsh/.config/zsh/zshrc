@@ -33,12 +33,14 @@ export PATH=$PATH:$HOME/.local/bin:$HOME/.local/share/nvim/mason/bin
 ############################################
 export ASDF_HOME=$XDG_CONFIG_HOME/asdf
 export ASDF_DIR=$ASDF_HOME
+export ASDF_CONFIG_FILE=$ASDF_HOME/.asdfrc
 
 ############################################
 ########          GIT
 ############################################
-export GITCONFIG=$HOME/.gitconfig
-export GITIGNORE=$HOME/.gitignore_global
+export GIT_HOME=$XDG_CONFIG_HOME/git
+export GITCONFIG=$GIT_HOME/.gitconfig
+export GITIGNORE=$GIT_HOME/.gitignore_global
 
 ############################################
 ########          ALIASES
@@ -99,29 +101,29 @@ HISTFILE=~/.zsh_history
 ## Define os-platorm
 ########################
 export PLATFORM_ARCH="$(uname -s)" # Linux | Darwin | ...
-export MACHINE_ARCH="$(uname -p)" # arm | AMD_64 | x86-64 
+export MACHINE_ARCH="$(uname -p)" # arm | AMD_64 | x86-64
 
 start_time=`date +%s`
 
-case $PLATFORM_ARCH in 
-  Linux)
-    if command -v dnf > /dev/null; then
-      export PLATFORM_OS="Fedora";
-    elif command -v apt > /dev/null; then
-      export PLATFORM_OS="Ubuntu";
-    else
-      echo "Unsupported linux distro $(uname -a)"
-    fi
-    ;;
-  Darwin)
-    export PLATFORM_OS="MacOS";
-    ;;
-  *)
-    echo "Invalid option $PLATFORM_ARCH"
-esac
+# case $PLATFORM_ARCH in
+#   Linux)
+#     if command -v dnf > /dev/null; then
+#       export PLATFORM_OS="Fedora";
+#     elif command -v apt > /dev/null; then
+#       export PLATFORM_OS="Ubuntu";
+#     else
+#       echo "Unsupported linux distro $(uname -a)"
+#     fi
+#     ;;
+#   Darwin)
+#     export PLATFORM_OS="MacOS";
+#     ;;
+#   *)
+#     echo "Invalid option $PLATFORM_ARCH"
+# esac
 
 export ZPLUG_HOME=$XDG_CONFIG_HOME/zsh/plugins/zplug
-if [ -f $ZPLUG_HOME/init.zsh ]; then 
+if [ -f $ZPLUG_HOME/init.zsh ]; then
   source $ZPLUG_HOME/init.zsh
 
   # General ZSH Plugins
@@ -153,7 +155,7 @@ if [ -f $ZPLUG_HOME/init.zsh ]; then
   zplug "lib/clipboard",                          from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
   zplug "plugins/osx",                            from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
 
-  
+
   # Theme
   zplug "themes/agnoster",                        from:oh-my-zsh, as:theme
   zplug "themes/robbyrussell",                    from:oh-my-zsh, as:theme
@@ -206,10 +208,8 @@ fi
 
 # Carregar arquivos .env.zsh da pasta $HOME/.config/zsh/envs
 if [ -d "$HOME/.config/zsh/envs" ]; then
-  for env_file in $HOME/.config/zsh/envs/*.env.zsh; do
-    if [ -f "$env_file" ]; then
-      source "$env_file"
-    fi
+  for env_file in $HOME/.config/zsh/envs/*.env.zsh(N); do
+    source "$env_file"
   done
 fi
 
