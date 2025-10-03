@@ -1,0 +1,4 @@
+--target=~/
+--dotfiles
+--restow
+--verbose

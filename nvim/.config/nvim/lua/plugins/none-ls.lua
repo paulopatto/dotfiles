@@ -11,6 +11,9 @@ return {
         require("none-ls.code_actions.eslint"),
         require("none-ls.diagnostics.eslint_d"),
 
+        -- EditorConfig Checker
+        null_ls.builtins.diagnostics.editorconfig_checker,
+
         -- Habilitar Flake8 configurado para usar as regras do projeto
         require("none-ls.diagnostics.flake8").with({
           cwd = function(params)
@@ -54,7 +57,7 @@ return {
 
         null_ls.builtins.formatting.shfmt.with({ args = { "-i", "4" } }),
         null_ls.builtins.formatting.prettier.with({
-          filetypes = { "json", "yaml", "markdown", "typescript", "javascript" },
+          filetypes = { "json", "yaml", "markdown", "typescript", "javascript", "editorconfig" },
         }),
       },
     })
@@ -68,6 +71,7 @@ return {
       automatic_installation = true,
     })
 
+    -- Mapeamento para formatar o buffer atual usando o LSP (incluindo formatadores do none-ls)
     vim.keymap.set("n", "<leader>fm", vim.lsp.buf.format, {})
   end,
 }
