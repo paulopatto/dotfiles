@@ -98,7 +98,7 @@ install_fedora_packages() {
 
 }
 
-function install_lazydocker_from_source() {
+function install_lazygit_from_source() {
   echo "+----------------------------------------------------------+"
   echo "|           🐙 Instalando LazyGit dos fontes...            |"
   echo "|           https://github.com/jesseduffield/lazygit       |"
@@ -143,10 +143,9 @@ install_debian_packages() {
   echo "🌀 Plataforma Ubuntu/Debian detectada."
   echo "📦 Instalando pacotes..."
   sudo apt-get update -qq
-  sudo apt-get install -qq -y build-essential apt-transport-https curl git gnupg2 libffi-dev libpq-dev libreadline-dev editorconfig-checker lua5.3 python3 python3-dev python3-pip tmux wget xclip
-  sudo apt-get install -y neovim stow zsh stow ripgrep fd-find jq tmux
+  sudo apt-get install -y build-essential apt-transport-https curl git gnupg2 libffi-dev libpq-dev libreadline-dev lua5.3 python3 python3-dev python3-pip tmux wget xclip neovim stow zsh stow ripgrep fd-find jq tmux
   if ! command -v lazygit >/dev/null; then
-    install_lazydocker_from_source
+    install_lazygit_from_source
   fi
 
   if ! command -v lazydocker >/dev/null; then
