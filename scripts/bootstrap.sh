@@ -66,7 +66,7 @@ install_fedora_packages() {
     if command -v stow >/dev/null; then
       echo "✔️  Stow já instalado"
     else
-      echo "☠️ Stow não instalado."
+      echo "😢 Stow não instalado."
       echo "Instalando Stow isoladamente..."
       sudo dnf install -y stow
     fi
@@ -129,6 +129,7 @@ install_debian_packages() {
   fi
 
   if ! command -v fd >/dev/null; then
+    sudo apt install -y fd-find
     echo "Criando link simbólico para fd-find como fd (hack)"
     sudo ln -s $(which fdfind) /usr/local/bin/fd
   fi
