@@ -49,6 +49,7 @@ install_fedora_packages() {
     sudo dnf copr enable -y atim/lazygit
     sudo dnf copr enable -y atim/lazydocker
     sudo dnf install -q -y automake curl gcc gcc-c++ git kernel-devel libffi-devel libpq-devel editorconfig-checker lua make neovim nodejs python3 python3-devel python3-pip readline readline-devel tmux wget zsh ripgrep fd-find lazygit lazydocker jq stow xclip
+    sudo dnf install -y stow
 }
 
 # Função para instalar pacotes no Debian/Ubuntu.
@@ -80,7 +81,7 @@ install_debian_packages() {
   fi
 
   if ! command -v fd >/dev/null; then
-    echo "🔍 Criando link simbólico para fd-find como fd (hack)"
+    echo "Criando link simbólico para fd-find como fd (hack)"
     sudo ln -s $(which fdfind) /usr/local/bin/fd
   fi
 
@@ -99,7 +100,7 @@ run_bootstrap() {
 
     create_initial_dirs
 
-    echo "📦 Verificando e instalando pacotes base..."
+    echo "🔍  Verificando e instalando pacotes base..."
     if [[ "$(uname -s)" == "Darwin" ]]; then
         install_macos_packages
     elif [[ "$(uname -s)" == "Linux" ]]; then
