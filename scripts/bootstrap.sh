@@ -58,8 +58,10 @@ install_fedora_packages() {
     if command -v fd >/dev/null; then
       echo "✔️  fd já instalado"
     else
+      sudo dnf install -y fd-find
       echo "Criando link simbólico para fd-find como fd (hack)"
       #sudo ln -s $(which fdfind) /usr/local/bin/fd
+      fd --version
     fi
 
     if command -v stow >/dev/null; then
@@ -71,6 +73,18 @@ install_fedora_packages() {
       stow --version
       echo "✔️  Stow instalado com sucesso."
     fi
+
+    if command -v jq >/dev/null; then
+      echo "✔️  jq já instalado"
+    else
+      echo "😢 jq não instalado."
+      echo "Instalando jq isoladamente..."
+      sudo dnf install -y jq
+      jq --version
+      echo "✔️  jq instalado com sucesso."
+    fi
+
+
 }
 
 function install_lazydocker_from_source() {
