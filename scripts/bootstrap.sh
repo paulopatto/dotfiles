@@ -84,6 +84,16 @@ install_fedora_packages() {
       echo "✔️  jq instalado com sucesso."
     fi
 
+    if command -v zsh >/dev/null; then
+      echo "✔️  zsh já instalado"
+    else
+      echo "😢 zsh não instalado."
+      echo "Instalando zsh isoladamente..."
+      sudo dnf install -y zsh
+      zsh --version
+      echo "✔️  zsh instalado com sucesso."
+    fi
+
 
 }
 
