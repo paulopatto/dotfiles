@@ -104,15 +104,16 @@ function install_lazygit_from_source() {
   echo "|           https://github.com/jesseduffield/lazygit       |"
   echo "+----------------------------------------------------------+"
 
-  LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"].*')
-  curl -Lo /tmp/lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
-  tar xf /tmp/lazygit.tar.gz -C /tmp/lazygit
-  sudo install /tmp/lazygit /usr/local/bin
-  echo "🧹 Cleaning up..."
-  rm -f /tmp/lazygit.tar.gz /tmp/lazygit
+  LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')
+  curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+  tar xf lazygit.tar.gz lazygit
+  sudo install lazygit -D -t /usr/local/bin/
+
+  echo "🧹 Cleaning up..." && rm -rf lazygit.tar.gz
 
   if command -v lazygit >/dev/null; then
     echo "✔️  LazyGit instalado com sucesso."
+    lazygit --version
   else
     echo "😢 Falha ao instalar o LazyGit."
   fi
