@@ -83,6 +83,14 @@ install_debian_packages() {
     echo "🔍 Criando link simbólico para fd-find como fd (hack)"
     sudo ln -s $(which fdfind) /usr/local/bin/fd
   fi
+
+  if command -v stow >/dev/null; then
+    echo "✔️  Stow já instalado"
+  else
+    echo "☠️ Stow não instalado."
+    echo "Instalando Stow..."
+    sudo apt install -y stow
+  fi
 }
 
 # Função principal que orquestra o bootstrap.
