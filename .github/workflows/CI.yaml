@@ -1,4 +1,4 @@
-name: Bats Tests
+name: CI
 
 on:
   pull_request:
@@ -25,14 +25,18 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Setup Bats and bats libs
+        id: setup-bats
+        uses: bats-core/bats-action@3.0.0
+
       - name: Install bats and helpers
         run: npm ci
-
-      - name: Set TERM environment variable
-        run: export TERM='xterm-256color'
 
       - name: Add bats to PATH
         run: echo "$(npm bin)" >> $GITHUB_PATH
 
       - name: Run bats tests
+        shell: bash
+        env:
+          TERM: xterm # Set TERM to a value that supports colors
         run: npm test
