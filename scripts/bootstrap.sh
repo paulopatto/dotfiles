@@ -68,6 +68,8 @@ install_fedora_packages() {
       echo "😢 Stow não instalado."
       echo "Instalando Stow isoladamente..."
       sudo dnf install -y stow
+      stow --version
+      echo "✔️  Stow instalado com sucesso."
     fi
 }
 
