@@ -60,10 +60,9 @@ jobs:
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Setup nodejs on fedora container
+      - name: Setup build essentials on fedora container
         run: |
-          dnf install -y nodejs
-          node --version
+          dnf install -y nodejs  @c-development @development-tools
 
       - name: Install bats and helpers
         run: npm ci
