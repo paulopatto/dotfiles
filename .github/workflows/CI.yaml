@@ -49,28 +49,28 @@ jobs:
           TERM: xterm # Set TERM to a value that supports colors
         run: npm test
 
-    test-on-fedora-via-docker:
-      runs-on: ubuntu-latest
-      container:
-        image: fedora:latest
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@v4
+  test-on-fedora-via-docker:
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-        - name: Setup Docker Buildx
-          uses: docker/setup-buildx-action@v2
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-        - name: Setup nodejs on fedora container
-          run: |
-            dnf install -y nodejs
-            node --version
+      - name: Setup nodejs on fedora container
+        run: |
+          dnf install -y nodejs
+          node --version
 
-        - name: Run tests in Fedora container
-          run: |
-            docker run --rm -v $PWD:/workspace -w /workspace fedora:latest bash -c "
-              dnf install -y nodejs &&
-              npm ci &&
-              echo "$(npm bin)" >> $GITHUB_PATH &&
-              make bootstrap &&
-              TERM=xterm npm test
-            "
+      - name: Run tests in Fedora container
+        run: |
+          docker run --rm -v $PWD:/workspace -w /workspace fedora:latest bash -c "
+            dnf install -y nodejs &&
+            npm ci &&
+            echo "$(npm bin)" >> $GITHUB_PATH &&
+            make bootstrap &&
+            TERM=xterm npm test
+          "
