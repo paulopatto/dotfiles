@@ -11,6 +11,11 @@ load test_helper
     [ "$status" -eq 0 ]
 }
 
+@test "it ripgrep (rg) be present" {
+    run command -v rg
+    [ "$status" -eq 0 ]
+}
+
 @test "it git be present" {
     run command -v git
     [ "$status" -eq 0 ]
@@ -26,8 +31,8 @@ load test_helper
     [ "$status" -eq 0 ]
 }
 
-@test "it neovim be present" {
-    run command -v neovim
+@test "it neovim (nvim) be present" {
+    run command -v nvim
     [ "$status" -eq 0 ]
 }
 
