@@ -65,12 +65,27 @@ jobs:
           dnf install -y nodejs
           node --version
 
-      - name: Run tests in Fedora container
-        run: |
-          docker run --rm -v $PWD:/workspace -w /workspace fedora:latest bash -c "
-            dnf install -y nodejs &&
-            npm ci &&
-            echo "$(npm bin)" >> $GITHUB_PATH &&
-            make bootstrap &&
-            TERM=xterm npm test
-          "
+      - name: Install bats and helpers
+        run: npm ci
+
+      - name: Run install script (bootstrap)
+        run: make bootstrap
+
+      - name: Add bats to PATH
+        run: echo "$(npm bin)" >> $GITHUB_PATH
+
+      - name: Run bats tests
+        shell: bash
+        env:
+          TERM: xterm # Set TERM to a value that supports colors
+        run: npm test
+
+      # - name: Run tests in Fedora container
+      #   run: |
+      #     docker run --rm -v $PWD:/workspace -w /workspace fedora:latest bash -c "
+      #       dnf install -y nodejs &&
+      #       npm ci &&
+      #       echo "$(npm bin)" >> $GITHUB_PATH &&
+      #       make bootstrap &&
+      #       TERM=xterm npm test
+      #     "
