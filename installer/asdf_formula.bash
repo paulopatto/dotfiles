@@ -3,7 +3,7 @@
 function install_asdf() {
 
   echo "+----------------------------------------------------------+"
-  echo "|           *** 🧩 Instalador do ASDF  ***                |"
+  echo "|           *** 🧩 Instalador do ASDF  ***                 |"
   echo "+----------------------------------------------------------+"
 
   if command -v asdf >/dev/null 2>&1; then
@@ -31,7 +31,7 @@ function install_asdf() {
 
   # Opcional: mostra conteúdo extraído
   echo "Conteúdo extraído:"
-  ls "$INSTALL_DIR/asdf-$LATEST_TAG"
+  ls "$INSTALL_DIR/" | grep "asdf"
   ln -sf "$INSTALL_DIR/asdf-$LATEST_TAG" "$INSTALL_DIR/asdf"
 
   # Limpeza
