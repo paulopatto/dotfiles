@@ -9,8 +9,9 @@
 
 [gpg]
   format = ssh
-# [gpg "ssh"]
-#   program = $HOME/.config/git/git-gpg-wrapper.sh
+[gpg "ssh"]
+  # Mac (Darwin)
+  program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
 
 [include]
   path = ~/.gitconfig-ssh
