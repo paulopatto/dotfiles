@@ -1,0 +1,10 @@
+ipython
+pipenv
+pynvim
+pytest
+requests
+ruff
+ruff-lsp
+virtualenv
+pipx
+uv

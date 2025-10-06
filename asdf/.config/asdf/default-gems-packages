@@ -1,0 +1,10 @@
+bundler
+gem-ctags
+httparty
+pry
+puma
+rails
+rspec
+rubocop
+ruby-lsp
+solargraph
