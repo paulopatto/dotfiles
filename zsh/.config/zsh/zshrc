@@ -56,7 +56,7 @@ alias ipy="python -c 'import IPython; IPython.terminal.ipapp.launch_new_instance
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="robbyrussell"   # [ robbyrussell | agnoster | sorin]
+ZSH_THEME="agnoster"   # [ robbyrussell | agnoster | sorin]
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -127,13 +127,16 @@ if [ -f $ZPLUG_HOME/init.zsh ]; then
   source $ZPLUG_HOME/init.zsh
 
   # General ZSH Plugins
+  zplug "plugins/asdf",                           from:oh-my-zsh
+  zplug "plugins/command-not-found",              from:oh-my-zsh
+  zplug "plugins/compleat",                       from:oh-my-zsh
+  zplug "lib/functions",                          from:oh-my-zsh
+  zplug "lib/async_prompt",                       from:oh-my-zsh
+  zplug "ohmyzsh/ohmyzsh",                        use:lib/async_prompt.zsh
   zplug "zsh-users/zsh-completions"
   zplug "zsh-users/zsh-syntax-highlighting",      from:github
   zplug "zsh-users/zsh-history-substring-search", from:github, defer:2
   zplug "djui/alias-tips",                        from:github
-  #zplug "plugins/asdf",                           from:oh-my-zsh
-  zplug "plugins/command-not-found",              from:oh-my-zsh
-  zplug "plugins/compleat",                       from:oh-my-zsh
 
   # SSH
   zplug "hkupty/ssh-agent",                       from:github
@@ -155,10 +158,12 @@ if [ -f $ZPLUG_HOME/init.zsh ]; then
   zplug "lib/clipboard",                          from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
   zplug "plugins/osx",                            from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
 
-
   # Theme
   zplug "themes/agnoster",                        from:oh-my-zsh, as:theme
   zplug "themes/robbyrussell",                    from:oh-my-zsh, as:theme
+  zplug "romkatv/powerlevel10k",                                  as:theme
+  
+  zplug "ohmyzsh/ohmyzsh",                        use:themes/agnoster.zsh-theme
 
   autoload -U +X bashcompinit && bashcompinit
   autoload -U +X compinit && compinit
@@ -168,11 +173,11 @@ if [ -f $ZPLUG_HOME/init.zsh ]; then
   # Example format: plugins=(rails git textmate ruby lighthouse)
   # Add wisely, as too many plugins slow down shell startup.
   # plugins=(git ruby rails pip zsh-syntax-highlighting)
-  plugins=(git asdf compleat)
+  plugins=(git asdf compleat zsh-syntax-highlighting)
 
   zplug load
   # Em caso de erro de plugins não encontrados pode chamar um zplug install
-  source $ZPLUG_HOME/repos/$ZSH_THEME/oh-my-zsh/oh-my-zsh.sh
+  # source $ZPLUG_HOME/repos/$ZSH_THEME/oh-my-zsh/oh-my-zsh.sh
 fi
 
 if [ -x tmuxifier ]; then
