@@ -1,12 +1,20 @@
 #!/bin/bash
 
 funcion install_asdf() {
+
+  echo "+----------------------------------------------------------+"
+  echo "|           *** 🧩 Instalador do ASDF  ***                |"
+  echo "+----------------------------------------------------------+"
+
   if command -v asdf >/dev/null 2>&1; then
     echo "ASDF-VM já está instalado."
     return
   fi
   REPO="asdf-vm/asdf"
   INSTALL_DIR="/usr/local/bin"
+
+  export ASDF_DIR="$HOME/.local/share/asdf"
+  mkdir -p "$ASDF_DIR"
 
 
   # Obtém a última versão do release via GitHub API

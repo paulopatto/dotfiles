@@ -29,6 +29,10 @@ load test_helper
   assert_dir_exists "$HOME/.config/mcphub"
 }
 
+@test "it asdf executable on /usr/local/bin exists" {
+  assert_file_exists "/usr/local/bin/asdf"
+}
+
 @test "it asdf folder in XDG_CONFIG_HOME exists in the new structure" {
   assert_dir_exists "$HOME/.config/asdf"
   assert_dir_exists "$HOME/.local/share/asdf"
