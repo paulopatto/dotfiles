@@ -7,12 +7,14 @@
 # -----------------------------------------------------------------------------
 function install_1password() {
 
+  echo "+----------------------------------------------------------+"
+  echo "|        *** 🗝️ Instalador do 1Password  ***               |"
+  echo "+----------------------------------------------------------+"
+
   if [ -f /opt/1Password/op-ssh-sign ]; then
     echo "✔️  1Password já instalado."
     return
   fi
-
-  echo "🗝️ Instalando 1Password..."
 
   case $PLATFORM_OS in
     Fedora)
