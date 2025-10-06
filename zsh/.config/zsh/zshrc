@@ -185,20 +185,6 @@ if [ -x tmuxifier ]; then
   eval "$(tmuxifier init -)"
 fi
 
-# Configs to ASDF-VM:
-if [ -d $ASDF_HOME/completions/ ]; then
-  # append completions to fpath
-  fpath=($ASDF_HOME/completions $fpath)
-
-  # initialise completions with ZSH's compinit
-  autoload -Uz compinit && compinit
-  [ -f $ASDF_HOME/completions/asdf.bash ] && source $ASDF_HOME/completions/asdf.bash
-fi
-
-export ASDF_NODEJS_LEGACY_FILE_DYNAMIC_STRATEGY=latest_installed
-[ -f $ASDF_HOME/asdf.sh ] && source $ASDF_HOME/asdf.sh
-[ -f $ASDF_HOME/plugins/golang/set-env.zsh ] && source $ASDF_HOME/plugins/golang/set-env.zsh
-[ -f $ASDF_HOME/plugins/java/set-java-home.zsh ] && source $ASDF_HOME/plugins/java/set-java-home.zsh
 [ -d $XDG_CONFIG_HOME/tmux/plugins/tpm/bin ] && export PATH=$PATH:$XDG_CONFIG_HOME/tmux/plugins/tpm/bin
 
 # Configs to Android commandline

@@ -28,3 +28,8 @@ load test_helper
 @test "it MCPHUB folder in XDG_CONFIG_HOME exists in the new structure" {
   assert_dir_exists "$HOME/.config/mcphub"
 }
+
+@test "it asdf folder in XDG_CONFIG_HOME exists in the new structure" {
+  assert_dir_exists "$HOME/.config/asdf"
+  assert_dir_exists "$HOME/.local/share/asdf"
+}
