@@ -6,6 +6,7 @@ source ./installer/brew_packages.bash
 source ./installer/lazy_packages.bash
 source ./installer/zplug_formula.bash
 source ./installer/tmux_formula.bash
+source ./installer/1password_formula.bash
 
 export XDG_CONFIG_HOME=$HOME/.config
 
@@ -21,14 +22,16 @@ main() {
   echo "Bootstrapping system dependencies..."
   echo "🔍  Verificando e instalando pacotes base..."
   if [[ "$(uname -s)" == "Darwin" ]]; then
-    PLATFORM_OS="MacOS"
-    PLATFORM_ARCH="Darwin"
+    export PLATFORM_OS="MacOS"
+    export PLATFORM_ARCH="Darwin"
+    ln -sf $HOME/.config/git/gitconfig-osx $HOME/.gitconfig-ssh
   elif [[ "$(uname -s)" == "Linux" ]]; then
-    PLATFORM_ARCH="Linux"
+    export PLATFORM_ARCH="Linux"
+    ln -sf $HOME/.config/git/gitconfig-linux $HOME/.gitconfig-ssh
     if command -v dnf >/dev/null; then
-      PLATFORM_OS="Fedora"
+      export PLATFORM_OS="Fedora"
     elif command -v apt >/dev/null; then
-      PLATFORM_OS="Ubuntu"
+      export PLATFORM_OS="Ubuntu"
     else
       echo "☠️ Distribuição Linux não suportada (nem dnf, nem apt encontrados)."
       exit 1
@@ -45,6 +48,7 @@ main() {
   change_shell_to_zsh
   ensure_zplug_installed
   ensure_tmux_tpm_installed
+  install_1password
   echo "🎉 Bootstrap concluído com sucesso!"
 }
 
@@ -67,7 +71,7 @@ function install_os_packages() {
 function change_shell_to_zsh() {
   if command -v zsh >/dev/null 2>&1; then
     echo "✔️  Zsh já instalado."
-    if [ "$SHELL" != "$(which zsh)" ]; then
+    if [[ "$SHELL" != *zsh* ]]; then
       echo "🔄 Alterando shell padrão para zsh..."
       chsh -s "$(which zsh)"
       echo "✔️  Shell padrão alterado para zsh. Por favor, reinicie o terminal."
