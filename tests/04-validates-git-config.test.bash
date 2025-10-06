@@ -13,3 +13,7 @@ load test_helper
   run grep 'export GIT_CONFIG_GPG_SSH_PROGRAM=' "$HOME/.config/zsh/envs/git.env.zsh"
   [ "$status" -eq 0 ]
 }
+
+@test "it gitconfig-ssh symlink exists" {
+  assert_file_exists "$HOME/.gitconfig-ssh"
+}
