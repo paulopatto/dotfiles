@@ -1,5 +1,6 @@
 # vim: ft=gitconfig
-# ~/.gitconfig
+# ~/.config/git/config
+# https://git-scm.com/docs/git-config#_environment
 [user]
   name        = Paulo Patto
   email       = paulopatto@paulopatto.com

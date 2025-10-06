@@ -17,6 +17,14 @@ load test_helper
   assert_file_exists "$HOME/.config/tmux/tmux.conf"
 }
 
+@test "it git folder in XDG_CONFIG_HOME exists in the new structure" {
+  assert_dir_exists "$HOME/.config/git/"
+}
+
+@test "it zplug folder in XDG_CONFIG_HOME exists in the new structure" {
+  assert_dir_exists "$HOME/.config/zsh/plugins/zplug"
+}
+
 @test "it MCPHUB folder in XDG_CONFIG_HOME exists in the new structure" {
   assert_dir_exists "$HOME/.config/mcphub"
 }

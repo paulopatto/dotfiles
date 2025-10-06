@@ -6,3 +6,4 @@ tmux/.config/tmux/plugins/tpm/
 .bootstrap
 node_modules/
 zsh/.config/zsh/envs/
+zshrc
