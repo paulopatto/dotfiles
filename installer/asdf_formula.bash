@@ -20,7 +20,8 @@ function install_asdf() {
   # Obtém a última versão do release via GitHub API
   LATEST_TAG=$(curl -s "https://api.github.com/repos/$REPO/releases/latest" | grep -oP '"tag_name": "\K(.*)(?=")')
   VERSION="${LATEST_TAG#v}"  # Remove o 'v' inicial, se presente
-  ARCHIVE_URL="https://github.com/$REPO/archive/refs/tags/$LATEST_TAG.tar.gz"
+  ARCHIVE_URL="https://github.com/$REPO/releases/download/$LATEST_TAG/asdf-$LATEST_TAG-linux-amd64.tar.gz"
+  #ARCHIVE_URL="https://github.com/$REPO/archive/refs/tags/$LATEST_TAG.tar.gz"
 
   echo "Baixando $ARCHIVE_URL..."
   curl -L "$ARCHIVE_URL" -o "/tmp/asdf-$LATEST_TAG.tar.gz"
