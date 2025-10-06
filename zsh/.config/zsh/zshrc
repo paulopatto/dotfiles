@@ -162,8 +162,9 @@ if [ -f $ZPLUG_HOME/init.zsh ]; then
   zplug "themes/agnoster",                        from:oh-my-zsh, as:theme
   zplug "themes/robbyrussell",                    from:oh-my-zsh, as:theme
   zplug "romkatv/powerlevel10k",                                  as:theme
-  
-  zplug "ohmyzsh/ohmyzsh",                        use:themes/agnoster.zsh-theme
+  zplug "dracula/zsh",                                            as:theme
+
+  zplug "ohmyzsh/ohmyzsh",         use:themes/agnoster.zsh-theme, as:theme
 
   autoload -U +X bashcompinit && bashcompinit
   autoload -U +X compinit && compinit
@@ -173,7 +174,7 @@ if [ -f $ZPLUG_HOME/init.zsh ]; then
   # Example format: plugins=(rails git textmate ruby lighthouse)
   # Add wisely, as too many plugins slow down shell startup.
   # plugins=(git ruby rails pip zsh-syntax-highlighting)
-  plugins=(git asdf compleat zsh-syntax-highlighting)
+  plugins=(git asdf compleat zsh-syntax-highlighting terraform)
 
   zplug load
   # Em caso de erro de plugins não encontrados pode chamar um zplug install

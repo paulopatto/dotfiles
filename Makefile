@@ -14,7 +14,7 @@ DOTFILES_HOME := $(shell pwd)
 
 .PHONY: all link unlink test
 
-all: link
+all: bootstrap link
 
 link:
 	@echo "Linking dotfiles to $(STOW_TARGET)..."
