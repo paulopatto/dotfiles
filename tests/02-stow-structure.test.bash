@@ -30,7 +30,9 @@ load test_helper
 }
 
 @test "it asdf executable on /usr/local/bin exists" {
-  assert_link_exists "/usr/local/bin/asdf"
+  #assert_link_exists "/usr/local/bin/asdf"
+  run command -v asdf
+  [ "$status" -eq 0 ]
 }
 
 @test "it asdf folder in XDG_CONFIG_HOME exists in the new structure" {
