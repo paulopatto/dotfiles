@@ -32,13 +32,13 @@ function install_asdf() {
   # Opcional: mostra conteúdo extraído
   echo "Conteúdo extraído:"
   ln -sf "$INSTALL_DIR/asdf-$VERSION" "$INSTALL_DIR/asdf"
-  $INSTALL_DIR/asdf --version
 
   # Limpeza
   rm "/tmp/asdf-$LATEST_TAG.tar.gz"
 
+  $INSTALL_DIR/asdf --version
   echo "Instalação do asdf $VERSION concluída."
   echo "Adicione o seguinte ao seu arquivo de configuração do shell (ex: ~/.zshrc ou ~/.bashrc):"
-  echo "  . /usr/local/bin/asdf-$LATEST_TAG/asdf.sh"
-  echo "  . /usr/local/bin/asdf-$LATEST_TAG/completions/asdf.bash"
+  echo "  source /usr/local/bin/asdf-$LATEST_TAG/asdf.sh"
+  echo "  source /usr/local/bin/asdf-$LATEST_TAG/completions/asdf.bash"
 }

@@ -36,7 +36,7 @@ load test_helper
 
 @test "it asdf executable on /usr/local/bin exists" {
   echo "DEBUG: Checking if asdf exists in /usr/local/bin PATH=$PATH"
-  ls -lah "$INSTALL_DIR/" | grep asdf
+  ls -lah /usr/local/bin | grep asdf
   assert_file_exists "/usr/local/bin/asdf"
   run command -v asdf
   [ "$status" -eq 0 ]
