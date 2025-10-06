@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 source ./installer/fedora_packages.bash
-source ./installer/debian_ackages.bash
+source ./installer/debian_packages.bash
 source ./installer/brew_packages.bash
 source ./installer/lazy_packages.bash
 source ./installer/zplug_formula.bash
