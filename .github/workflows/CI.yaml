@@ -38,8 +38,11 @@ jobs:
       - name: Install bats and helpers
         run: npm ci
 
-      - name: Run install script (bootstrap)
+      - name: Run install script (make bootstrap)
         run: make bootstrap
+
+      - name: Run stow to link config files (make link)
+        run: make link
 
       - name: Add bats to PATH
         run: echo "$(npm bin)" >> $GITHUB_PATH
@@ -68,8 +71,11 @@ jobs:
       - name: Install bats and helpers
         run: npm ci
 
-      - name: Run install script (bootstrap)
+      - name: Run install script (make bootstrap)
         run: make bootstrap
+
+      - name: Run stow to link config files (make link)
+        run: make link
 
       - name: Add bats to PATH
         run: echo "$(npm bin)" >> $GITHUB_PATH

@@ -5,3 +5,4 @@ nvim/lazy-lock.json
 tmux/.config/tmux/plugins/tpm/
 .bootstrap
 node_modules/
+zsh/.config/zsh/envs/
