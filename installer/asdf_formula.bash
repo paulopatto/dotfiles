@@ -1,6 +1,6 @@
 #!/bin/bash
 
-funcion install_asdf() {
+function install_asdf() {
 
   echo "+----------------------------------------------------------+"
   echo "|           *** 🧩 Instalador do ASDF  ***                |"
