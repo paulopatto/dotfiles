@@ -1,12 +1,18 @@
 #!/usr/bin/env bats
 load test_helper
 
-@test "it zshrc config exists in the new structure" {
-  assert_file_exists "zsh/.config/zsh/zshrc"
+@test "it zshrc main config file exists in the new structure" {
+  assert_file_exists "$HOME/.config/zsh/zshrc"
 }
-@test "it nvim config exists in the new structure" {
-  assert_file_exists "nvim/.config/nvim/init.lua"
+
+@test "it nvim main config file exists in the new structure" {
+  assert_file_exists "$HOME/.config/nvim/init.lua"
 }
-@test "it tmux config exists in the new structure" {
-  assert_file_exists "tmux/.config/tmux/tmux.conf"
+
+@test "it tmux main config file exists in the new structure" {
+  assert_file_exists "$HOME/.config/tmux/tmux.conf"
+}
+
+@test "it MCPHUB folder in XDG_CONFIG_HOME exists in the new structure" {
+  assert_file_exists "$HOME/.config/MCPHUB"
 }

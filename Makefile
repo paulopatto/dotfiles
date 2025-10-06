@@ -29,7 +29,7 @@ bootstrap:
 	@echo "Verificando a necessidade de bootstrap..."
 	@if [ ! -f .bootstrap ]; then \
 		echo "Executando bootstrap de dependências do sistema..."; \
-		./scripts/bootstrap.sh; \
+		./installer/bootstrap.sh; \
 		echo "Bootstrap concluído."; \
 		touch .bootstrap; \
 	else \
