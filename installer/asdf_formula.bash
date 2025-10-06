@@ -31,7 +31,7 @@ function install_asdf() {
 
   # Opcional: mostra conteúdo extraído
   echo "Conteúdo extraído:"
-  ls "$INSTALL_DIR/asdf"
+  ls -lah "$INSTALL_DIR/" | grep asdf
 
   # Limpeza
   rm "/tmp/asdf-$LATEST_TAG.tar.gz"
