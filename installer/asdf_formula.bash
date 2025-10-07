@@ -20,7 +20,20 @@ function install_asdf() {
   # Obtém a última versão do release via GitHub API
   LATEST_TAG=$(curl -s "https://api.github.com/repos/$REPO/releases/latest" | grep -oP '"tag_name": "\K(.*)(?=")')
   VERSION="${LATEST_TAG#v}"  # Remove o 'v' inicial, se presente
-  ARCHIVE_URL="https://github.com/$REPO/releases/download/$LATEST_TAG/asdf-$LATEST_TAG-linux-amd64.tar.gz"
+  case $PLATFORM_OS in
+    Fedora)
+      ARCHIVE_URL="https://github.com/$REPO/releases/download/$LATEST_TAG/asdf-$LATEST_TAG-linux-amd64.tar.gz"
+      ;;
+    Ubuntu)
+      ARCHIVE_URL="https://github.com/$REPO/releases/download/$LATEST_TAG/asdf-$LATEST_TAG-linux-amd64.tar.gz"
+      ;;
+    MacOS)
+      ARCHIVE_URL="https://github.com/$REPO/releases/download/$LATEST_TAG/asdf-$LATEST_TAG-darwin-arm64.tar.gz"
+      ;;
+    *)
+      echo "Invalid option $PLATFORM_ARCH"
+  esac
+
   #ARCHIVE_URL="https://github.com/$REPO/archive/refs/tags/$LATEST_TAG.tar.gz"
 
   echo "Baixando $ARCHIVE_URL..."
