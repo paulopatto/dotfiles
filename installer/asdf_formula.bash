@@ -1,0 +1,59 @@
+#!/bin/bash
+
+function install_asdf() {
+
+  echo "+----------------------------------------------------------+"
+  echo "|           *** 🧩 Instalador do ASDF  ***                 |"
+  echo "+----------------------------------------------------------+"
+
+  if command -v asdf >/dev/null 2>&1; then
+    echo "ASDF-VM já está instalado."
+    return
+  fi
+  REPO="asdf-vm/asdf"
+  INSTALL_DIR="/usr/local/bin"
+
+  export ASDF_DIR="$HOME/.local/share/asdf"
+  mkdir -p "$ASDF_DIR"
+
+
+  # Obtém a última versão do release via GitHub API
+  LATEST_TAG=$(curl -s "https://api.github.com/repos/$REPO/releases/latest" | grep -oP '"tag_name": "\K(.*)(?=")')
+  VERSION="${LATEST_TAG#v}"  # Remove o 'v' inicial, se presente
+  case $PLATFORM_OS in
+    Fedora)
+      ARCHIVE_URL="https://github.com/$REPO/releases/download/$LATEST_TAG/asdf-$LATEST_TAG-linux-amd64.tar.gz"
+      ;;
+    Ubuntu)
+      ARCHIVE_URL="https://github.com/$REPO/releases/download/$LATEST_TAG/asdf-$LATEST_TAG-linux-amd64.tar.gz"
+      ;;
+    MacOS)
+      ARCHIVE_URL="https://github.com/$REPO/releases/download/$LATEST_TAG/asdf-$LATEST_TAG-darwin-arm64.tar.gz"
+      ;;
+    *)
+      echo "Invalid option $PLATFORM_ARCH"
+  esac
+
+  #ARCHIVE_URL="https://github.com/$REPO/archive/refs/tags/$LATEST_TAG.tar.gz"
+
+  echo "Baixando $ARCHIVE_URL..."
+  curl -L "$ARCHIVE_URL" -o "/tmp/asdf-$LATEST_TAG.tar.gz"
+
+  # Extrai para /usr/local/bin
+  echo "Extraindo para $INSTALL_DIR..."
+  sudo tar -xzf "/tmp/asdf-$LATEST_TAG.tar.gz" -C "$INSTALL_DIR"
+
+  # Opcional: mostra conteúdo extraído
+  echo "Conteúdo extraído:"
+  # ln -sf "$INSTALL_DIR/asdf-$VERSION" "$INSTALL_DIR/asdf"
+  ls -l "$INSTALL_DIR/" | grep -i asdf
+
+  # Limpeza
+  rm "/tmp/asdf-$LATEST_TAG.tar.gz"
+
+  $INSTALL_DIR/asdf --version
+  echo "Instalação do asdf $VERSION concluída."
+  echo "Adicione o seguinte ao seu arquivo de configuração do shell (ex: ~/.zshrc ou ~/.bashrc):"
+  echo "  source /usr/local/bin/asdf-$LATEST_TAG/asdf.sh"
+  echo "  source /usr/local/bin/asdf-$LATEST_TAG/completions/asdf.bash"
+}

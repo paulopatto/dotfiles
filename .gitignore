@@ -7,3 +7,4 @@ tmux/.config/tmux/plugins/tpm/
 node_modules/
 zsh/.config/zsh/envs/
 zshrc
+nvim/.config/nvim/lazy-lock.json

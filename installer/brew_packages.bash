@@ -30,5 +30,6 @@ install_macos_packages() {
   brew "xclip"
   brew "editorconfig-checker"
   brew "zplug"
+  brew "coreutils"
 EOF
 }

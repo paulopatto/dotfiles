@@ -7,12 +7,14 @@
 # -----------------------------------------------------------------------------
 function install_1password() {
 
+  echo "+----------------------------------------------------------+"
+  echo "|        *** 🗝️ Instalador do 1Password  ***               |"
+  echo "+----------------------------------------------------------+"
+
   if [ -f /opt/1Password/op-ssh-sign ]; then
     echo "✔️  1Password já instalado."
     return
   fi
-
-  echo "🗝️ Instalando 1Password..."
 
   case $PLATFORM_OS in
     Fedora)
@@ -62,7 +64,7 @@ function install_1password() {
 function install_1password_debian_or_ubuntu() {
   _add_key_for_the_1Password_apt_repository_and_add_apt_repo
   sudo apt-get update -qq
-  sudo apt-get install -y 1password
+  sudo apt-get install -qq -y 1password
 }
 
 function _add_key_for_the_1Password_apt_repository_and_add_apt_repo() {
@@ -96,7 +98,7 @@ function _add_key_for_the_1Password_apt_repository_and_add_apt_repo() {
 # -----------------------------------------------------------------------------
 function install_1password_fedora() {
   _add_key_for_the_1Password_yum_repository
-  sudo dnf install -y 1password
+  sudo dnf install -q -y 1password
 }
 
 function _add_key_for_the_1Password_yum_repository() {

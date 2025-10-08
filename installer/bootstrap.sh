@@ -7,6 +7,7 @@ source ./installer/lazy_packages.bash
 source ./installer/zplug_formula.bash
 source ./installer/tmux_formula.bash
 source ./installer/1password_formula.bash
+source ./installer/asdf_formula.bash
 
 export XDG_CONFIG_HOME=$HOME/.config
 
@@ -49,6 +50,7 @@ main() {
   ensure_zplug_installed
   ensure_tmux_tpm_installed
   install_1password
+  install_asdf
   echo "🎉 Bootstrap concluído com sucesso!"
 }
 

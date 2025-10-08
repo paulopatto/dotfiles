@@ -45,7 +45,5 @@ function creates_zsh_envs_to_zplug() {
     mkdir -p $XDG_CONFIG_HOME/zsh/envs
   fi
 
-  echo "export ZPLUG_HOME=$XDG_CONFIG_HOME/zsh/plugins/zplug" > $XDG_CONFIG_HOME/zsh/envs/zplug.env.zsh
-  echo "source \$ZPLUG_HOME/init.zsh" >> $XDG_CONFIG_HOME/zsh/envs/zplug.env.zsh
   echo "Arquivos de configuração do zsh para zplug criados com sucesso."
 }
