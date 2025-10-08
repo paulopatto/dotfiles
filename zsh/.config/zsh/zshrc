@@ -159,10 +159,10 @@ if [ -f $ZPLUG_HOME/init.zsh ]; then
   zplug "plugins/osx",                            from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
 
   # Theme
-  zplug "themes/agnoster",                        from:oh-my-zsh, as:theme
+  # zplug "romkatv/powerlevel10k",                                  as:theme
   zplug "themes/robbyrussell",                    from:oh-my-zsh, as:theme
-  zplug "romkatv/powerlevel10k",                                  as:theme
   zplug "dracula/zsh",                                            as:theme
+  zplug "themes/agnoster",                        from:oh-my-zsh, as:theme
 
   zplug "ohmyzsh/ohmyzsh",         use:themes/agnoster.zsh-theme, as:theme
 
