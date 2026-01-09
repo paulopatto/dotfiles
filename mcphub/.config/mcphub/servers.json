@@ -1,5 +1,14 @@
 {
   "mcpServers": {
+    "time-docker": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "mcp/time"
+      ]
+    },
     "context7": {
       "disabled": false,
       "headers": {
