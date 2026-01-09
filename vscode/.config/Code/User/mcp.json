@@ -10,13 +10,8 @@
       ]
     },
     "playwright": {
-      "command": "docker",
-      "args": [
-        "run",
-        "-i",
-        "--rm",
-        "mcp/playwright"
-      ]
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
     }
   }
 }
