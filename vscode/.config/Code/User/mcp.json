@@ -1,13 +1,22 @@
 {
-    "servers": {
-        "time": {
-            "command": "docker",
-            "args": [
-                "run", 
-                "-i", 
-                "--rm", 
-                "mcp/time"
-            ]
-        }
+  "servers": {
+    "time": {
+      "command": "docker",
+      "args": [
+        "run", 
+        "-i", 
+        "--rm", 
+        "mcp/time"
+      ]
+    },
+    "playwright": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "mcp/playwright"
+      ]
     }
+  }
 }

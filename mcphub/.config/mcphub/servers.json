@@ -23,6 +23,17 @@
         "Authorization": "Bearer ${GITHUB_PERSONAL_ACCESS_TOKEN}"
       },
       "url": "https://api.githubcopilot.com/mcp/"
+    },
+    "playwright": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--init",
+        "-e", "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1",
+        "mcp/playwright"
+      ]
     }
   }
 }
