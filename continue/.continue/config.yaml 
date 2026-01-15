@@ -1,0 +1,203 @@
+---
+#############################################################################################################
+## Continue.dev YAML config
+## Ref doc: https://docs.continue.dev/reference
+#############################################################################################################
+name: Local Config
+version: 1.0.0
+schema: v1
+#############################################################################################################
+#                          Auto Complete Model 
+#############################################################################################################
+# Configuração específica para preenchimento de código (Tab Autocomplete) usando ollama local
+# ajuste se vai usar local ou via OpenRoute. 
+# Configuração específica para preenchimento de código (Tab Autocomplete)
+# ref docs:
+# - https://docs.continue.dev/ide-extensions/autocomplete/model-setup
+#############################################################################################################
+### Qwen 2.5 Coder (default)
+# tabAutocompleteModel:
+#   title: "Qwen 2.5 Coder (Local)"
+#   provider: "ollama"
+#   model: "qwen2.5-coder:7b" # "qwen2.5-coder:1.5b"
+# Existem opções ótimas tanto para rodar localmente com pouca RAM quanto usando OpenRouter gratuitamente. 
+# Aqui estão as alternativas:
+#### Deepseek Coder V2 Lite para 1.5Gb
+tabAutocompleteModel:
+  title: "DeepSeek Coder V2 Lite (Local)"
+  provider: "ollama"
+  model: "deepseek-coder:1.3b"  # Usa ~1.5GB RAM, muito rápido e bom para autocomplete
+#### Qwen2.5-Coder 0.5B (super leve): ~400MB RAM, bem rápido
+# tabAutocompleteModel:
+#   title: "Qwen2.5 Coder (Local)"
+#   provider: "ollama"
+#   model: "qwen2.5-coder:0.5b"  # Usa ~1.5GB RAM, muito rápido e bom para autocomplete
+#############################################################################################################
+
+#############################################################################################################
+#                          Models 
+#############################################################################################################
+# Models form the foundation of the entire agent experience, offering different specialized capabilities:
+# - Chat: Power conversational interactions about code and provide detailed guidance
+# - Edit: Handle complex code transformations and refactoring tasks
+# - Apply: Execute targeted code modifications with high accuracy
+# - Autocomplete: Provide real-time suggestions as developers type
+# - Embedding: Transform code into vector representations for semantic search
+# - Reranker: Improve search relevance by ordering results based on semantic meaning
+##
+# Reference docs:
+# - recommended-models: https://docs.continue.dev/customize/models#recommended-models
+#############################################################################################################
+
+models:
+  - uses: google/gemini-2.5-pro
+    with:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+    roles:
+      - agent
+      - chat
+    capabilities:
+      - tool_use
+
+  - uses: google/gemini-2.0-flash
+    with:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+    roles:
+      - agent
+      - chat
+    capabilities:
+      - tool_use
+
+  - uses: google/gemini-3-flash-preview
+    with:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+    roles:
+      - agent
+      - chat
+    capabilities:
+      - tool_use
+
+  - uses: google/gemini-3-pro-preview
+    with:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+    roles:
+      - agent
+      - chat
+    capabilities:
+      - tool_use
+  
+
+  - name: qwen2.5-coder 1.5b
+    provider: ollama
+    model: qwen2.5-coder:1.5b
+    roles:
+      - apply
+      - autocomplete
+      - chat
+      - edit
+
+  - name: "Phi-3 Mini Local"
+    provider: "ollama"
+    model: "phi3:mini"
+    description: >
+      Microsoft Phi-3 3.8B local, coding leve/multilingual 8GB RAM
+
+  - name: "Qwen 2.5 Coder 7B Local"
+    provider: "ollama"
+    model: "qwen2.5-coder:7b"
+    description: >
+      Qwen2.5-Coder 7B local Ollama, top coding (SWE-bench 65%), Java/Python 8GB RAM
+    capabilities:
+      - tool_use
+
+  - provider: openrouter
+    apiBase: "https://openrouter.ai/api/v1"
+    name: "Xiaomi MiMo-V2-Flash (free)"
+    model: xiaomi/mimo-v2-flash:free
+    description: >
+      Líder SWE-bench, MoE 309B (15B ativos), top coding/reasoning/agents
+    apiKey: ${{ secrets.OPENROUTER_API_KEY }}
+    capabilities:
+      - tool_use
+
+  - provider: openrouter
+    apiBase: "https://openrouter.ai/api/v1"
+    name: Mistral Devstral 2
+    model: mistralai/devstral-2512:free
+    description: >
+      Agentic coding 123B, 256K ctx, multi-file/explorar codebases
+    apiKey: ${{ secrets.OPENROUTER_API_KEY }}
+
+  - provider: openrouter
+    apiBase: "https://openrouter.ai/api/v1"
+    name: "Qwen3 Coder 480B"
+    model: qwen/qwen3-coder:free
+    description: >
+      MoE 480B (35B), function calling/repo reasoning, multilingual
+    apiKey: ${{ secrets.OPENROUTER_API_KEY }}
+
+  - provider: openrouter
+    apiBase: "https://openrouter.ai/api/v1"
+    name: DeepSeek R1
+    model: deepseek/deepseek-r1:free
+    description: >
+      Reasoning o1-like 671B MoE, lógica/code gen com tokens visíveis
+    apiKey: ${{ secrets.OPENROUTER_API_KEY }}
+
+  - provider: openrouter
+    apiBase: "https://openrouter.ai/api/v1"
+    name: "Gemma-3 27B (free)"
+    model: google/gemma-3-27b-it:free
+    description: >
+      Multimodal 27B, 128K ctx, math/reasoning/function calling Gemma 3
+      introduces multimodality, supporting vision-language input and text
+      outputs. It handles context windows up to 128k tokens, understands over
+      140 languages, and offers improved math, reasoning, and chat capabilities,
+      including structured outputs and function calling. Gemma 3 27B is
+      Google's latest open source model, successor to Gemma 2
+    apiKey: ${{ secrets.OPENROUTER_API_KEY }}
+
+  - provider: openrouter
+    apiBase: "https://openrouter.ai/api/v1"
+    name: Llama-3.3-70B-Instruct
+    model: meta-llama/llama-3.3-70b-instruct:free
+    description: >
+      Multilingual 70B (PT-BR), diálogo/coding geral outperform open
+    apiKey: ${{ secrets.OPENROUTER_API_KEY }}
+
+  - provider: openrouter
+    apiBase: "https://openrouter.ai/api/v1"
+    name: "GPT OSS 120B (o3 Free)"
+    model: openai/gpt-oss-120b:free
+    description: >
+      OpenAI open-weight 21B MoE, o3-mini level coding/tools, eficiente 16GB RAM
+    apiKey: ${{ secrets.OPENROUTER_API_KEY }}
+
+#############################################################################################################
+#                          MCP servers 
+#############################################################################################################
+# Learn how to use Model Context Protocol (MCP) blocks in Continue to integrate w/ 
+# external tools, connect databases, and extend your development environment.
+# Model Context Protocol (MCP) servers let Continue connect to external tools, 
+# systems, and databases by running MCP servers.
+#############################################################################################################
+mcpServers:
+  - name: "Context7-CLI"
+    command: npx
+    args: 
+    - "-y" 
+    - "@upstash/context7-mcp"
+    env:
+      CONTEXT7_API_KEY: ${{ secrets.CONTEXT7_API_KEY }}
+
+  - name: "Playwright"
+    command: npx
+    args: ["@playwright/mcp@latest"]
+
+  - name: "N8N [via Docker]"
+    command: docker
+    args:
+      - run
+      - "-i" 
+      - "--rm"
+      - "mcp/n8n"
