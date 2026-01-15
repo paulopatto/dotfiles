@@ -201,3 +201,11 @@ mcpServers:
       - "-i" 
       - "--rm"
       - "mcp/n8n"
+
+  - name: "Figma MCP (Oficial)"
+    command: npx
+    args:
+      - "-y"
+      - "@figma/mcp"
+    env:
+      FIGMA_API_TOKEN: ${{ secrets.FIGMA_API_TOKEN }}
