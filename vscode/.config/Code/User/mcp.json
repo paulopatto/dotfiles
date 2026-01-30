@@ -1,11 +1,11 @@
 {
-  "mcpServers": {
-    "time-docker": {
+  "servers": {
+    "time": {
       "command": "docker",
       "args": [
-        "run",
-        "-i",
-        "--rm",
+        "run", 
+        "-i", 
+        "--rm", 
         "mcp/time"
       ]
     },
