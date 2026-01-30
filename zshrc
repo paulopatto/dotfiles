@@ -33,6 +33,8 @@ export PATH=$PATH:$HOME/.local/bin:$HOME/.local/share/nvim/mason/bin
 ############################################
 export ASDF_HOME=$XDG_CONFIG_HOME/asdf
 export ASDF_DIR=$ASDF_HOME
+export ASDF_DATA_DIR=$HOME/.local/share/asdf
+export ASDF_CONFIG_FILE=$HOME/.asdfrc
 
 ############################################
 ########          GIT
@@ -54,7 +56,7 @@ alias ipy="python -c 'import IPython; IPython.terminal.ipapp.launch_new_instance
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="robbyrussell"   # [ robbyrussell | agnoster | sorin]
+ZSH_THEME="catppuccin"   # [ robbyrussell | agnoster | sorin]
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -124,14 +126,22 @@ export ZPLUG_HOME=$XDG_CONFIG_HOME/zsh/plugins/zplug
 if [ -f $ZPLUG_HOME/init.zsh ]; then 
   source $ZPLUG_HOME/init.zsh
 
+  zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
+  # 1. Carrega a biblioteca base do Oh My Zsh (essencial para plugins e temas)
+  zplug "lib/history",                            from:oh-my-zsh
+  zplug "lib/theme-and-appearance",               from:oh-my-zsh
+  zplug "lib/completion",                         from:oh-my-zsh  # Opcional, mas recomendado
+
   # General ZSH Plugins
   zplug "zsh-users/zsh-completions"
   zplug "zsh-users/zsh-syntax-highlighting",      from:github
-  zplug "zsh-users/zsh-history-substring-search", from:github, defer:2
+  zplug "zsh-users/zsh-history-substring-search", from:github,      defer:2
+  zplug "catppuccin/zsh-syntax-highlighting",                       defer:2
   zplug "djui/alias-tips",                        from:github
-  #zplug "plugins/asdf",                           from:oh-my-zsh
+  zplug "plugins/asdf",                           from:oh-my-zsh
   zplug "plugins/command-not-found",              from:oh-my-zsh
   zplug "plugins/compleat",                       from:oh-my-zsh
+  zplug "plugins/sudo",                           from:oh-my-zsh
 
   # SSH
   zplug "hkupty/ssh-agent",                       from:github
@@ -153,10 +163,17 @@ if [ -f $ZPLUG_HOME/init.zsh ]; then
   zplug "lib/clipboard",                          from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
   zplug "plugins/osx",                            from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
 
+
   
   # Theme
-  zplug "themes/agnoster",                        from:oh-my-zsh, as:theme
-  zplug "themes/robbyrussell",                    from:oh-my-zsh, as:theme
+  # zplug "themes/agnoster",                        from:oh-my-zsh, as:theme
+  # zplug "themes/robbyrussell",                    from:oh-my-zsh, as:theme
+  zplug "JannoTjarks/catppuccin-zsh",     use:catppuccin.zsh-theme, as:theme 
+  export CATPPUCCIN_FLAVOR="macchiato"
+  export CATPPUCCIN_SHOW_TIME=false
+  export CATPPUCCIN_SHOW_HOSTNAME="never"
+  export CATPPUCCIN_SHOW_USER="always"
+
 
   autoload -U +X bashcompinit && bashcompinit
   autoload -U +X compinit && compinit
@@ -170,7 +187,7 @@ if [ -f $ZPLUG_HOME/init.zsh ]; then
 
   zplug load
   # Em caso de erro de plugins não encontrados pode chamar um zplug install
-  source $ZPLUG_HOME/repos/$ZSH_THEME/oh-my-zsh/oh-my-zsh.sh
+  #source $ZPLUG_HOME/repos/$ZSH_THEME/oh-my-zsh/oh-my-zsh.sh
 fi
 
 if [ -x tmuxifier ]; then
@@ -178,20 +195,20 @@ if [ -x tmuxifier ]; then
 fi
 
 # Configs to ASDF-VM:
-if [ -d $ASDF_HOME/completions/ ]; then
-  # append completions to fpath
-  fpath=($ASDF_HOME/completions $fpath)
+# if [ -d $ASDF_HOME/completions/ ]; then
+#   # append completions to fpath
+#   fpath=($ASDF_HOME/completions $fpath)
 
-  # initialise completions with ZSH's compinit
-  autoload -Uz compinit && compinit
-  [ -f $ASDF_HOME/completions/asdf.bash ] && source $ASDF_HOME/completions/asdf.bash
-fi
+#   # initialise completions with ZSH's compinit
+#   autoload -Uz compinit && compinit
+#   [ -f $ASDF_HOME/completions/asdf.bash ] && source $ASDF_HOME/completions/asdf.bash
+# fi
 
 export ASDF_NODEJS_LEGACY_FILE_DYNAMIC_STRATEGY=latest_installed
-[ -f $ASDF_HOME/asdf.sh ] && source $ASDF_HOME/asdf.sh
-[ -f $ASDF_HOME/plugins/golang/set-env.zsh ] && source $ASDF_HOME/plugins/golang/set-env.zsh
-[ -f $ASDF_HOME/plugins/java/set-java-home.zsh ] && source $ASDF_HOME/plugins/java/set-java-home.zsh
-[ -d $XDG_CONFIG_HOME/tmux/plugins/tpm/bin ] && export PATH=$PATH:$XDG_CONFIG_HOME/tmux/plugins/tpm/bin
+# [ -f $ASDF_HOME/asdf.sh ] && source $ASDF_HOME/asdf.sh
+# [ -f $ASDF_HOME/plugins/golang/set-env.zsh ] && source $ASDF_HOME/plugins/golang/set-env.zsh
+# [ -f $ASDF_HOME/plugins/java/set-java-home.zsh ] && source $ASDF_HOME/plugins/java/set-java-home.zsh
+# [ -d $XDG_CONFIG_HOME/tmux/plugins/tpm/bin ] && export PATH=$PATH:$XDG_CONFIG_HOME/tmux/plugins/tpm/bin
 
 # Configs to Android commandline
 if [ -d $HOME/.local/share/Android ]; then
