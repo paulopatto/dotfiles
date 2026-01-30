@@ -33,14 +33,15 @@ export PATH=$PATH:$HOME/.local/bin:$HOME/.local/share/nvim/mason/bin
 ############################################
 export ASDF_HOME=$XDG_CONFIG_HOME/asdf
 export ASDF_DIR=$ASDF_HOME
+export ASDF_CONFIG_FILE=$ASDF_HOME/.asdfrc
 export ASDF_DATA_DIR=$HOME/.local/share/asdf
-export ASDF_CONFIG_FILE=$HOME/.asdfrc
 
 ############################################
 ########          GIT
 ############################################
-export GITCONFIG=$HOME/.gitconfig
-export GITIGNORE=$HOME/.gitignore_global
+export GIT_HOME=$XDG_CONFIG_HOME/git
+export GITCONFIG=$GIT_HOME/.gitconfig
+export GITIGNORE=$GIT_HOME/.gitignore_global
 
 ############################################
 ########          ALIASES
@@ -56,7 +57,7 @@ alias ipy="python -c 'import IPython; IPython.terminal.ipapp.launch_new_instance
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="catppuccin"   # [ robbyrussell | agnoster | sorin]
+ZSH_THEME="catppuccin"   # [ robbyrussell | agnoster | sorin | catppuccin ]
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -101,29 +102,29 @@ HISTFILE=~/.zsh_history
 ## Define os-platorm
 ########################
 export PLATFORM_ARCH="$(uname -s)" # Linux | Darwin | ...
-export MACHINE_ARCH="$(uname -p)" # arm | AMD_64 | x86-64 
+export MACHINE_ARCH="$(uname -p)" # arm | AMD_64 | x86-64
 
 start_time=`date +%s`
 
-case $PLATFORM_ARCH in 
-  Linux)
-    if command -v dnf > /dev/null; then
-      export PLATFORM_OS="Fedora";
-    elif command -v apt > /dev/null; then
-      export PLATFORM_OS="Ubuntu";
-    else
-      echo "Unsupported linux distro $(uname -a)"
-    fi
-    ;;
-  Darwin)
-    export PLATFORM_OS="MacOS";
-    ;;
-  *)
-    echo "Invalid option $PLATFORM_ARCH"
-esac
+# case $PLATFORM_ARCH in
+#   Linux)
+#     if command -v dnf > /dev/null; then
+#       export PLATFORM_OS="Fedora";
+#     elif command -v apt > /dev/null; then
+#       export PLATFORM_OS="Ubuntu";
+#     else
+#       echo "Unsupported linux distro $(uname -a)"
+#     fi
+#     ;;
+#   Darwin)
+#     export PLATFORM_OS="MacOS";
+#     ;;
+#   *)
+#     echo "Invalid option $PLATFORM_ARCH"
+# esac
 
 export ZPLUG_HOME=$XDG_CONFIG_HOME/zsh/plugins/zplug
-if [ -f $ZPLUG_HOME/init.zsh ]; then 
+if [ -f $ZPLUG_HOME/init.zsh ]; then
   source $ZPLUG_HOME/init.zsh
 
   zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
@@ -133,6 +134,12 @@ if [ -f $ZPLUG_HOME/init.zsh ]; then
   zplug "lib/completion",                         from:oh-my-zsh  # Opcional, mas recomendado
 
   # General ZSH Plugins
+  zplug "plugins/asdf",                           from:oh-my-zsh
+  zplug "plugins/command-not-found",              from:oh-my-zsh
+  zplug "plugins/compleat",                       from:oh-my-zsh
+  zplug "lib/functions",                          from:oh-my-zsh
+  zplug "lib/async_prompt",                       from:oh-my-zsh
+  zplug "ohmyzsh/ohmyzsh",                        use:lib/async_prompt.zsh
   zplug "zsh-users/zsh-completions"
   zplug "zsh-users/zsh-syntax-highlighting",      from:github
   zplug "zsh-users/zsh-history-substring-search", from:github,      defer:2
@@ -164,11 +171,12 @@ if [ -f $ZPLUG_HOME/init.zsh ]; then
   zplug "plugins/osx",                            from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
 
 
-  
+
   # Theme
-  # zplug "themes/agnoster",                        from:oh-my-zsh, as:theme
-  # zplug "themes/robbyrussell",                    from:oh-my-zsh, as:theme
-  zplug "JannoTjarks/catppuccin-zsh",     use:catppuccin.zsh-theme, as:theme 
+  zplug "themes/agnoster",                        from:oh-my-zsh, as:theme
+  zplug "themes/robbyrussell",                    from:oh-my-zsh, as:theme
+  zplug "dracula/zsh",                                            as:theme
+  zplug "JannoTjarks/catppuccin-zsh",     use:catppuccin.zsh-theme, as:theme
   export CATPPUCCIN_FLAVOR="macchiato"
   export CATPPUCCIN_SHOW_TIME=false
   export CATPPUCCIN_SHOW_HOSTNAME="never"
@@ -183,11 +191,11 @@ if [ -f $ZPLUG_HOME/init.zsh ]; then
   # Example format: plugins=(rails git textmate ruby lighthouse)
   # Add wisely, as too many plugins slow down shell startup.
   # plugins=(git ruby rails pip zsh-syntax-highlighting)
-  plugins=(git asdf compleat)
+  plugins=(git asdf compleat zsh-syntax-highlighting terraform)
 
   zplug load
   # Em caso de erro de plugins não encontrados pode chamar um zplug install
-  #source $ZPLUG_HOME/repos/$ZSH_THEME/oh-my-zsh/oh-my-zsh.sh
+  # source $ZPLUG_HOME/repos/$ZSH_THEME/oh-my-zsh/oh-my-zsh.sh
 fi
 
 if [ -x tmuxifier ]; then
@@ -223,10 +231,8 @@ fi
 
 # Carregar arquivos .env.zsh da pasta $HOME/.config/zsh/envs
 if [ -d "$HOME/.config/zsh/envs" ]; then
-  for env_file in $HOME/.config/zsh/envs/*.env.zsh; do
-    if [ -f "$env_file" ]; then
-      source "$env_file"
-    fi
+  for env_file in $HOME/.config/zsh/envs/*.env.zsh(N); do
+    source "$env_file"
   done
 fi
 
