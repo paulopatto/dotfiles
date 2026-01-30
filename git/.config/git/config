@@ -20,7 +20,7 @@
 	defaultBranch = main
 
 [core]
-  excludesfile = ~/.gitignore_global
+  excludesfile = ~/.config/git/gitignore_global
   editor       = nvim
 
 [github]

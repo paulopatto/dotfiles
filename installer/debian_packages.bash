@@ -5,7 +5,7 @@ install_debian_packages() {
   echo "🌀 Plataforma Ubuntu/Debian detectada."
   echo "📦 Instalando pacotes..."
   sudo apt-get update -qq
-  sudo apt-get install -y build-essential apt-transport-https curl git gnupg2 libffi-dev libpq-dev libreadline-dev lua5.3 python3 python3-dev python3-pip tmux wget xclip neovim stow zsh stow ripgrep fd-find jq tmux
+  sudo apt-get install -qq -y build-essential apt-transport-https curl coreutils git gnupg2 libffi-dev libpq-dev libreadline-dev lua5.3 python3 python3-dev python3-pip tmux wget xclip neovim stow zsh stow ripgrep fd-find jq tmux
   if ! command -v lazygit >/dev/null; then
     install_lazygit_from_source
   fi

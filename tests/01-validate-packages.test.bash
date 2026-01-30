@@ -51,6 +51,11 @@ load test_helper
     [ "$status" -eq 0 ]
 }
 
+@test "it asdf be present" {
+    run command -v asdf
+    [ "$status" -eq 0 ]
+}
+
 # @test "it fd be present" {
 #     run command -v fd
 #     [ "$status" -eq 0 ]

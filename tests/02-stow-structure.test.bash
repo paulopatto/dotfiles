@@ -28,3 +28,16 @@ load test_helper
 @test "it MCPHUB folder in XDG_CONFIG_HOME exists in the new structure" {
   assert_dir_exists "$HOME/.config/mcphub"
 }
+
+@test "it asdf folder in XDG_CONFIG_HOME exists in the new structure" {
+  assert_dir_exists "$HOME/.config/asdf"
+  assert_dir_exists "$HOME/.local/share/asdf"
+}
+
+@test "it asdf executable on /usr/local/bin exists" {
+  echo "DEBUG: Checking if asdf exists in /usr/local/bin PATH=$PATH"
+  ls -lah /usr/local/bin | grep asdf
+  assert_file_exists "/usr/local/bin/asdf"
+  run command -v asdf
+  [ "$status" -eq 0 ]
+}

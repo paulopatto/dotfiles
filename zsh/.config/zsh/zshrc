@@ -173,7 +173,7 @@ if [ -f $ZPLUG_HOME/init.zsh ]; then
 
 
   # Theme
-  zplug "themes/agnoster",                        from:oh-my-zsh, as:theme
+  # zplug "romkatv/powerlevel10k",                                  as:theme
   zplug "themes/robbyrussell",                    from:oh-my-zsh, as:theme
   zplug "dracula/zsh",                                            as:theme
   zplug "JannoTjarks/catppuccin-zsh",     use:catppuccin.zsh-theme, as:theme
@@ -181,6 +181,7 @@ if [ -f $ZPLUG_HOME/init.zsh ]; then
   export CATPPUCCIN_SHOW_TIME=false
   export CATPPUCCIN_SHOW_HOSTNAME="never"
   export CATPPUCCIN_SHOW_USER="always"
+
 
 
   autoload -U +X bashcompinit && bashcompinit
@@ -202,6 +203,8 @@ if [ -x tmuxifier ]; then
   eval "$(tmuxifier init -)"
 fi
 
+[ -d $XDG_CONFIG_HOME/tmux/plugins/tpm/bin ] && export PATH=$PATH:$XDG_CONFIG_HOME/tmux/plugins/tpm/bin
+
 # Configs to ASDF-VM:
 # if [ -d $ASDF_HOME/completions/ ]; then
 #   # append completions to fpath
@@ -217,6 +220,7 @@ export ASDF_NODEJS_LEGACY_FILE_DYNAMIC_STRATEGY=latest_installed
 # [ -f $ASDF_HOME/plugins/golang/set-env.zsh ] && source $ASDF_HOME/plugins/golang/set-env.zsh
 # [ -f $ASDF_HOME/plugins/java/set-java-home.zsh ] && source $ASDF_HOME/plugins/java/set-java-home.zsh
 # [ -d $XDG_CONFIG_HOME/tmux/plugins/tpm/bin ] && export PATH=$PATH:$XDG_CONFIG_HOME/tmux/plugins/tpm/bin
+
 
 # Configs to Android commandline
 if [ -d $HOME/.local/share/Android ]; then
