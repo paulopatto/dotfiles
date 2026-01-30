@@ -12,7 +12,7 @@ export ASDF_GOLANG_DEFAULT_PACKAGES_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf
 [ -f $ASDF_DATA_DIR/plugins/golang/set-env.zsh ] && source $ASDF_DATA_DIR/plugins/golang/set-env.zsh
 [ -f $ASDF_DATA_DIR/plugins/java/set-java-home.zsh ] && source $ASDF_DATA_DIR/plugins/java/set-java-home.zsh
 
-export $PATH=$ASDF_DATA_DIR/shims:$PATH
+export PATH=$ASDF_DATA_DIR/shims:$PATH
 
 # Configs to ASDF-VM:
 if [ -d $ASDF_HOME/completions/ ]; then

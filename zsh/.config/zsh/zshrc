@@ -57,7 +57,11 @@ alias ipy="python -c 'import IPython; IPython.terminal.ipapp.launch_new_instance
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="catppuccin"   # [ robbyrussell | agnoster | sorin | catppuccin ]
+export ZSH_THEME="catppuccin"   # [ robbyrussell | agnoster | sorin | catppuccin ]
+export CATPPUCCIN_FLAVOR="macchiato"
+export CATPPUCCIN_SHOW_TIME=true
+export CATPPUCCIN_SHOW_HOSTNAME="never"
+export CATPPUCCIN_SHOW_USER="always"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -76,7 +80,7 @@ ZSH_THEME="catppuccin"   # [ robbyrussell | agnoster | sorin | catppuccin ]
 # DISABLE_LS_COLORS="true"
 
 # Uncomment the following line to disable auto-setting terminal title.
-DISABLE_AUTO_TITLE="true"
+export DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
@@ -92,8 +96,12 @@ DISABLE_AUTO_TITLE="true"
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
 # The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-HIST_STAMPS="yyyy-mm-dd"
-HISTFILE=~/.zsh_history
+export HIST_STAMPS="yyyy-mm-dd"
+export HISTFILE=~/.local/share/zsh/zsh_history
+# HISTSIZE=100000
+# SAVEHIST=100000
+[ ! -d $HOME/.local/share/zsh/ ] && mkdir -p $HOME/.local/share/zsh/
+[ ! -f $HISTFILE ] &&  touch $HISTFILE
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
@@ -126,8 +134,8 @@ start_time=`date +%s`
 export ZPLUG_HOME=$XDG_CONFIG_HOME/zsh/plugins/zplug
 if [ -f $ZPLUG_HOME/init.zsh ]; then
   source $ZPLUG_HOME/init.zsh
-
-  zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
+  # zplug check --verbose
+  zplug "robbyrussell/oh-my-zsh",                 from:oh-my-zsh, use:"lib/*.zsh"
   # 1. Carrega a biblioteca base do Oh My Zsh (essencial para plugins e temas)
   zplug "lib/history",                            from:oh-my-zsh
   zplug "lib/theme-and-appearance",               from:oh-my-zsh
@@ -170,18 +178,11 @@ if [ -f $ZPLUG_HOME/init.zsh ]; then
   zplug "lib/clipboard",                          from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
   zplug "plugins/osx",                            from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
 
-
-
   # Theme
-  # zplug "romkatv/powerlevel10k",                                  as:theme
+  zplug "romkatv/powerlevel10k",                                  as:theme
   zplug "themes/robbyrussell",                    from:oh-my-zsh, as:theme
   zplug "dracula/zsh",                                            as:theme
   zplug "JannoTjarks/catppuccin-zsh",     use:catppuccin.zsh-theme, as:theme
-  export CATPPUCCIN_FLAVOR="macchiato"
-  export CATPPUCCIN_SHOW_TIME=false
-  export CATPPUCCIN_SHOW_HOSTNAME="never"
-  export CATPPUCCIN_SHOW_USER="always"
-
 
 
   autoload -U +X bashcompinit && bashcompinit
@@ -191,8 +192,8 @@ if [ -f $ZPLUG_HOME/init.zsh ]; then
   # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
   # Example format: plugins=(rails git textmate ruby lighthouse)
   # Add wisely, as too many plugins slow down shell startup.
-  # plugins=(git ruby rails pip zsh-syntax-highlighting)
-  plugins=(git asdf compleat zsh-syntax-highlighting terraform)
+  # plugins=(git ruby rails pip zsh-syntax-highlighting terraform)
+  plugins=(git asdf compleat zsh-syntax-highlighting)
 
   zplug load
   # Em caso de erro de plugins não encontrados pode chamar um zplug install
@@ -248,4 +249,3 @@ fi
 #   asdf install gcloud latest
 # 3. Set global version
 #   asdf global gcloud latest
-
