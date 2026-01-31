@@ -5,7 +5,7 @@
   name        = Paulo Patto
   email       = paulopatto@paulopatto.com
   username    = paulopatto
-  signingkey = ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCm2WeLebNK9ZxMQJdZn/lfU3bPenbvyTTUGLxG2cHtvJ8UG+rHvx95qgryrNMEFmWiq620dI59qrti+X3BaGdWurIycYIChqbP23Vo7lUHD7zNsV4USR7gYjW6iQsVCpb0q2GNQvgUMRWfeOyqTQLJy7fGkR+3B63kil0xPBPdRXsH26NUJOCXaDzsVcF/TyrSXMIUSXCITBERpYtX4JbLOigvOPxb6cj0c+mMjc4v0glyPdtlx+5N0s55CLkzM/odg2osTYJ8+h2skhpFJGWicd89z8UuxilOYFvXxjjWxsqjNYVfrsHQHgSCKlKbbd62TpSvkJT90eMqnpJ9Su6j9Nj9pfoC1wBqi7vCqP3Ki24F0OENp0QgJiJLQyp0T92jHJGM1oZNg5AdX8DpILfAdSvh5KfJDkquYCaR/bjD4ioewWOKHRj16LDXZdQv9Weyza43cOPSkBfxdP4uHNRFlMPABVE8Boy91rXwuKTFV8CZ+ao5MfeMgfKbGJez7k+LuUIVWMB/pnKmQ4rgkHlAr+RwZ02v8X0HpkfzPwjkugp8bKBBFNeANUYwENAHmDhXZHu+nw+LLCrj/+qHRDK0sLY4+ElI8WUf5SNvgnzm1kmPuwPYeot4WVATctZmR7HYwNSPltS4u5jf69w62Vgn23PZWSurm7joJSKy58s83Q==
+  signingkey  = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJBu79W/czszkGHPfVK+rvOjQNkJeoQIv/qUM2i4rz9E
 
 [gpg]
   format = ssh
