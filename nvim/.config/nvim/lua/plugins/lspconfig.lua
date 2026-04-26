@@ -17,33 +17,45 @@ return {
       end
       local capabilities = vim.lsp.protocol.make_client_capabilities()
 
-      -- Setup language servers via mason handlers (modern API)
-      mason_lspconfig.setup_handlers({
-        function(server_name)
+      -- Setup language servers (compat: new + old mason-lspconfig)
+      if mason_lspconfig.setup_handlers then
+        mason_lspconfig.setup_handlers({
+          function(server_name)
+            if server_name ~= "jdtls" then
+              require("lspconfig")[server_name].setup({
+                on_attach = on_attach,
+                capabilities = capabilities,
+              })
+            end
+          end,
+
+          ["terraformls"] = function()
+            require("lspconfig").terraformls.setup({
+              on_attach = on_attach,
+              capabilities = capabilities,
+              filetypes = { "terraform", "tf", "hcl" },
+            })
+          end,
+
+          ["kotlin_language_server"] = function()
+            require("lspconfig").kotlin_language_server.setup({
+              on_attach = on_attach,
+              capabilities = capabilities,
+              filetypes = { "kotlin" },
+            })
+          end,
+        })
+      else
+        local servers = mason_lspconfig.get_installed_servers()
+        for _, server_name in ipairs(servers) do
           if server_name ~= "jdtls" then
             require("lspconfig")[server_name].setup({
               on_attach = on_attach,
               capabilities = capabilities,
             })
           end
-        end,
-
-        ["terraformls"] = function()
-          require("lspconfig").terraformls.setup({
-            on_attach = on_attach,
-            capabilities = capabilities,
-            filetypes = { "terraform", "tf", "hcl" },
-          })
-        end,
-
-        ["kotlin_language_server"] = function()
-          require("lspconfig").kotlin_language_server.setup({
-            on_attach = on_attach,
-            capabilities = capabilities,
-            filetypes = { "kotlin" },
-          })
-        end,
-      })
+        end
+      end
 
       -- Custom setup for jdtls
       local java_path = vim.fn.expand("~/.asdf/shims/java")
