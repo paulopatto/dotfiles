@@ -241,11 +241,3 @@ if [ -d "$HOME/.config/zsh/envs" ]; then
   done
 fi
 
-## Configs to gcloud
-# Using asdf-gcloud
-# 1. Install plugin
-#   asdf plugin add gcloud https://github.com/jthegedus/asdf-gcloud
-# 2. Install install gcloud installed
-#   asdf install gcloud latest
-# 3. Set global version
-#   asdf global gcloud latest
