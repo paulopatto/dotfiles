@@ -6,18 +6,16 @@ return {
         -- Availables LSP Servers
         -- https://github.com/williamboman/mason-lspconfig.nvim?tab=readme-ov-file#available-lsp-servers
         ensure_installed = {
-          "autopep8",
           "clangd",
           "jdtls",
           "kotlin_language_server",
           "lua_ls",
           "pyright",
-          "ruby-lsp",
-          "ruff",
-          "solargrah",
+          "ruby_lsp",
+          "solargraph",
           "tailwindcss",
           "terraformls",
-          "tsserver",
+          "ts_ls",
         },
       })
     end,
