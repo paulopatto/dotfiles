@@ -2,6 +2,7 @@ return {
   "ravitemer/mcphub.nvim",
   dependencies = { "nvim-lua/plenary.nvim" },
   build = "npm install -g mcp-hub@latest", -- Installs `mcp-hub` node binary globally
+  event = "VeryLazy", -- avoid startup errors; load later
   config = function()
     local mcphub_config_path = vim.fn.expand("~/.config/mcphub/servers.json")
     local mcphub_config_dir = vim.fn.expand("~/.config/mcphub")
