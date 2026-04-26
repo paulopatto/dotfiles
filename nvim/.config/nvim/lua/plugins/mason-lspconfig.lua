@@ -8,6 +8,7 @@ return {
         ensure_installed = {
           "clangd",
           "jdtls",
+          "java-lanuage-server",
           "kotlin_language_server",
           "lua_ls",
           "pyright",

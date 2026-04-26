@@ -11,6 +11,8 @@ return {
       local mason_lspconfig = require("mason-lspconfig")
       -- Ensure mason-lspconfig is initialized before using handlers
       mason_lspconfig.setup()
+      -- Ensure Mason binaries are in PATH
+      vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin:" .. vim.env.PATH
       local on_attach = function(client, bufnr)
         -- Enable completion triggered by <c-x><c-o>
         vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
@@ -21,8 +23,8 @@ return {
       if mason_lspconfig.setup_handlers then
         mason_lspconfig.setup_handlers({
           function(server_name)
-            if server_name ~= "jdtls" then
-              require("lspconfig")[server_name].setup({
+            if server_name ~= "jdtls" and server_name ~= "stylua" and lspconfig[server_name] then
+              lspconfig[server_name].setup({
                 on_attach = on_attach,
                 capabilities = capabilities,
               })
@@ -48,8 +50,8 @@ return {
       else
         local servers = mason_lspconfig.get_installed_servers()
         for _, server_name in ipairs(servers) do
-          if server_name ~= "jdtls" then
-            require("lspconfig")[server_name].setup({
+          if server_name ~= "jdtls" and server_name ~= "stylua" and lspconfig[server_name] then
+            lspconfig[server_name].setup({
               on_attach = on_attach,
               capabilities = capabilities,
             })
@@ -58,28 +60,24 @@ return {
       end
 
       -- Custom setup for jdtls
-      local java_path = vim.fn.expand("~/.asdf/shims/java")
+      -- Proper jdtls setup (required for stability)
       local jdtls = require("jdtls")
-      lspconfig.jdtls.setup({
-        cmd = { "jdtls" },
-        root_dir = lspconfig.util.root_pattern("pom.xml", "build.gradle", ".git"),
-        settings = {
-          java = {
-            configuration = {
-              runtimes = {
-                {
-                  name = "JavaSE-17",
-                  path = java_path,
-                },
-              },
-            },
+      local root = vim.fs.find({ "pom.xml", "build.gradle", ".git" }, { upward = true })[1]
+
+      if root then
+        local project_name = vim.fn.fnamemodify(vim.fs.dirname(root), ":p:h:t")
+        local workspace_dir = vim.fn.stdpath("data") .. "/jdtls-workspace/" .. project_name
+
+        jdtls.start_or_attach({
+          cmd = {
+            vim.fn.expand("$HOME/.local/share/nvim/mason/bin/jdtls"),
+            "-data",
+            workspace_dir,
           },
-        },
-      })
-      jdtls.start_or_attach({
-        cmd = { vim.fn.expand("$HOME/.local/share/nvim/mason/bin/jdtls") },
-        root_dir = vim.fs.dirname(vim.fs.find({ "pom.xml", "build.gradle", ".git" }, { upward = true })[1]),
-      })
+          root_dir = vim.fs.dirname(root),
+          capabilities = capabilities,
+        })
+      end
 
       -- Global keymaps
       vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
