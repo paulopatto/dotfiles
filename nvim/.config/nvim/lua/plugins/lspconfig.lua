@@ -9,6 +9,8 @@ return {
     config = function()
       local lspconfig = require("lspconfig")
       local mason_lspconfig = require("mason-lspconfig")
+      -- Ensure mason-lspconfig is initialized before using handlers
+      mason_lspconfig.setup()
       local on_attach = function(client, bufnr)
         -- Enable completion triggered by <c-x><c-o>
         vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
