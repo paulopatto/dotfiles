@@ -15,17 +15,33 @@ return {
       end
       local capabilities = vim.lsp.protocol.make_client_capabilities()
 
-      -- Setup language servers installed through Mason
-      local servers = mason_lspconfig.get_installed_servers()
-      for _, server_name in ipairs(servers) do
-        -- Exclude jdtls from the general setup, as it has a custom one
-        if server_name ~= "jdtls" then
-          lspconfig[server_name].setup({
+      -- Setup language servers via mason handlers (modern API)
+      mason_lspconfig.setup_handlers({
+        function(server_name)
+          if server_name ~= "jdtls" then
+            require("lspconfig")[server_name].setup({
+              on_attach = on_attach,
+              capabilities = capabilities,
+            })
+          end
+        end,
+
+        ["terraformls"] = function()
+          require("lspconfig").terraformls.setup({
             on_attach = on_attach,
             capabilities = capabilities,
+            filetypes = { "terraform", "tf", "hcl" },
           })
-        end
-      end
+        end,
+
+        ["kotlin_language_server"] = function()
+          require("lspconfig").kotlin_language_server.setup({
+            on_attach = on_attach,
+            capabilities = capabilities,
+            filetypes = { "kotlin" },
+          })
+        end,
+      })
 
       -- Custom setup for jdtls
       local java_path = vim.fn.expand("~/.asdf/shims/java")
