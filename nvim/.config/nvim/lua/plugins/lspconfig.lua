@@ -9,8 +9,7 @@ return {
     config = function()
       local lspconfig = require("lspconfig")
       local mason_lspconfig = require("mason-lspconfig")
-      -- Ensure mason-lspconfig is initialized before using handlers
-      mason_lspconfig.setup()
+      -- mason-lspconfig is initialized in its own plugin config
       -- Ensure Mason binaries are in PATH
       vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin:" .. vim.env.PATH
       local on_attach = function(client, bufnr)
@@ -23,11 +22,16 @@ return {
       if mason_lspconfig.setup_handlers then
         mason_lspconfig.setup_handlers({
           function(server_name)
-            if server_name ~= "jdtls" and server_name ~= "stylua" and lspconfig[server_name] then
-              lspconfig[server_name].setup({
-                on_attach = on_attach,
-                capabilities = capabilities,
-              })
+            if server_name ~= "jdtls" and server_name ~= "stylua" then
+              local ok, server = pcall(function()
+                return lspconfig[server_name]
+              end)
+              if ok and server then
+                server.setup({
+                  on_attach = on_attach,
+                  capabilities = capabilities,
+                })
+              end
             end
           end,
 
@@ -50,34 +54,22 @@ return {
       else
         local servers = mason_lspconfig.get_installed_servers()
         for _, server_name in ipairs(servers) do
-          if server_name ~= "jdtls" and server_name ~= "stylua" and lspconfig[server_name] then
-            lspconfig[server_name].setup({
-              on_attach = on_attach,
-              capabilities = capabilities,
-            })
+          if server_name ~= "jdtls" and server_name ~= "stylua" then
+            local ok, server = pcall(function()
+              return lspconfig[server_name]
+            end)
+            if ok and server then
+              server.setup({
+                on_attach = on_attach,
+                capabilities = capabilities,
+              })
+            end
           end
         end
       end
 
       -- Custom setup for jdtls
-      -- Proper jdtls setup (required for stability)
-      local jdtls = require("jdtls")
-      local root = vim.fs.find({ "pom.xml", "build.gradle", ".git" }, { upward = true })[1]
-
-      if root then
-        local project_name = vim.fn.fnamemodify(vim.fs.dirname(root), ":p:h:t")
-        local workspace_dir = vim.fn.stdpath("data") .. "/jdtls-workspace/" .. project_name
-
-        jdtls.start_or_attach({
-          cmd = {
-            vim.fn.expand("$HOME/.local/share/nvim/mason/bin/jdtls"),
-            "-data",
-            workspace_dir,
-          },
-          root_dir = vim.fs.dirname(root),
-          capabilities = capabilities,
-        })
-      end
+      -- jdtls is handled via ftplugin/java.lua (proper lazy + per-project setup)
 
       -- Global keymaps
       vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
