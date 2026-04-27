@@ -7,71 +7,92 @@ return {
       "williamboman/mason.nvim",
     },
     config = function()
-      local lspconfig = require("lspconfig")
       local mason_lspconfig = require("mason-lspconfig")
-      -- mason-lspconfig is initialized in its own plugin config
-      -- Ensure Mason binaries are in PATH
       vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin:" .. vim.env.PATH
       local on_attach = function(client, bufnr)
-        -- Enable completion triggered by <c-x><c-o>
         vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
       end
       local capabilities = vim.lsp.protocol.make_client_capabilities()
 
-      -- Setup language servers (compat: new + old mason-lspconfig)
-      if mason_lspconfig.setup_handlers then
-        mason_lspconfig.setup_handlers({
-          function(server_name)
-            if server_name ~= "jdtls" and server_name ~= "stylua" then
-              local ok, server = pcall(function()
-                return lspconfig[server_name]
-              end)
-              if ok and server then
-                server.setup({
-                  on_attach = on_attach,
-                  capabilities = capabilities,
-                })
-              end
-            end
-          end,
+      local default_config = {
+        on_attach = on_attach,
+        capabilities = capabilities,
+      }
 
-          ["terraformls"] = function()
-            require("lspconfig").terraformls.setup({
-              on_attach = on_attach,
-              capabilities = capabilities,
-              filetypes = { "terraform", "tf", "hcl" },
-            })
-          end,
+      local use_new_api = vim.version().minor >= 11
 
-          ["kotlin_language_server"] = function()
-            require("lspconfig").kotlin_language_server.setup({
-              on_attach = on_attach,
-              capabilities = capabilities,
-              filetypes = { "kotlin" },
-            })
-          end,
+      if use_new_api then
+        vim.lsp.config("terraformls", {
+          filetypes = { "terraform", "tf", "hcl" },
+          on_attach = on_attach,
+          capabilities = capabilities,
         })
+
+        vim.lsp.config("kotlin_language_server", {
+          filetypes = { "kotlin" },
+          on_attach = on_attach,
+          capabilities = capabilities,
+        })
+
+        if mason_lspconfig.setup_handlers then
+          mason_lspconfig.setup_handlers({
+            function(server_name)
+              if server_name ~= "jdtls" and server_name ~= "stylua" then
+                vim.lsp.config(server_name, default_config)
+              end
+            end,
+          })
+        else
+          local servers = mason_lspconfig.get_installed_servers()
+          for _, server_name in ipairs(servers) do
+            if server_name ~= "jdtls" and server_name ~= "stylua" then
+              vim.lsp.config(server_name, default_config)
+            end
+          end
+        end
       else
-        local servers = mason_lspconfig.get_installed_servers()
-        for _, server_name in ipairs(servers) do
-          if server_name ~= "jdtls" and server_name ~= "stylua" then
-            local ok, server = pcall(function()
-              return lspconfig[server_name]
-            end)
-            if ok and server then
-              server.setup({
-                on_attach = on_attach,
-                capabilities = capabilities,
-              })
+        local lspconfig = require("lspconfig")
+
+        local function setup_server(server_name, custom_config)
+          local config = custom_config or default_config
+          local ok, server = pcall(function()
+            return lspconfig[server_name]
+          end)
+          if ok and server and server.setup then
+            pcall(server.setup, config)
+          end
+        end
+
+        if pcall(function() return lspconfig.terraformls end) then
+          setup_server("terraformls", {
+            filetypes = { "terraform", "tf", "hcl" },
+          })
+        end
+
+        if pcall(function() return lspconfig.kotlin_language_server end) then
+          setup_server("kotlin_language_server", {
+            filetypes = { "kotlin" },
+          })
+        end
+
+        if mason_lspconfig.setup_handlers then
+          mason_lspconfig.setup_handlers({
+            function(server_name)
+              if server_name ~= "jdtls" and server_name ~= "stylua" then
+                setup_server(server_name)
+              end
+            end,
+          })
+        else
+          local servers = mason_lspconfig.get_installed_servers()
+          for _, server_name in ipairs(servers) do
+            if server_name ~= "jdtls" and server_name ~= "stylua" then
+              setup_server(server_name)
             end
           end
         end
       end
 
-      -- Custom setup for jdtls
-      -- jdtls is handled via ftplugin/java.lua (proper lazy + per-project setup)
-
-      -- Global keymaps
       vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
       vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
       vim.keymap.set("n", "gr", vim.lsp.buf.references, {})
@@ -82,7 +103,6 @@ return {
         vim.lsp.buf.code_action({ context = { only = { "source.organizeImports" } } })
       end, { desc = "Organize Imports" })
 
-      -- Format on save
       vim.api.nvim_create_autocmd("BufWritePre", {
         group = vim.api.nvim_create_augroup("LspFormatOnSave", { clear = true }),
         callback = function(args)
