@@ -2,7 +2,6 @@ return {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
-      "mfussenegger/nvim-jdtls",
       "williamboman/mason-lspconfig.nvim",
       "williamboman/mason.nvim",
     },
@@ -63,13 +62,17 @@ return {
           end
         end
 
-        if pcall(function() return lspconfig.terraformls end) then
+        if pcall(function()
+          return lspconfig.terraformls
+        end) then
           setup_server("terraformls", {
             filetypes = { "terraform", "tf", "hcl" },
           })
         end
 
-        if pcall(function() return lspconfig.kotlin_language_server end) then
+        if pcall(function()
+          return lspconfig.kotlin_language_server
+        end) then
           setup_server("kotlin_language_server", {
             filetypes = { "kotlin" },
           })
