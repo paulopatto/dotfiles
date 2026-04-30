@@ -7,7 +7,6 @@ return {
         -- https://github.com/williamboman/mason-lspconfig.nvim?tab=readme-ov-file#available-lsp-servers
         ensure_installed = {
           "clangd",
-          "jdtls",
           "kotlin_language_server",
           "lua_ls",
           "pyright",
