@@ -11,10 +11,11 @@ return {
     "nvim-lua/plenary.nvim",
     "stevearc/dressing.nvim",
     --- The below dependencies are optional,
-    "echasnovski/mini.pick",         -- for file_selector provider mini.pick
-    "ibhagwan/fzf-lua",              -- for file_selector provider fzf
+    "echasnovski/mini.pick", -- for file_selector provider mini.pick
+    "ibhagwan/fzf-lua", -- for file_selector provider fzf
     "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
-    "nvim-tree/nvim-web-devicons",   -- or echasnovski/mini.icons
+    "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+    "folke/snacks.nvim", -- for input provider snacks'
     {
       -- support for image pasting
       "HakonHarnes/img-clip.nvim",
@@ -42,6 +43,7 @@ return {
     },
   },
   opts = {
+    instructions_file = "AGENT.md",
     ---@alias Provider "claude" | "openai" | "azure" | "gemini" | "cohere" | "copilot" | string
     -- add any opts here
     -- for example
@@ -49,7 +51,7 @@ return {
       openai = {
         endpoint = "https://api.openai.com/v1",
         model = "gpt-4o", -- your desired model (or use gpt-4o, etc.)
-        timeout = 30000,  -- timeout in milliseconds
+        timeout = 30000, -- timeout in milliseconds
         extra_request_body = {
           temperature = 0,
           max_tokens = 4096,
@@ -58,17 +60,70 @@ return {
       gemini = {
         endpoint = "https://generativelanguage.googleapis.com/v1beta/models", -- Endpoint da API do Gemini
         -- @see https://ai.google.dev/gemini-api/docs/models/gemini
-        model = "gemini-2.5-pro",                                             -- Modelo do Gemini (ex: "gemini-pro" ou "gemini-ultra")
-        temperature = 0,                                                      -- Controla a criatividade (0 para respostas mais determinísticas)
-        max_tokens = 8192,                                                    -- Número máximo de tokens na resposta
+        model = "gemini-2.5-pro", -- Modelo do Gemini (ex: "gemini-pro" ou "gemini-ultra")
+        temperature = 0, -- Controla a criatividade (0 para respostas mais determinísticas)
+        max_tokens = 8192, -- Número máximo de tokens na resposta
+      },
+      minimax25_free = {
+        __inherited_from = "openai",
+        endpoint = "https://openrouter.ai/api/v1",
+        api_key_name = "OPENROUTER_API_KEY",
+        model = "minimax/minimax-m2.5:free",
+      },
+      gpt_oss120_free = {
+        __inherited_from = "openai",
+        endpoint = "https://openrouter.ai/api/v1",
+        api_key_name = "OPENROUTER_API_KEY",
+        model = "openai/gpt-oss-120b:free",
+        extra_request_body = {
+          max_tokens = 4096,
+        },
+      },
+      claude_opus46 = {
+        __inherited_from = "openai",
+        endpoint = "https://openrouter.ai/api/v1",
+        api_key_name = "OPENROUTER_API_KEY",
+        model = "anthropic/claude-opus-4.6",
+        extra_request_body = {
+          temperature = 0,
+          max_tokens = 4096,
+        },
+      },
+      claude_sonnet46 = {
+        __inherited_from = "openai",
+        endpoint = "https://openrouter.ai/api/v1",
+        api_key_name = "OPENROUTER_API_KEY",
+        model = "anthropic/claude-sonnet-4.6",
+        extra_request_body = {
+          temperature = 0.3,
+          max_tokens = 4096,
+        },
+      },
+      qwen3_coder = {
+        __inherited_from = "openai",
+        endpoint = "https://openrouter.ai/api/v1",
+        api_key_name = "OPENROUTER_API_KEY",
+        model = "qwen/qwen3-coder-next",
+        extra_request_body = {
+          temperature = 0.2,
+        },
+      },
+      qwen3_max = {
+        __inherited_from = "openai",
+        endpoint = "https://openrouter.ai/api/v1",
+        api_key_name = "OPENROUTER_API_KEY",
+        model = "qwen/qwen3-max-thinking",
+        extra_request_body = {
+          temperature = 0.2,
+        },
       },
     },
 
     -- WARNING: Since auto-suggestions are a high-frequency operation and therefore expensive,
     -- currently designating it as `copilot` provider is dangerous because: https://github.com/yetone/avante.nvim/issues/1048
     -- Of course, you can reduce the request frequency by increasing `suggestion.debounce`.
-    auto_suggestions_provider = "gemini",
-    provider = "gemini", -- The provider used in Aider mode or in the planning phase of Cursor Planning Mode
+    auto_suggestions_provider = "minimax25_free",
+    provider = "minimax25_free", -- The provider used in Aider mode or in the planning phase of Cursor Planning Mode
 
     ---Specify the special dual_boost mode
     ---1. enabled: Whether to enable dual_boost mode. Default to false.
@@ -83,8 +138,7 @@ return {
       enabled = true,
       first_provider = "gemini",
       second_provider = "openai",
-      prompt =
-      "Based on the two reference outputs below, generate a response that incorporates elements from both but reflects your own judgment and unique perspective. Do not provide any explanation, just give the response directly. Reference Output 1: [{{provider1_output}}], Reference Output 2: [{{provider2_output}}]",
+      prompt = "Based on the two reference outputs below, generate a response that incorporates elements from both but reflects your own judgment and unique perspective. Do not provide any explanation, just give the response directly. Reference Output 1: [{{provider1_output}}], Reference Output 2: [{{provider2_output}}]",
       timeout = 60000, -- Timeout in milliseconds
     },
 
@@ -94,8 +148,8 @@ return {
       auto_set_keymaps = true,
       auto_apply_diff_after_generation = false,
       support_paste_from_clipboard = false,
-      minimize_diff = true,                -- Whether to remove unchanged lines when applying a code block
-      enable_token_counting = true,        -- Whether to enable token counting. Default to true.
+      minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
+      enable_token_counting = true, -- Whether to enable token counting. Default to true.
       enable_cursor_planning_mode = false, -- Whether to enable Cursor Planning Mode. Default to false.
     },
 
