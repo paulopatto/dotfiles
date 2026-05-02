@@ -1,10 +1,12 @@
 -- Treesitter configs
 return {
   "nvim-treesitter/nvim-treesitter",
-  build = ":TSUpdate",
+  branch = "main",
+  lazy = false,
+  build = ":STUpdate",
   config = function()
-    local treesitter_configs = require("nvim-treesitter.configs")
-    treesitter_configs.setup({
+    local treesitter_configs = require("nvim-treesitter")
+    require("nvim-treesitter").setup({
       highlight = {
         enable = true,
         additional_vim_regex_highlighting = { "ruby" },
