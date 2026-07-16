@@ -1,7 +1,7 @@
 return {
   {
     "nvim-telescope/telescope.nvim",
-    tag = "0.1.6",
+    branch = "master",
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
       -- Telescope configs
@@ -43,4 +43,3 @@ return {
     end,
   },
 }
-
