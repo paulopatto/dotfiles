@@ -127,6 +127,11 @@ return {
           OPENCODE_API_KEY = os.getenv("OPENCODE_API_KEY"),
         },
       },
+
+      ["codex"] = {
+        command = "codex",
+        args = { "acp" },
+      },
     },
 
     ---@alias Mode "agentic" | "legacy"
